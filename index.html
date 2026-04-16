@@ -4,11 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AcuOps — CI/CD for Acumatica Customizations</title>
-  <meta name="description" content="Ship Acumatica customizations with confidence. AcuOps automates validation, deployment, and rollback for ERP customization projects.">
+  <meta name="description" content="AcuOps is the CI/CD pipeline for Acumatica VARs. 100+ automated checks per publish. $300/month per instance. No tiers, no per-seat pricing.">
+  <link rel="canonical" href="https://acuops.com">
 
   <!-- Open Graph -->
   <meta property="og:title" content="AcuOps — CI/CD for Acumatica Customizations">
-  <meta property="og:description" content="Automated validation, deployment, and rollback for Acumatica ERP customization projects. Push to main, deploy to production.">
+  <meta property="og:description" content="You don't publish on Fridays. AcuOps is the CI/CD pipeline that would have caught it on the branch. $300/month per Acumatica instance.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://acuops.com">
   <meta property="og:image" content="https://acuops.com/og-image.png">
@@ -16,544 +17,321 @@
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="AcuOps — CI/CD for Acumatica Customizations">
-  <meta name="twitter:description" content="Automated validation, deployment, and rollback for Acumatica ERP customization projects.">
+  <meta name="twitter:description" content="You don't publish on Fridays. AcuOps is the CI/CD pipeline that would have caught it on the branch.">
 
-  <link rel="canonical" href="https://acuops.com">
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
       theme: {
         extend: {
+          fontFamily: {
+            mono: ['"JetBrains Mono"', 'monospace'],
+            sans: ['Inter', 'sans-serif'],
+          },
           colors: {
-            acuBlue: '#0F3557',
-            acuLight: '#1a6bb5',
-            acuAccent: '#00A3E0',
-            studioB: '#1E293B',
-          }
-        }
-      }
+            cyan: { DEFAULT: '#22D3EE', deep: '#0891B2', glow: 'rgba(34, 211, 238, 0.10)' },
+            bg: '#04060B',
+            surface: '#0C1017',
+            'surface-2': '#141A24',
+            border: '#1E2A3A',
+            text: '#E8ECF1',
+            muted: '#8A95A5',
+            dim: '#566174',
+            'ci-pass': '#10B981',
+            warn: '#F59E0B',
+            error: '#EF4444',
+          },
+        },
+      },
     }
   </script>
+
+  <!-- HubSpot Forms -->
+  <script charset="utf-8" type="text/javascript" src="//js.hsforms.net/forms/embed/v2.js"></script>
+
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
-    body { font-family: 'Inter', sans-serif; }
-    .gradient-hero { background: linear-gradient(135deg, #0F3557 0%, #1a6bb5 50%, #00A3E0 100%); }
-    .gradient-cta { background: linear-gradient(135deg, #00A3E0 0%, #1a6bb5 100%); }
-    .feature-card:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,0,0,0.12); }
-    .feature-card { transition: all 0.2s ease; }
-    .pricing-card:hover { border-color: #00A3E0; }
-    .pricing-card { transition: border-color 0.2s ease; }
-    .pricing-popular { border-color: #00A3E0; }
-    code { font-family: 'SF Mono', 'Fira Code', monospace; }
-    .terminal { background: #1a1a2e; border-radius: 8px; }
-    .terminal-header { background: #16213e; border-radius: 8px 8px 0 0; }
-    .dot { width: 12px; height: 12px; border-radius: 50%; }
+    :root {
+      --cyan: #22D3EE;
+      --cyan-deep: #0891B2;
+      --cyan-glow: rgba(34, 211, 238, 0.10);
+      --bg: #04060B;
+      --surface: #0C1017;
+      --surface-2: #141A24;
+      --border: #1E2A3A;
+      --text: #E8ECF1;
+      --muted: #8A95A5;
+      --dim: #566174;
+      --ci-pass: #10B981;
+      --warn: #F59E0B;
+      --error: #EF4444;
+    }
+
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; }
+
+    /* Override HubSpot form embed styles */
+    .acuops-form .hs-form,
+    .acuops-waitlist-form .hs-form { font-family: 'Inter', sans-serif; }
+
+    .acuops-form .hs-form-field label,
+    .acuops-waitlist-form .hs-form-field label { color: var(--muted); font-size: 0.875rem; }
+
+    .acuops-form .hs-input,
+    .acuops-waitlist-form .hs-input {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      border-radius: 0.375rem;
+      padding: 0.75rem 1rem;
+      width: 100%;
+    }
+
+    .acuops-form .hs-input:focus,
+    .acuops-waitlist-form .hs-input:focus {
+      border-color: var(--cyan);
+      outline: none;
+      box-shadow: 0 0 0 2px rgba(34,211,238,.25);
+    }
+
+    .acuops-form .hs-submit .hs-button,
+    .acuops-waitlist-form .hs-submit .hs-button {
+      background: var(--cyan);
+      color: var(--bg);
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 500;
+      border: none;
+      border-radius: 0.375rem;
+      padding: 0.75rem 1.5rem;
+      cursor: pointer;
+      width: 100%;
+      letter-spacing: 0.05em;
+    }
+
+    .acuops-form .hs-submit .hs-button:hover {
+      background: var(--cyan-deep);
+      color: #fff;
+    }
+
+    .acuops-waitlist-form .hs-submit .hs-button:hover {
+      background: var(--cyan-deep);
+      color: #fff;
+    }
+
+    .acuops-form .hs-error-msgs,
+    .acuops-waitlist-form .hs-error-msgs { color: var(--error); font-size: 0.75rem; }
+
+    .acuops-form .submitted-message,
+    .acuops-waitlist-form .submitted-message {
+      color: var(--cyan);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* Select dropdowns */
+    .acuops-form select.hs-input,
+    .acuops-waitlist-form select.hs-input {
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%238A95A5' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10l-5 5z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 1rem center;
+    }
+
+    /* Textarea */
+    .acuops-form textarea.hs-input,
+    .acuops-waitlist-form textarea.hs-input {
+      min-height: 5rem;
+      resize: vertical;
+    }
+
+    /* Legal / GDPR consent */
+    .acuops-form .legal-consent-container,
+    .acuops-waitlist-form .legal-consent-container { color: var(--dim); font-size: 0.75rem; }
+
+    .acuops-form .legal-consent-container a,
+    .acuops-waitlist-form .legal-consent-container a { color: var(--cyan); }
+
+    /* Field list spacing */
+    .acuops-form .hs-form-field,
+    .acuops-waitlist-form .hs-form-field { margin-bottom: 1rem; }
   </style>
 </head>
-<body class="bg-white text-gray-900">
+<body class="antialiased">
 
   <!-- Nav -->
-  <nav class="fixed top-0 w-full bg-white/95 backdrop-blur-sm border-b border-gray-100 z-50">
-    <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-      <div class="flex items-center gap-2">
-        <div class="w-8 h-8 rounded-lg gradient-hero flex items-center justify-center">
-          <span class="text-white font-bold text-sm">AO</span>
-        </div>
-        <span class="font-bold text-xl text-acuBlue">AcuOps</span>
-      </div>
-      <div class="hidden md:flex items-center gap-8 text-sm font-medium text-gray-600">
-        <a href="#features" class="hover:text-acuBlue">Features</a>
-        <a href="#how-it-works" class="hover:text-acuBlue">How It Works</a>
-        <a href="#case-study" class="hover:text-acuBlue">Case Study</a>
-        <a href="#pricing" class="hover:text-acuBlue">Pricing</a>
-      </div>
-      <a href="#cta" class="hidden md:inline-flex items-center px-4 py-2 bg-acuBlue text-white text-sm font-medium rounded-lg hover:bg-acuLight transition-colors">
-        Get Started
-      </a>
+  <nav class="fixed top-0 left-0 right-0 z-50 bg-surface/80 backdrop-blur-md border-b border-border">
+    <div class="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
+      <span class="font-mono font-bold text-cyan tracking-[0.35em] text-sm">A C U O P S</span>
+      <a href="#cta" class="font-mono text-sm text-muted hover:text-cyan transition-colors">Book a call &rarr;</a>
     </div>
   </nav>
 
-  <!-- Hero -->
-  <section class="gradient-hero pt-32 pb-20 px-6">
-    <div class="max-w-6xl mx-auto">
-      <div class="grid md:grid-cols-2 gap-12 items-center">
-        <div>
-          <div class="inline-flex items-center gap-2 bg-white/10 text-white/90 text-xs font-medium px-3 py-1.5 rounded-full mb-6">
-            <span class="w-2 h-2 bg-green-400 rounded-full"></span>
-            ISV Certification In Progress
-          </div>
-          <h1 class="text-4xl md:text-5xl font-extrabold text-white leading-tight mb-6">
-            CI/CD for Acumatica<br>Customizations
-          </h1>
-          <p class="text-lg text-blue-100 mb-8 leading-relaxed">
-            Ship customization projects with confidence. AcuOps validates, deploys, and rolls back
-            Acumatica ERP customizations through GitHub Actions &mdash; no manual uploads, no broken publishes.
-          </p>
-          <div class="flex flex-wrap gap-4">
-            <a href="#cta" class="inline-flex items-center px-6 py-3 bg-white text-acuBlue font-semibold rounded-lg hover:bg-blue-50 transition-colors">
-              Start Free
-            </a>
-            <a href="#how-it-works" class="inline-flex items-center px-6 py-3 border border-white/30 text-white font-medium rounded-lg hover:bg-white/10 transition-colors">
-              See How It Works
-            </a>
-          </div>
-        </div>
-        <div class="terminal shadow-2xl">
-          <div class="terminal-header px-4 py-3 flex items-center gap-2">
-            <div class="dot bg-red-400"></div>
-            <div class="dot bg-yellow-400"></div>
-            <div class="dot bg-green-400"></div>
-            <span class="ml-3 text-gray-400 text-xs">acuops-deploy.yml</span>
-          </div>
-          <div class="p-5 text-sm leading-relaxed">
-            <code class="text-gray-400"># Push to main &rarr; deploy to production</code><br>
-            <code class="text-green-400">$</code> <code class="text-white">git push origin main</code><br><br>
-            <code class="text-gray-400"># AcuOps validates, packages, and deploys</code><br>
-            <code class="text-blue-300">[VALIDATE]</code> <code class="text-gray-300">project.xml &mdash; 14 checks passed</code><br>
-            <code class="text-blue-300">[PACKAGE ]</code> <code class="text-gray-300">Customization.zip &mdash; 247 KB</code><br>
-            <code class="text-blue-300">[BACKUP  ]</code> <code class="text-gray-300">Downloaded current package</code><br>
-            <code class="text-blue-300">[IMPORT  ]</code> <code class="text-gray-300">Uploaded to Acumatica</code><br>
-            <code class="text-blue-300">[PUBLISH ]</code> <code class="text-gray-300">Publishing with 2 co-projects...</code><br>
-            <code class="text-green-400">[SUCCESS ]</code> <code class="text-white">Deploy complete in 3m 12s</code><br><br>
-            <code class="text-yellow-300">[INTEL   ]</code> <code class="text-gray-300">Prediction: 94% success &mdash; Actual: pass</code>
-          </div>
-        </div>
+  <!-- 1. Hero -->
+  <section class="pt-32 pb-20 px-6 md:pt-44 md:pb-28">
+    <div class="max-w-3xl mx-auto">
+      <p class="font-mono text-cyan text-xs tracking-[0.3em] uppercase mb-6">For Acumatica VARs</p>
+      <h1 class="font-mono font-bold text-4xl sm:text-5xl md:text-7xl leading-[1.1] mb-8">You don't publish on&nbsp;Fridays.</h1>
+      <p class="text-lg md:text-xl leading-relaxed max-w-2xl">
+        <span class="text-muted">Not because you're careful&thinsp;&mdash;&thinsp;because the last one took down a client at 4:30pm and you spent the weekend on&nbsp;it.</span>
+        <span class="text-text"> AcuOps is the CI/CD pipeline that would have caught it on the&nbsp;branch.</span>
+      </p>
+      <div class="mt-10 flex flex-col sm:flex-row gap-4 items-start">
+        <a href="#cta" class="inline-block bg-cyan text-bg font-mono font-medium text-sm px-6 py-3 rounded-md hover:bg-cyan-deep hover:text-white transition-colors tracking-wide">Book a 20-minute call</a>
+        <a href="#catches" class="inline-block font-mono text-sm text-muted hover:text-cyan transition-colors py-3">See what it catches &rarr;</a>
       </div>
     </div>
   </section>
 
-  <!-- Logos / Social Proof -->
-  <section class="py-12 bg-gray-50 border-b border-gray-100">
-    <div class="max-w-6xl mx-auto px-6 text-center">
-      <p class="text-sm font-medium text-gray-500 mb-6">Built for the Acumatica ecosystem</p>
-      <div class="flex flex-wrap justify-center items-center gap-12 text-gray-400">
-        <span class="text-lg font-semibold">Acumatica Cloud ERP</span>
-        <span class="text-lg font-semibold">GitHub Actions</span>
-        <span class="text-lg font-semibold">ISV Partners</span>
-        <span class="text-lg font-semibold">VARs</span>
-      </div>
-    </div>
-  </section>
-
-  <!-- Features -->
-  <section id="features" class="py-20 px-6">
-    <div class="max-w-6xl mx-auto">
-      <div class="text-center mb-16">
-        <h2 class="text-3xl font-bold mb-4">Everything you need to ship Acumatica customizations</h2>
-        <p class="text-gray-600 max-w-2xl mx-auto">From validation to deployment to rollback, AcuOps handles the entire lifecycle of your customization projects.</p>
-      </div>
-      <div class="grid md:grid-cols-3 gap-8">
-        <!-- Feature 1 -->
-        <div class="feature-card bg-white border border-gray-200 rounded-xl p-6">
-          <div class="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center mb-4">
-            <svg class="w-5 h-5 text-acuAccent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-            </svg>
-          </div>
-          <h3 class="font-semibold text-lg mb-2">Automated Validation</h3>
-          <p class="text-gray-600 text-sm leading-relaxed">14-point project.xml validation catches schema errors, missing files, and ISV naming violations before deploy.</p>
-        </div>
-        <!-- Feature 2 -->
-        <div class="feature-card bg-white border border-gray-200 rounded-xl p-6">
-          <div class="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center mb-4">
-            <svg class="w-5 h-5 text-acuAccent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
-            </svg>
-          </div>
-          <h3 class="font-semibold text-lg mb-2">Push-to-Deploy</h3>
-          <p class="text-gray-600 text-sm leading-relaxed">Merge to main and AcuOps handles packaging, import, co-publish conflict checking, and publish polling automatically.</p>
-        </div>
-        <!-- Feature 3 -->
-        <div class="feature-card bg-white border border-gray-200 rounded-xl p-6">
-          <div class="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center mb-4">
-            <svg class="w-5 h-5 text-acuAccent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
-            </svg>
-          </div>
-          <h3 class="font-semibold text-lg mb-2">Pre-Deploy Backup</h3>
-          <p class="text-gray-600 text-sm leading-relaxed">Downloads the current published package before every deploy. One-command rollback if anything goes wrong.</p>
-        </div>
-        <!-- Feature 4 -->
-        <div class="feature-card bg-white border border-gray-200 rounded-xl p-6">
-          <div class="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center mb-4">
-            <svg class="w-5 h-5 text-acuAccent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
-            </svg>
-          </div>
-          <h3 class="font-semibold text-lg mb-2">Deploy Intelligence</h3>
-          <p class="text-gray-600 text-sm leading-relaxed">ML-powered success prediction learns from your deploy history. Flags risky deploys before they fail.</p>
-        </div>
-        <!-- Feature 5 -->
-        <div class="feature-card bg-white border border-gray-200 rounded-xl p-6">
-          <div class="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center mb-4">
-            <svg class="w-5 h-5 text-acuAccent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
-            </svg>
-          </div>
-          <h3 class="font-semibold text-lg mb-2">ISV Certification Ready</h3>
-          <p class="text-gray-600 text-sm leading-relaxed">Built-in certification checklist and solution object generator. Validates naming conventions against your ISV prefix.</p>
-        </div>
-        <!-- Feature 6 -->
-        <div class="feature-card bg-white border border-gray-200 rounded-xl p-6">
-          <div class="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center mb-4">
-            <svg class="w-5 h-5 text-acuAccent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
-            </svg>
-          </div>
-          <h3 class="font-semibold text-lg mb-2">Multi-Client Management</h3>
-          <p class="text-gray-600 text-sm leading-relaxed">Manage dozens of clients from a single CLI. Health monitoring, SLA tracking, and monthly reports included.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- How It Works -->
-  <section id="how-it-works" class="py-20 px-6 bg-gray-50">
-    <div class="max-w-6xl mx-auto">
-      <div class="text-center mb-16">
-        <h2 class="text-3xl font-bold mb-4">How it works</h2>
-        <p class="text-gray-600">Three steps from code change to production deploy.</p>
-      </div>
-      <div class="grid md:grid-cols-3 gap-12">
-        <div class="text-center">
-          <div class="w-14 h-14 rounded-full gradient-hero flex items-center justify-center mx-auto mb-5">
-            <span class="text-white font-bold text-xl">1</span>
-          </div>
-          <h3 class="font-semibold text-lg mb-2">Export &amp; Commit</h3>
-          <p class="text-gray-600 text-sm">Export your customization project from Acumatica Source Control (SM204505) and commit to GitHub.</p>
-        </div>
-        <div class="text-center">
-          <div class="w-14 h-14 rounded-full gradient-hero flex items-center justify-center mx-auto mb-5">
-            <span class="text-white font-bold text-xl">2</span>
-          </div>
-          <h3 class="font-semibold text-lg mb-2">Push to Main</h3>
-          <p class="text-gray-600 text-sm">Push or merge your PR. AcuOps validates the project, creates a backup, and deploys via the Customization API.</p>
-        </div>
-        <div class="text-center">
-          <div class="w-14 h-14 rounded-full gradient-hero flex items-center justify-center mx-auto mb-5">
-            <span class="text-white font-bold text-xl">3</span>
-          </div>
-          <h3 class="font-semibold text-lg mb-2">Monitor &amp; Report</h3>
-          <p class="text-gray-600 text-sm">Deploy Intelligence tracks outcomes. Get monthly reports with success rates, SLA compliance, and recommendations.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Case Study -->
-  <section id="case-study" class="py-20 px-6">
-    <div class="max-w-6xl mx-auto">
-      <div class="bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl p-8 md:p-12 text-white">
-        <div class="grid md:grid-cols-2 gap-12 items-center">
-          <div>
-            <p class="text-acuAccent font-semibold text-sm mb-3 uppercase tracking-wide">Case Study</p>
-            <h2 class="text-3xl font-bold mb-4">Heritage Fabrics</h2>
-            <p class="text-gray-300 mb-6 leading-relaxed">
-              Mid-market textile company running Acumatica Cloud ERP with 6 custom DAC extensions,
-              SQL column creation, and co-publish dependencies. AcuOps manages their entire customization lifecycle.
-            </p>
-            <div class="grid grid-cols-2 gap-6 mb-8">
-              <div>
-                <p class="text-3xl font-bold text-acuAccent">0</p>
-                <p class="text-gray-400 text-sm">Failed deploys since adoption</p>
-              </div>
-              <div>
-                <p class="text-3xl font-bold text-acuAccent">&lt;4 min</p>
-                <p class="text-gray-400 text-sm">Average deploy time</p>
-              </div>
-              <div>
-                <p class="text-3xl font-bold text-acuAccent">6</p>
-                <p class="text-gray-400 text-sm">C# DAC extensions managed</p>
-              </div>
-              <div>
-                <p class="text-3xl font-bold text-acuAccent">100%</p>
-                <p class="text-gray-400 text-sm">Automated &mdash; no manual uploads</p>
-              </div>
-            </div>
-            <blockquote class="border-l-2 border-acuAccent pl-4 text-gray-300 italic">
-              &ldquo;We went from manually uploading packages and hoping the publish worked to push-to-deploy
-              with automatic rollback. AcuOps eliminated our deployment anxiety.&rdquo;
-            </blockquote>
-          </div>
-          <div class="terminal">
-            <div class="terminal-header px-4 py-3 flex items-center gap-2">
-              <div class="dot bg-red-400"></div>
-              <div class="dot bg-yellow-400"></div>
-              <div class="dot bg-green-400"></div>
-              <span class="ml-3 text-gray-400 text-xs">heritage-fabrics deploy</span>
-            </div>
-            <div class="p-5 text-xs leading-relaxed">
-              <code class="text-gray-400"># HeritageFabricsPOv5 &mdash; 6 Graph extensions + SQL</code><br><br>
-              <code class="text-blue-300">[VALIDATE]</code> <code class="text-gray-300">project.xml</code><br>
-              <code class="text-gray-500">  POOrderExt .............. pass</code><br>
-              <code class="text-gray-500">  POLineExt ............... pass</code><br>
-              <code class="text-gray-500">  CustomerExt ............. pass</code><br>
-              <code class="text-gray-500">  SOOrderExt .............. pass</code><br>
-              <code class="text-gray-500">  SQL columns (6) ......... pass</code><br><br>
-              <code class="text-blue-300">[CO-PUB  ]</code> <code class="text-gray-300">HeritageFabricsPOv5</code><br>
-              <code class="text-blue-300">[BACKUP  ]</code> <code class="text-gray-300">v4 downloaded (189 KB)</code><br>
-              <code class="text-blue-300">[IMPORT  ]</code> <code class="text-gray-300">Uploaded v5 (247 KB)</code><br>
-              <code class="text-blue-300">[PUBLISH ]</code> <code class="text-gray-300">Publishing...</code><br>
-              <code class="text-green-400">[SUCCESS ]</code> <code class="text-white">3m 42s</code><br>
-              <code class="text-yellow-300">[INTEL   ]</code> <code class="text-gray-300">94% predicted &rarr; pass</code>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Pricing -->
-  <section id="pricing" class="py-20 px-6 bg-gray-50">
-    <div class="max-w-6xl mx-auto">
-      <div class="text-center mb-16">
-        <h2 class="text-3xl font-bold mb-4">Simple, transparent pricing</h2>
-        <p class="text-gray-600">Start free with the open-source pipeline. Add managed services when you need them.</p>
-      </div>
-      <div class="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-        <!-- Self-Service -->
-        <div class="pricing-card bg-white border-2 border-gray-200 rounded-xl p-8">
-          <h3 class="font-semibold text-lg mb-1">Self-Service</h3>
-          <p class="text-gray-500 text-sm mb-6">Open-source pipeline</p>
-          <div class="mb-6">
-            <span class="text-4xl font-bold">Free</span>
-          </div>
-          <ul class="space-y-3 text-sm text-gray-600 mb-8">
-            <li class="flex items-start gap-2">
-              <svg class="w-5 h-5 text-green-500 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-              Full CI/CD pipeline (BSL 1.1)
-            </li>
-            <li class="flex items-start gap-2">
-              <svg class="w-5 h-5 text-green-500 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-              Validation + deploy workflows
-            </li>
-            <li class="flex items-start gap-2">
-              <svg class="w-5 h-5 text-green-500 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-              Pre-deploy backup
-            </li>
-            <li class="flex items-start gap-2">
-              <svg class="w-5 h-5 text-green-500 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-              Community support
-            </li>
-          </ul>
-          <a href="https://github.com/studio-b-ai/acuops-pipeline" target="_blank" class="block text-center px-6 py-3 border-2 border-gray-200 text-gray-700 font-medium rounded-lg hover:border-acuAccent transition-colors">
-            View on GitHub
-          </a>
-        </div>
-        <!-- Standard -->
-        <div class="pricing-card pricing-popular bg-white border-2 rounded-xl p-8 relative shadow-lg">
-          <div class="absolute -top-3 left-1/2 -translate-x-1/2">
-            <span class="bg-acuAccent text-white text-xs font-semibold px-3 py-1 rounded-full">Most Popular</span>
-          </div>
-          <h3 class="font-semibold text-lg mb-1">Standard Managed</h3>
-          <p class="text-gray-500 text-sm mb-6">We run your pipeline</p>
-          <div class="mb-6">
-            <span class="text-4xl font-bold">$500</span>
-            <span class="text-gray-500 text-sm">/mo per project</span>
-          </div>
-          <ul class="space-y-3 text-sm text-gray-600 mb-8">
-            <li class="flex items-start gap-2">
-              <svg class="w-5 h-5 text-green-500 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-              Everything in Self-Service
-            </li>
-            <li class="flex items-start gap-2">
-              <svg class="w-5 h-5 text-green-500 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-              Deploy Intelligence (ML predictions)
-            </li>
-            <li class="flex items-start gap-2">
-              <svg class="w-5 h-5 text-green-500 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-              95% deploy success SLA
-            </li>
-            <li class="flex items-start gap-2">
-              <svg class="w-5 h-5 text-green-500 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-              Monthly reports
-            </li>
-            <li class="flex items-start gap-2">
-              <svg class="w-5 h-5 text-green-500 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-              8-hour response time
-            </li>
-          </ul>
-          <a href="#cta" class="block text-center px-6 py-3 bg-acuBlue text-white font-medium rounded-lg hover:bg-acuLight transition-colors">
-            Get Started
-          </a>
-        </div>
-        <!-- Premium -->
-        <div class="pricing-card bg-white border-2 border-gray-200 rounded-xl p-8">
-          <h3 class="font-semibold text-lg mb-1">Premium Managed</h3>
-          <p class="text-gray-500 text-sm mb-6">White-glove DevOps</p>
-          <div class="mb-6">
-            <span class="text-4xl font-bold">$1,200</span>
-            <span class="text-gray-500 text-sm">/mo per project</span>
-          </div>
-          <ul class="space-y-3 text-sm text-gray-600 mb-8">
-            <li class="flex items-start gap-2">
-              <svg class="w-5 h-5 text-green-500 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-              Everything in Standard
-            </li>
-            <li class="flex items-start gap-2">
-              <svg class="w-5 h-5 text-green-500 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-              99.5% deploy success SLA
-            </li>
-            <li class="flex items-start gap-2">
-              <svg class="w-5 h-5 text-green-500 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-              4-hour response time
-            </li>
-            <li class="flex items-start gap-2">
-              <svg class="w-5 h-5 text-green-500 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-              Named support contact
-            </li>
-            <li class="flex items-start gap-2">
-              <svg class="w-5 h-5 text-green-500 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-              Monthly review call
-            </li>
-          </ul>
-          <a href="#cta" class="block text-center px-6 py-3 border-2 border-gray-200 text-gray-700 font-medium rounded-lg hover:border-acuAccent transition-colors">
-            Get Started
-          </a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- CTA -->
-  <section id="cta" class="py-20 px-6">
+  <!-- 2. Leverage beat -->
+  <section class="bg-surface border-y border-border py-20 px-6">
     <div class="max-w-3xl mx-auto text-center">
-      <h2 class="text-3xl font-bold mb-4">Ready to automate your Acumatica deployments?</h2>
-      <p class="text-gray-600 mb-8">Get started with the free pipeline in minutes, or talk to us about managed services.</p>
-
-      <!-- Form -->
-      <div id="acuops-form-container" class="max-w-md mx-auto mb-10">
-        <form id="acuops-form" class="space-y-4 text-left">
-          <div>
-            <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Work Email</label>
-            <input type="email" id="email" name="email" required
-              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-acuAccent focus:border-acuAccent outline-none transition-colors"
-              placeholder="you@company.com">
-          </div>
-          <div>
-            <label for="company" class="block text-sm font-medium text-gray-700 mb-1">Company</label>
-            <input type="text" id="company" name="company"
-              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-acuAccent focus:border-acuAccent outline-none transition-colors"
-              placeholder="Your company name">
-          </div>
-          <div>
-            <label for="interest" class="block text-sm font-medium text-gray-700 mb-1">I'm interested in...</label>
-            <select id="interest" name="acuops_service_tier"
-              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-acuAccent focus:border-acuAccent outline-none transition-colors bg-white">
-              <option value="self_service">Self-Service (Free Pipeline)</option>
-              <option value="standard" selected>Standard Managed ($500/mo)</option>
-              <option value="premium">Premium Managed ($1,200/mo)</option>
-            </select>
-          </div>
-          <button type="submit" id="acuops-submit"
-            class="w-full px-8 py-4 bg-acuBlue text-white font-semibold rounded-lg hover:bg-acuLight transition-colors text-lg">
-            Get Started
-          </button>
-        </form>
-        <div id="acuops-success" class="hidden py-8">
-          <div class="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-4">
-            <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-            </svg>
-          </div>
-          <h3 class="text-xl font-semibold mb-2">We'll be in touch!</h3>
-          <p class="text-gray-600">Kevin from Studio B will reach out within 24 hours.</p>
-        </div>
-      </div>
-
-      <div class="flex flex-wrap justify-center gap-4">
-        <a href="https://github.com/studio-b-ai/acuops-pipeline" target="_blank" class="inline-flex items-center px-6 py-3 border-2 border-gray-200 text-gray-700 font-medium rounded-lg hover:border-acuAccent transition-colors">
-          <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
-          View on GitHub
-        </a>
-      </div>
-      <p class="text-gray-400 text-sm mt-6">Free tier requires GitHub Actions minutes (2,000/mo included on GitHub Free).</p>
+      <p class="font-mono font-bold text-2xl sm:text-3xl md:text-4xl leading-snug">
+        One senior dev can run the pipeline for <span class="text-cyan">five&nbsp;clients</span>.<br class="hidden sm:block"> Without it, they run&nbsp;two.
+      </p>
+      <p class="mt-6 text-muted text-lg">AcuOps is the reason you can grow without&nbsp;hiring.</p>
     </div>
   </section>
 
-  <!-- HubSpot Form Submission Script -->
-  <script>
-    document.getElementById('acuops-form').addEventListener('submit', async function(e) {
-      e.preventDefault();
-      const btn = document.getElementById('acuops-submit');
-      btn.disabled = true;
-      btn.textContent = 'Submitting...';
+  <!-- 3. What AcuOps catches -->
+  <section id="catches" class="py-20 md:py-28 px-6">
+    <div class="max-w-4xl mx-auto">
+      <h2 class="font-mono font-bold text-2xl sm:text-3xl md:text-4xl mb-4">What AcuOps catches</h2>
+      <p class="text-muted text-base md:text-lg mb-12 max-w-2xl">Every item is a production incident AcuOps intercepts on the branch&thinsp;&mdash;&thinsp;or a failure mode that's bitten us and now has a check against&nbsp;it.</p>
+      <div class="grid md:grid-cols-2 gap-x-10 gap-y-5">
+        <div class="flex items-start gap-3">
+          <span class="text-ci-pass font-mono text-lg mt-0.5 shrink-0">&#10003;</span>
+          <span class="font-mono text-sm text-text leading-relaxed">Co-publish conflicts between multiple customization projects</span>
+        </div>
+        <div class="flex items-start gap-3">
+          <span class="text-ci-pass font-mono text-lg mt-0.5 shrink-0">&#10003;</span>
+          <span class="font-mono text-sm text-text leading-relaxed"><code class="text-cyan">[PXDBInt]</code> deadlocks at schema-update time</span>
+        </div>
+        <div class="flex items-start gap-3">
+          <span class="text-ci-pass font-mono text-lg mt-0.5 shrink-0">&#10003;</span>
+          <span class="font-mono text-sm text-text leading-relaxed">ASPX / CDATA drift between source and <code class="text-cyan">project.xml</code></span>
+        </div>
+        <div class="flex items-start gap-3">
+          <span class="text-ci-pass font-mono text-lg mt-0.5 shrink-0">&#10003;</span>
+          <span class="font-mono text-sm text-text leading-relaxed">Mid-flight SQL timeouts during "Copying the website"</span>
+        </div>
+        <div class="flex items-start gap-3">
+          <span class="text-ci-pass font-mono text-lg mt-0.5 shrink-0">&#10003;</span>
+          <span class="font-mono text-sm text-text leading-relaxed">Orphan SiteMap entries that survive a merge=true publish</span>
+        </div>
+        <div class="flex items-start gap-3">
+          <span class="text-ci-pass font-mono text-lg mt-0.5 shrink-0">&#10003;</span>
+          <span class="font-mono text-sm text-text leading-relaxed">Missing GI access rights after publish (api-bot lockouts)</span>
+        </div>
+        <div class="flex items-start gap-3">
+          <span class="text-ci-pass font-mono text-lg mt-0.5 shrink-0">&#10003;</span>
+          <span class="font-mono text-sm text-text leading-relaxed">Customizations that compile but crash a screen on load</span>
+        </div>
+        <div class="flex items-start gap-3">
+          <span class="text-ci-pass font-mono text-lg mt-0.5 shrink-0">&#10003;</span>
+          <span class="font-mono text-sm text-text leading-relaxed">Schema drift between dev and production</span>
+        </div>
+        <div class="flex items-start gap-3">
+          <span class="text-ci-pass font-mono text-lg mt-0.5 shrink-0">&#10003;</span>
+          <span class="font-mono text-sm text-text leading-relaxed"><code class="text-cyan">NullReferenceException</code> from <code class="text-cyan">UserRecordsDBUpdater</code></span>
+        </div>
+        <div class="flex items-start gap-3">
+          <span class="text-ci-pass font-mono text-lg mt-0.5 shrink-0">&#10003;</span>
+          <span class="font-mono text-sm text-text leading-relaxed">Friday 4pm you-know-what</span>
+        </div>
+      </div>
+    </div>
+  </section>
 
-      const email = document.getElementById('email').value;
-      const company = document.getElementById('company').value;
-      const tier = document.getElementById('interest').value;
+  <!-- 4. Stats strip -->
+  <section class="bg-surface border-y border-border py-20 px-6">
+    <div class="max-w-4xl mx-auto text-center">
+      <p class="font-mono font-bold text-6xl md:text-7xl text-cyan">100+</p>
+      <p class="font-mono text-muted text-sm tracking-[0.2em] uppercase mt-3">automated checks per publish</p>
+      <div class="grid sm:grid-cols-3 gap-4 mt-12 max-w-2xl mx-auto">
+        <div class="border border-border rounded-lg px-6 py-5">
+          <p class="font-mono font-bold text-3xl text-text">12</p>
+          <p class="font-mono text-muted text-xs tracking-wider mt-1">health probes</p>
+        </div>
+        <div class="border border-border rounded-lg px-6 py-5">
+          <p class="font-mono font-bold text-3xl text-text">15-min</p>
+          <p class="font-mono text-muted text-xs tracking-wider mt-1">schema drift detection</p>
+        </div>
+        <div class="border border-border rounded-lg px-6 py-5">
+          <p class="font-mono font-bold text-3xl text-text">10+</p>
+          <p class="font-mono text-muted text-xs tracking-wider mt-1">customizations shipped / quarter</p>
+        </div>
+      </div>
+      <p class="text-dim text-xs font-mono mt-8">measured on Heritage Fabrics &mdash; the reference practice that runs on AcuOps</p>
+    </div>
+  </section>
 
-      try {
-        const resp = await fetch('https://api.hsforms.com/submissions/v3/integration/submit/49070660/5837f94b-fb1c-4f56-9fdc-03ddc4693993', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            fields: [
-              { name: 'email', value: email },
-              { name: 'company', value: company },
-            ],
-            context: {
-              pageUri: window.location.href,
-              pageName: 'AcuOps - Get Started',
-            },
-          }),
+  <!-- 5. Pricing -->
+  <section class="py-20 md:py-28 px-6">
+    <div class="max-w-lg mx-auto">
+      <div class="rounded-xl p-8 md:p-10" style="box-shadow: 0 0 0 1px rgba(34,211,238,.35), 0 10px 40px -10px rgba(34,211,238,.25);">
+        <p class="font-mono text-cyan text-xs tracking-[0.3em] uppercase mb-4">Pricing</p>
+        <p class="font-mono font-bold text-4xl md:text-5xl text-text">$300 <span class="text-muted text-lg font-medium">/ month</span></p>
+        <p class="text-muted text-lg mt-1">/ Acumatica instance.</p>
+        <p class="font-mono text-muted text-sm mt-4">Flat.</p>
+        <ul class="mt-6 space-y-2.5 text-text text-sm">
+          <li class="flex items-center gap-2"><span class="text-dim">&mdash;</span> No tiers</li>
+          <li class="flex items-center gap-2"><span class="text-dim">&mdash;</span> No per-seat pricing</li>
+          <li class="flex items-center gap-2"><span class="text-dim">&mdash;</span> No minimum commitment</li>
+          <li class="flex items-center gap-2"><span class="text-dim">&mdash;</span> One line item on your managed services invoice</li>
+        </ul>
+        <p class="text-dim text-xs font-mono mt-8">Dev and test instances unlimited at no cost. You only pay for production.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. CTA -->
+  <section id="cta" class="bg-surface border-y border-border py-20 md:py-28 px-6">
+    <div class="max-w-lg mx-auto">
+      <h2 class="font-mono font-bold text-2xl sm:text-3xl md:text-4xl mb-4">Book a 20-minute&nbsp;call.</h2>
+      <p class="text-muted text-base md:text-lg mb-10">Tell us what you run. We'll tell you whether AcuOps is worth a pilot. No slide&nbsp;deck.</p>
+
+      <div id="hubspot-primary-form"></div>
+      <script>
+        hbspt.forms.create({
+          region: "na1",
+          portalId: "49070660",
+          formId: "8b2c96c9-0ec0-4011-9c3c-22bb2e8d926e",
+          target: "#hubspot-primary-form",
+          css: "",
+          cssClass: "acuops-form"
         });
+      </script>
 
-        if (resp.ok || resp.status === 200) {
-          document.getElementById('acuops-form').classList.add('hidden');
-          document.getElementById('acuops-success').classList.remove('hidden');
-        } else {
-          btn.textContent = 'Something went wrong — try again';
-          btn.disabled = false;
-        }
-      } catch (err) {
-        btn.textContent = 'Network error — try again';
-        btn.disabled = false;
-      }
-    });
-  </script>
+      <div class="border-t border-border my-12"></div>
 
-  <!-- Footer -->
-  <footer class="bg-gray-900 text-gray-400 py-12 px-6">
-    <div class="max-w-6xl mx-auto">
-      <div class="grid md:grid-cols-4 gap-8 mb-8">
-        <div>
-          <div class="flex items-center gap-2 mb-4">
-            <div class="w-8 h-8 rounded-lg gradient-hero flex items-center justify-center">
-              <span class="text-white font-bold text-sm">AO</span>
-            </div>
-            <span class="font-bold text-lg text-white">AcuOps</span>
-          </div>
-          <p class="text-sm">CI/CD for Acumatica customizations.<br>Built by Studio B.</p>
-        </div>
-        <div>
-          <h4 class="text-white font-semibold mb-4">Product</h4>
-          <ul class="space-y-2 text-sm">
-            <li><a href="#features" class="hover:text-white">Features</a></li>
-            <li><a href="#pricing" class="hover:text-white">Pricing</a></li>
-            <li><a href="#case-study" class="hover:text-white">Case Study</a></li>
-          </ul>
-        </div>
-        <div>
-          <h4 class="text-white font-semibold mb-4">Resources</h4>
-          <ul class="space-y-2 text-sm">
-            <li><a href="https://github.com/studio-b-ai/acuops-pipeline" class="hover:text-white">GitHub</a></li>
-            <li><a href="https://github.com/studio-b-ai/acuops-pipeline/discussions" class="hover:text-white">Community</a></li>
-            <li><a href="https://studio-b-ai.github.io/acuops-pipeline/" class="hover:text-white">Documentation</a></li>
-          </ul>
-        </div>
-        <div>
-          <h4 class="text-white font-semibold mb-4">Legal</h4>
-          <ul class="space-y-2 text-sm">
-            <li><a href="https://github.com/studio-b-ai/acuops-pipeline/blob/main/legal/terms-of-service.md" class="hover:text-white">Terms of Service</a></li>
-            <li><a href="https://github.com/studio-b-ai/acuops-pipeline/blob/main/legal/managed-service-agreement.md" class="hover:text-white">Service Agreement</a></li>
-            <li><a href="https://github.com/studio-b-ai/acuops-pipeline/blob/main/LICENSE" class="hover:text-white">License (BSL 1.1)</a></li>
-          </ul>
-        </div>
-      </div>
-      <div class="border-t border-gray-800 pt-8 text-sm text-center">
-        <p>&copy; 2026 Studio B. All rights reserved. AcuOps is not affiliated with Acumatica, Inc.</p>
-      </div>
+      <p class="text-muted text-sm font-mono mb-6">Not ready for a call?</p>
+      <div id="hubspot-waitlist-form"></div>
+      <script>
+        hbspt.forms.create({
+          region: "na1",
+          portalId: "49070660",
+          formId: "140319f1-7ddd-4571-92b1-37ffd4a1a4d5",
+          target: "#hubspot-waitlist-form",
+          css: "",
+          cssClass: "acuops-waitlist-form"
+        });
+      </script>
+    </div>
+  </section>
+
+  <!-- 7. Closer + Footer -->
+  <section class="py-20 px-6">
+    <p class="font-mono text-center text-xl md:text-2xl text-text max-w-2xl mx-auto">One rolled-back publish pays for the&nbsp;year.</p>
+  </section>
+
+  <footer class="border-t border-border py-8 px-6">
+    <div class="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-dim text-xs font-mono">
+      <span>A C U O P S &middot; by Studio B</span>
+      <span>&copy; 2026 Studio B</span>
     </div>
   </footer>
 
