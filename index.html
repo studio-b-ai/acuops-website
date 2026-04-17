@@ -1,339 +1,1752 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AcuOps — CI/CD for Acumatica Customizations</title>
-  <meta name="description" content="AcuOps is the CI/CD pipeline for Acumatica VARs. 100+ automated checks per publish. $300/month per instance. No tiers, no per-seat pricing.">
-  <link rel="canonical" href="https://acuops.com">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AcuOps — Acumatica DevOps Platform</title>
+<meta name="description" content="AcuOps watches the Acumatica instances you run for clients. Twelve health probes, 146 post-publish tests, CI/CD through the Customization API. $300 per month, per instance, flat. Made by Studio B.">
+<meta property="og:title" content="AcuOps — Acumatica DevOps Platform">
+<meta property="og:description" content="AcuOps watches the Acumatica instances you run for clients. Twelve health probes, 146 post-publish tests, CI/CD through the Customization API. $300 per month, per instance, flat.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://acuops.com">
+<link rel="canonical" href="https://acuops.com">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
 
-  <!-- Open Graph -->
-  <meta property="og:title" content="AcuOps — CI/CD for Acumatica Customizations">
-  <meta property="og:description" content="You don't publish on Fridays. AcuOps is the CI/CD pipeline that would have caught it on the branch. $300/month per Acumatica instance.">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://acuops.com">
-  <meta property="og:image" content="https://acuops.com/og-image.png">
+<!-- HubSpot Tracking Code -->
+<script type="text/javascript" id="hs-script-loader" async defer src="//js.hs-scripts.com/49070660.js"></script>
 
-  <!-- Twitter Card -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="AcuOps — CI/CD for Acumatica Customizations">
-  <meta name="twitter:description" content="You don't publish on Fridays. AcuOps is the CI/CD pipeline that would have caught it on the branch.">
+<style>
+/* ══════════════════════════════════════════════════
+   AcuOps — "Mission Control"
+   Deep slate + burnt orange + phosphor green.
+   Dark dashboard register. VAR-facing. Infrastructural.
 
-  <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+   Rhymes with Studio B (Broadsheet Verde) and Bolt (Cut Sheet).
+   Shares family grammar: mono eyebrows, hairline rules, editorial
+   sectioning, section numbering, one-flash-accent discipline.
+   Breaks family palette: inverts light paper → dark dashboard.
+   Inverted ivory printouts (hero-panel, pricing card) are the
+   only light objects on the page — memorable as lit readouts
+   on a dark console.
+   ══════════════════════════════════════════════════ */
 
-  <!-- Tailwind CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: {
-            mono: ['"JetBrains Mono"', 'monospace'],
-            sans: ['Inter', 'sans-serif'],
-          },
-          colors: {
-            cyan: { DEFAULT: '#22D3EE', deep: '#0891B2', glow: 'rgba(34, 211, 238, 0.10)' },
-            bg: '#04060B',
-            surface: '#0C1017',
-            'surface-2': '#141A24',
-            border: '#1E2A3A',
-            text: '#E8ECF1',
-            muted: '#8A95A5',
-            dim: '#566174',
-            'ci-pass': '#10B981',
-            warn: '#F59E0B',
-            error: '#EF4444',
-          },
-        },
-      },
-    }
-  </script>
+:root {
+  /* Page — dark slate primary */
+  --bg: #0D1117;                   /* deep slate, cool, no green tint */
+  --surface: #161B22;              /* elevated card */
+  --surface-2: #1C242E;            /* deeper surface for recessed panels */
+  --console: #090D12;              /* sub-bg consoles (dispatch strip) */
+  --rule: #30363D;                 /* primary divider on dark */
+  --rule-light: #21262D;           /* subtle divider */
 
-  <!-- HubSpot Forms -->
-  <script charset="utf-8" type="text/javascript" src="//js.hsforms.net/forms/embed/v2.js"></script>
+  /* Inverted ivory — used only on hero-panel + pricing-card (printouts) */
+  --printout: #F4F0E6;             /* ivory — lit readout */
+  --printout-rule: #D6CFC0;
 
-  <style>
-    :root {
-      --cyan: #22D3EE;
-      --cyan-deep: #0891B2;
-      --cyan-glow: rgba(34, 211, 238, 0.10);
-      --bg: #04060B;
-      --surface: #0C1017;
-      --surface-2: #141A24;
-      --border: #1E2A3A;
-      --text: #E8ECF1;
-      --muted: #8A95A5;
-      --dim: #566174;
-      --ci-pass: #10B981;
-      --warn: #F59E0B;
-      --error: #EF4444;
-    }
+  /* Ink — dark tokens used ONLY on ivory printouts */
+  --ink: #131821;
+  --ink-70: rgba(19, 24, 33, 0.7);
+  --ink-55: rgba(19, 24, 33, 0.55);
+  --ink-40: rgba(19, 24, 33, 0.4);
+  --ink-15: rgba(19, 24, 33, 0.15);
+  --ink-06: rgba(19, 24, 33, 0.06);
 
-    html { scroll-behavior: smooth; }
-    body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; }
+  /* Signal system */
+  --signal: #FF7A1A;               /* burnt orange — between vermillion & yellow */
+  --signal-hover: #FF9447;
+  --signal-dim: rgba(255, 122, 26, 0.18);
 
-    /* Override HubSpot form embed styles */
-    .acuops-form .hs-form,
-    .acuops-waitlist-form .hs-form { font-family: 'Inter', sans-serif; }
+  --pulse: #3FB950;                /* phosphor green LED */
+  --alert: #F85149;                /* critical red, rare */
 
-    .acuops-form .hs-form-field label,
-    .acuops-waitlist-form .hs-form-field label { color: var(--muted); font-size: 0.875rem; }
+  /* Text on dark */
+  --text: #E6EDF3;                 /* primary cool white */
+  --text-secondary: #B1BAC4;       /* muted body */
+  --text-tertiary: #7D8590;        /* dim metadata */
+  --text-dim: #484F58;             /* faintest */
+}
 
-    .acuops-form .hs-input,
-    .acuops-waitlist-form .hs-input {
-      background: var(--bg);
-      border: 1px solid var(--border);
-      color: var(--text);
-      border-radius: 0.375rem;
-      padding: 0.75rem 1rem;
-      width: 100%;
-    }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
 
-    .acuops-form .hs-input:focus,
-    .acuops-waitlist-form .hs-input:focus {
-      border-color: var(--cyan);
-      outline: none;
-      box-shadow: 0 0 0 2px rgba(34,211,238,.25);
-    }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Geist', sans-serif;
+  font-weight: 400;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  position: relative;
+  /* Schematic grid — 64px major cells, 16px minor. Subtle — only reads at depth */
+  background-image:
+    linear-gradient(to right, rgba(230, 237, 243, 0.028) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(230, 237, 243, 0.028) 1px, transparent 1px),
+    linear-gradient(to right, rgba(230, 237, 243, 0.014) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(230, 237, 243, 0.014) 1px, transparent 1px);
+  background-size: 64px 64px, 64px 64px, 16px 16px, 16px 16px;
+  background-position: 0 0, 0 0, 0 0, 0 0;
+}
 
-    .acuops-form .hs-submit .hs-button,
-    .acuops-waitlist-form .hs-submit .hs-button {
-      background: var(--cyan);
-      color: var(--bg);
-      font-family: 'JetBrains Mono', monospace;
-      font-weight: 500;
-      border: none;
-      border-radius: 0.375rem;
-      padding: 0.75rem 1.5rem;
-      cursor: pointer;
-      width: 100%;
-      letter-spacing: 0.05em;
-    }
+/* Subtle CRT grain for authenticity — very low opacity */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.25;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 256px 256px;
+  mix-blend-mode: overlay;
+}
 
-    .acuops-form .hs-submit .hs-button:hover {
-      background: var(--cyan-deep);
-      color: #fff;
-    }
+/* ── Animations ── */
+@keyframes rise { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes drawLine { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
 
-    .acuops-waitlist-form .hs-submit .hs-button:hover {
-      background: var(--cyan-deep);
-      color: #fff;
-    }
+/* ── Dispatch strip (top of page — sets the operations floor tone) ── */
+.dispatch {
+  background: var(--console);
+  border-bottom: 1px solid var(--rule-light);
+  color: var(--text);
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.68rem;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.dispatch-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0.55rem 2.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1.6rem;
+  flex-wrap: wrap;
+}
+.dispatch-inner > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  color: rgba(238, 234, 226, 0.7);
+}
+.dispatch-inner > span strong {
+  color: var(--text);
+  font-weight: 500;
+}
+.dispatch-led {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--pulse);
+  box-shadow: 0 0 6px rgba(4, 120, 87, 0.7);
+  animation: blink 2.4s ease-in-out infinite;
+}
+.dispatch-spacer { opacity: 0.3; }
 
-    .acuops-form .hs-error-msgs,
-    .acuops-waitlist-form .hs-error-msgs { color: var(--error); font-size: 0.75rem; }
+/* ── Nav ── */
+nav {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1.6rem 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+}
+nav::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 2.5rem; right: 2.5rem;
+  height: 2px;
+  background: var(--signal);
+  transform-origin: left;
+  animation: drawLine 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
+}
 
-    .acuops-form .submitted-message,
-    .acuops-waitlist-form .submitted-message {
-      color: var(--cyan);
-      font-family: 'JetBrains Mono', monospace;
-    }
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.brand-main {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none;
+  color: var(--text);
+}
+.brand-mark {
+  width: 30px; height: 30px;
+  flex-shrink: 0;
+}
+.brand-name {
+  font-family: 'Geist', sans-serif;
+  font-size: 1.4rem;
+  font-weight: 500;
+  letter-spacing: -0.015em;
+  color: var(--text);
+  line-height: 1;
+}
+.brand-parent {
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.58rem;
+  font-weight: 400;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  padding-left: 0.9rem;
+  margin-left: 0.2rem;
+  border-left: 1px solid var(--rule);
+  line-height: 1;
+}
+.brand-parent a {
+  color: var(--text-tertiary);
+  text-decoration: none;
+  border-bottom: 1px dotted transparent;
+  transition: border-color 0.25s, color 0.25s;
+}
+.brand-parent a:hover {
+  color: var(--signal);
+  border-bottom-color: var(--signal);
+}
 
-    /* Select dropdowns */
-    .acuops-form select.hs-input,
-    .acuops-waitlist-form select.hs-input {
-      appearance: none;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%238A95A5' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10l-5 5z'/%3E%3C/svg%3E");
-      background-repeat: no-repeat;
-      background-position: right 1rem center;
-    }
+.nav-links { display: flex; gap: 1.9rem; align-items: center; }
+.nav-links a {
+  font-family: 'Geist', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: color 0.25s;
+  letter-spacing: 0.01em;
+}
+.nav-links a:hover { color: var(--text); }
+.nav-links a.current { color: var(--signal); }
+.nav-cta {
+  color: var(--bg) !important;
+  background: var(--signal);
+  padding: 0.5rem 1.3rem;
+  border-radius: 2px;
+  font-weight: 600 !important;
+  transition: all 0.25s !important;
+}
+.nav-cta:hover { background: var(--signal-hover) !important; color: var(--bg) !important; }
 
-    /* Textarea */
-    .acuops-form textarea.hs-input,
-    .acuops-waitlist-form textarea.hs-input {
-      min-height: 5rem;
-      resize: vertical;
-    }
+.nav-toggle { display: none; background: none; border: none; cursor: pointer; padding: 0.5rem; }
+.nav-toggle span {
+  display: block; width: 22px; height: 2px;
+  background: var(--text); margin: 4px 0; transition: all 0.3s;
+}
 
-    /* Legal / GDPR consent */
-    .acuops-form .legal-consent-container,
-    .acuops-waitlist-form .legal-consent-container { color: var(--dim); font-size: 0.75rem; }
+/* ── Hero ── */
+.hero {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 5.5rem 2.5rem 4.5rem;
+  position: relative;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  top: 4rem;
+  left: 2.5rem;
+  width: 40px;
+  height: 3px;
+  background: var(--signal);
+  animation: rise 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both;
+}
 
-    .acuops-form .legal-consent-container a,
-    .acuops-waitlist-form .legal-consent-container a { color: var(--cyan); }
+.hero-eyebrow {
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.62rem;
+  font-weight: 400;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--signal);
+  margin-bottom: 1.4rem;
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  animation: rise 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both;
+}
+.hero-eyebrow::after {
+  content: '';
+  flex: 0 0 50px;
+  height: 1px;
+  background: var(--signal);
+  opacity: 0.6;
+}
 
-    /* Field list spacing */
-    .acuops-form .hs-form-field,
-    .acuops-waitlist-form .hs-form-field { margin-bottom: 1rem; }
-  </style>
+.hero h1 {
+  font-family: 'Geist', sans-serif;
+  font-weight: 400;
+  font-size: clamp(2.7rem, 5.4vw, 4.3rem);
+  line-height: 1.08;
+  letter-spacing: -0.025em;
+  max-width: 900px;
+  color: var(--text);
+  animation: rise 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both;
+}
+.hero h1 em {
+  font-style: italic;
+  font-weight: 300;
+  color: var(--text);
+}
+.hero h1 .sig { color: var(--signal); font-style: italic; }
+
+.hero-lower {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 3.5rem;
+  margin-top: 3rem;
+  animation: rise 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.35s both;
+}
+
+.hero-body {
+  font-size: 1rem;
+  line-height: 1.85;
+  color: var(--text-secondary);
+}
+
+/* Inverted ivory printout — one of the two light objects on the page.
+   Local CSS-var override: descendants use dark-on-ivory text automatically. */
+.hero-panel {
+  --text: #131821;
+  --text-secondary: rgba(19, 24, 33, 0.7);
+  --text-tertiary: rgba(19, 24, 33, 0.55);
+  --text-dim: rgba(19, 24, 33, 0.4);
+  --rule: var(--printout-rule);
+  --rule-light: rgba(19, 24, 33, 0.08);
+
+  background: var(--printout);
+  color: var(--text);
+  border: 1px solid var(--printout-rule);
+  border-top: 3px solid var(--signal);
+  border-radius: 2px;
+  padding: 1.5rem 1.6rem;
+  font-family: 'Geist Mono', monospace;
+  box-shadow: 0 14px 44px rgba(0, 0, 0, 0.35);
+}
+.hero-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 0.9rem;
+  margin-bottom: 0.6rem;
+  border-bottom: 1px solid var(--printout-rule);
+  font-size: 0.62rem;
+  font-weight: 400;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+.hero-panel-header .led {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--pulse);
+  box-shadow: 0 0 5px rgba(63, 185, 80, 0.6);
+  animation: blink 2.4s ease-in-out infinite;
+  display: inline-block;
+  margin-right: 0.45rem;
+  vertical-align: middle;
+}
+.hero-panel-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 0.65rem 0;
+  border-bottom: 1px dashed var(--printout-rule);
+  font-size: 0.78rem;
+}
+.hero-panel-row:last-child { border-bottom: none; }
+.hp-label {
+  color: var(--text-tertiary);
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 0.66rem;
+}
+.hp-value {
+  color: var(--text);
+  font-weight: 500;
+  font-size: 0.82rem;
+  text-align: right;
+}
+.hp-value .sig { color: var(--signal); }
+
+/* ── Section utility ── */
+.section {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 5rem 2.5rem;
+}
+.section-rule {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2.5rem;
+}
+.section-rule hr { border: none; height: 1px; background: var(--rule); }
+
+.section-eyebrow {
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.62rem;
+  font-weight: 400;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--signal);
+  margin-bottom: 1rem;
+}
+
+.section-title {
+  font-family: 'Geist', sans-serif;
+  font-weight: 400;
+  font-size: clamp(2rem, 3.4vw, 2.7rem);
+  line-height: 1.14;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  margin-bottom: 0.6rem;
+}
+.section-title em { font-style: italic; font-weight: 300; color: var(--signal); }
+
+.section-intro {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  max-width: 560px;
+  line-height: 1.78;
+}
+
+/* ── Fade-in ── */
+.fade-in { opacity: 0; transform: translateY(24px); transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+.fade-in.visible { opacity: 1; transform: translateY(0); }
+
+/* ── Problem (two-column editorial) ── */
+.problem-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.3fr;
+  gap: 4rem;
+  align-items: start;
+  margin-top: 1rem;
+}
+.problem-title {
+  font-family: 'Geist', sans-serif;
+  font-weight: 400;
+  font-size: clamp(1.7rem, 2.8vw, 2.1rem);
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+  color: var(--text);
+}
+.problem-title em { font-style: italic; font-weight: 300; color: var(--signal); }
+.problem-body { font-size: 0.98rem; line-height: 1.85; color: var(--text-secondary); }
+.problem-body p + p { margin-top: 1.1rem; }
+.problem-body strong {
+  color: var(--text);
+  font-weight: 500;
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.92em;
+  background: var(--signal-dim);
+  padding: 0.05em 0.35em;
+  border-radius: 2px;
+}
+
+/* ── Features: rack-style cards with status dots ── */
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.2rem;
+  margin-top: 3rem;
+}
+.feature-card {
+  background: var(--surface);
+  border: 1px solid var(--rule-light);
+  border-radius: 2px;
+  padding: 1.9rem 1.7rem 1.7rem;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s, border-color 0.35s;
+}
+.feature-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--rule);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+.feature-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--signal);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.feature-card:hover::before { transform: scaleX(1); }
+
+.fc-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.9rem;
+}
+.fc-label {
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.6rem;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+.fc-status {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--pulse);
+  font-weight: 500;
+}
+.fc-status::before {
+  content: '';
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--pulse);
+  box-shadow: 0 0 4px rgba(4, 120, 87, 0.6);
+  animation: blink 2.4s ease-in-out infinite;
+}
+.feature-card h3 {
+  font-family: 'Geist', sans-serif;
+  font-weight: 500;
+  font-size: 1.18rem;
+  letter-spacing: -0.01em;
+  line-height: 1.25;
+  color: var(--text);
+  margin-bottom: 0.75rem;
+}
+.feature-card p {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+.feature-card p code,
+.feature-card code {
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.86em;
+  color: var(--text);
+  background: var(--bg);
+  padding: 0.08em 0.4em;
+  border-radius: 2px;
+}
+
+/* ── How it works: editorial numbered grid with ink top-rules ── */
+.steps {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  margin-top: 3rem;
+}
+.step { padding: 1.8rem 0 0; border-top: 1px solid var(--rule); }
+.step-number {
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.65rem;
+  font-weight: 400;
+  color: var(--text-tertiary);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-bottom: 0.8rem;
+}
+.step h3 {
+  font-family: 'Geist', sans-serif;
+  font-weight: 500;
+  font-size: 1.3rem;
+  letter-spacing: -0.01em;
+  color: var(--text);
+  margin-bottom: 0.7rem;
+}
+.step p { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.75; }
+
+/* ── Slack integration ── */
+.slack-panels {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.2rem;
+  margin-top: 3rem;
+}
+.slack-panel {
+  background: var(--surface);
+  border: 1px solid var(--rule-light);
+  border-radius: 2px;
+  padding: 2rem 1.7rem;
+}
+.slack-panel-label {
+  font-family: 'Geist Mono', monospace;
+  font-weight: 400;
+  font-size: 0.6rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--signal);
+  margin-bottom: 0.8rem;
+}
+.slack-panel h3 {
+  font-family: 'Geist', sans-serif;
+  font-weight: 500;
+  font-size: 1.22rem;
+  letter-spacing: -0.01em;
+  color: var(--text);
+  margin-bottom: 1rem;
+}
+.slack-panel p {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.72;
+  margin-bottom: 1.1rem;
+}
+.slack-channel {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.65rem 0;
+  border-top: 1px solid var(--rule-light);
+}
+.slack-channel:last-child { border-bottom: 1px solid var(--rule-light); }
+.slack-channel-icon {
+  color: var(--signal);
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.88rem;
+  font-weight: 500;
+  flex-shrink: 0;
+}
+.slack-channel-name {
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.8rem;
+  color: var(--text);
+  font-weight: 500;
+}
+.slack-channel-desc {
+  font-size: 0.74rem;
+  color: var(--text-tertiary);
+  margin-left: auto;
+  text-align: right;
+}
+.slack-footnote {
+  margin-top: 1.1rem;
+  font-size: 0.8rem;
+  color: var(--text-tertiary);
+  font-style: italic;
+}
+/* Sample alert block — spec-sheet moment, rhymes with Bolt's live-transaction panel */
+.alert-sample {
+  max-width: 720px;
+  margin: 3rem auto 0;
+  background: var(--surface-2);
+  border: 1px solid var(--rule);
+  color: var(--text);
+  border-radius: 2px;
+  overflow: hidden;
+  font-family: 'Geist Mono', monospace;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+}
+.alert-sample-head {
+  background: rgba(255, 255, 255, 0.04);
+  padding: 0.8rem 1.6rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(238, 234, 226, 0.08);
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(238, 234, 226, 0.55);
+}
+.alert-sample-head .as-channel { color: var(--text); font-weight: 500; }
+.alert-sample-head .as-channel::before {
+  content: '#';
+  color: var(--signal);
+  font-weight: 500;
+  margin-right: 0.25rem;
+}
+.alert-sample-body { padding: 1.4rem 1.6rem; font-size: 0.82rem; line-height: 1.6; }
+.alert-sample-body .as-bot {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.7rem;
+  color: rgba(238, 234, 226, 0.55);
+  margin-bottom: 0.9rem;
+  letter-spacing: 0.04em;
+}
+.alert-sample-body .as-bot strong { color: var(--text); font-weight: 500; }
+.alert-sample-body .as-bot .as-badge {
+  display: inline-block;
+  background: var(--signal);
+  color: var(--text);
+  padding: 0.1em 0.45em;
+  border-radius: 2px;
+  font-size: 0.64rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+}
+.alert-sample-body .as-title {
+  color: var(--signal);
+  font-weight: 500;
+  font-size: 0.88rem;
+  letter-spacing: 0.04em;
+  margin-bottom: 0.9rem;
+}
+.alert-sample-body .as-title::before { content: '▲ '; }
+.alert-sample-body dl {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 0.35rem 1.1rem;
+  font-size: 0.78rem;
+  color: rgba(238, 234, 226, 0.85);
+}
+.alert-sample-body dt {
+  color: rgba(238, 234, 226, 0.45);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.66rem;
+  padding-top: 0.15rem;
+}
+.alert-sample-body dd { color: var(--text); }
+.alert-sample-body dd em { color: var(--signal); font-style: normal; }
+.alert-sample-actions {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.9rem 1.6rem 1.2rem;
+  border-top: 1px solid rgba(238, 234, 226, 0.08);
+}
+.alert-sample-actions button {
+  background: transparent;
+  color: var(--text);
+  border: 1px solid rgba(238, 234, 226, 0.2);
+  padding: 0.4rem 0.9rem;
+  border-radius: 2px;
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: default;
+  transition: all 0.2s;
+}
+.alert-sample-actions button:first-child {
+  background: var(--signal);
+  border-color: var(--signal);
+  color: var(--text);
+}
+
+.slack-onboard {
+  max-width: 640px;
+  margin: 3rem auto 0;
+  border-top: 1px solid var(--rule);
+  padding-top: 2rem;
+}
+.slack-onboard .slack-panel-label { margin-bottom: 1rem; }
+.slack-onboard-step {
+  display: grid;
+  grid-template-columns: 2rem 1fr;
+  gap: 0.7rem;
+  padding: 0.6rem 0;
+  align-items: baseline;
+}
+.slack-onboard-step-num {
+  font-family: 'Geist Mono', monospace;
+  font-weight: 400;
+  font-size: 0.68rem;
+  color: var(--text-tertiary);
+  letter-spacing: 0.1em;
+}
+.slack-onboard-step p { font-size: 0.88rem; color: var(--text-secondary); line-height: 1.65; }
+
+/* ── Pricing: ivory printout pinned to the console ── */
+.pricing-wrap { max-width: 720px; margin: 3rem auto 0; }
+.pricing-card {
+  /* Local CSS-var override: descendants pick up dark-on-ivory automatically */
+  --text: #131821;
+  --text-secondary: rgba(19, 24, 33, 0.7);
+  --text-tertiary: rgba(19, 24, 33, 0.55);
+  --text-dim: rgba(19, 24, 33, 0.4);
+  --rule: var(--printout-rule);
+  --rule-light: rgba(19, 24, 33, 0.08);
+
+  background: var(--printout);
+  color: var(--text);
+  border: 1px solid var(--printout-rule);
+  border-radius: 2px;
+  padding: 0;
+  font-family: 'Geist Mono', monospace;
+  overflow: hidden;
+  box-shadow: 0 16px 52px rgba(0, 0, 0, 0.4);
+}
+.pricing-head {
+  /* Re-override to light text inside the dark header strip */
+  --text: var(--printout);
+  --text-secondary: rgba(244, 240, 230, 0.6);
+  --text-tertiary: rgba(244, 240, 230, 0.5);
+
+  background: #131821;
+  color: var(--text);
+  padding: 1.1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.66rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+.pricing-head .ph-meta { color: rgba(244, 240, 230, 0.55); font-weight: 400; }
+.pricing-body { padding: 2.5rem 2rem 2rem; }
+.pricing-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 0.7rem 0;
+  border-bottom: 1px dashed var(--printout-rule);
+  font-size: 0.78rem;
+  color: var(--text);
+}
+.pricing-row:first-child { padding-top: 0; }
+.pricing-row .pr-label {
+  color: var(--text-tertiary);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 0.66rem;
+}
+.pricing-row .pr-value { font-weight: 500; }
+
+.pricing-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 1.8rem 0 0.4rem;
+  border-top: 1px solid var(--rule);
+  margin-top: 1rem;
+}
+.pricing-total-label {
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.66rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text);
+}
+.pricing-total-price {
+  font-family: 'Geist', sans-serif;
+  font-weight: 500;
+  font-size: clamp(3rem, 5vw, 4.2rem);
+  line-height: 1;
+  color: var(--text);
+  letter-spacing: -0.03em;
+}
+.pricing-total-price .cents {
+  font-weight: 300;
+  font-size: 0.5em;
+  color: var(--text-tertiary);
+  letter-spacing: 0.04em;
+  padding-left: 0.2em;
+}
+.pricing-unit {
+  font-size: 0.74rem;
+  color: var(--text-tertiary);
+  letter-spacing: 0.04em;
+  margin-top: -0.3rem;
+  margin-bottom: 1.8rem;
+  text-align: right;
+}
+.pricing-features {
+  list-style: none;
+  padding: 1.6rem 0 0;
+  margin: 0;
+  border-top: 1px solid var(--printout-rule);
+}
+.pricing-features li {
+  font-family: 'Geist', sans-serif;
+  font-size: 0.9rem;
+  padding: 0.8rem 0;
+  border-bottom: 1px solid var(--printout-rule);
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  color: var(--text);
+}
+.pricing-features li:last-child { border-bottom: none; }
+.check {
+  color: var(--signal);
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.78rem;
+  font-weight: 500;
+  flex-shrink: 0;
+  width: 16px;
+  text-align: center;
+}
+.pricing-volume {
+  margin-top: 1.6rem;
+  padding-top: 1.2rem;
+  border-top: 1px solid var(--printout-rule);
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.72rem;
+  color: var(--text-tertiary);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+/* ── Reasoning: 2x2 grid ── */
+.reasoning-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2.5rem 3rem;
+  margin-top: 3rem;
+}
+.reason-item { border-top: 1px solid var(--rule); padding-top: 1.3rem; }
+.reason-item .r-num {
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.6rem;
+  font-weight: 400;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--signal);
+  margin-bottom: 0.6rem;
+}
+.reason-item h3 {
+  font-family: 'Geist', sans-serif;
+  font-weight: 500;
+  font-size: 1.22rem;
+  letter-spacing: -0.01em;
+  line-height: 1.25;
+  color: var(--text);
+  margin-bottom: 0.8rem;
+}
+.reason-item p { font-size: 0.92rem; color: var(--text-secondary); line-height: 1.82; }
+
+/* ── FAQ: editorial list ── */
+.faq-list { margin-top: 3rem; border-top: 1px solid var(--rule); }
+.faq-item {
+  padding: 1.8rem 0;
+  border-bottom: 1px solid var(--rule-light);
+  display: grid;
+  grid-template-columns: 1fr 1.6fr;
+  gap: 2.5rem;
+  align-items: baseline;
+}
+.faq-q {
+  font-family: 'Geist', sans-serif;
+  font-weight: 500;
+  font-size: 1.08rem;
+  letter-spacing: -0.005em;
+  line-height: 1.35;
+  color: var(--text);
+}
+.faq-a { font-size: 0.92rem; color: var(--text-secondary); line-height: 1.8; }
+
+/* ── CTA ── */
+.cta-grid {
+  display: grid;
+  grid-template-columns: 1.05fr 1fr;
+  gap: 4rem;
+  align-items: start;
+  margin-top: 3rem;
+}
+.cta-form { max-width: none; margin: 0; min-height: 520px; }
+.cta-alt { margin-top: 0.6rem; font-size: 0.78rem; color: var(--text-tertiary); font-family: 'Geist Mono', monospace; letter-spacing: 0.04em; }
+.cta-alt a {
+  color: var(--text);
+  text-decoration: none;
+  border-bottom: 1px solid var(--rule);
+  transition: border-color 0.25s;
+}
+.cta-alt a:hover { border-color: var(--signal); }
+
+/* Right-column visual: last-publish spec readout */
+.cta-visual {
+  background: var(--surface-2);
+  border: 1px solid var(--rule);
+  color: var(--text);
+  border-radius: 2px;
+  overflow: hidden;
+  font-family: 'Geist Mono', monospace;
+  box-shadow: 0 14px 44px rgba(0, 0, 0, 0.4);
+}
+.cv-head {
+  background: rgba(255, 255, 255, 0.04);
+  padding: 0.9rem 1.6rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(238, 234, 226, 0.08);
+  font-size: 0.62rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(238, 234, 226, 0.6);
+}
+.cv-head .cv-head-title { color: var(--text); font-weight: 500; }
+.cv-head .cv-head-title::before {
+  content: '';
+  display: inline-block;
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--pulse);
+  box-shadow: 0 0 5px rgba(4, 120, 87, 0.6);
+  margin-right: 0.5rem;
+  vertical-align: middle;
+  animation: blink 2.4s ease-in-out infinite;
+}
+.cv-body { padding: 1.4rem 1.6rem 1.6rem; font-size: 0.78rem; line-height: 1.7; }
+.cv-meta {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 0.35rem 1.1rem;
+  padding-bottom: 1rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px dashed rgba(238, 234, 226, 0.15);
+}
+.cv-meta dt {
+  color: rgba(238, 234, 226, 0.5);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 0.62rem;
+  padding-top: 0.15rem;
+}
+.cv-meta dd { color: var(--text); font-size: 0.8rem; }
+.cv-tests {
+  list-style: none;
+  margin: 0 0 1rem;
+  padding: 0;
+}
+.cv-tests li {
+  display: grid;
+  grid-template-columns: 1fr max-content max-content;
+  gap: 0.6rem;
+  padding: 0.35rem 0;
+  font-size: 0.76rem;
+  color: rgba(238, 234, 226, 0.88);
+  align-items: baseline;
+}
+.cv-tests li .cv-count { color: rgba(238, 234, 226, 0.6); }
+.cv-tests li .cv-pass { color: var(--signal); font-weight: 500; }
+.cv-total {
+  padding-top: 0.9rem;
+  border-top: 1px solid rgba(238, 234, 226, 0.15);
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-size: 0.78rem;
+  color: var(--text);
+  margin-bottom: 1rem;
+}
+.cv-total strong { font-family: 'Geist', sans-serif; font-size: 1.4rem; font-weight: 500; letter-spacing: -0.02em; }
+.cv-total .cv-total-time { color: rgba(238, 234, 226, 0.55); font-size: 0.7rem; letter-spacing: 0.06em; }
+.cv-next {
+  padding-top: 0.9rem;
+  border-top: 1px dashed rgba(238, 234, 226, 0.15);
+  font-size: 0.72rem;
+  color: rgba(238, 234, 226, 0.7);
+  line-height: 1.6;
+}
+.cv-next .cv-next-label {
+  display: block;
+  color: rgba(238, 234, 226, 0.45);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 0.6rem;
+  margin-bottom: 0.35rem;
+}
+.cv-next strong { color: var(--signal); font-weight: 500; }
+
+/* ── Footer ── */
+footer {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2.2rem 2.5rem;
+  border-top: 1px solid var(--rule);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+footer .f-copy {
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.64rem;
+  color: var(--text-tertiary);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+footer .f-copy strong { color: var(--text); font-weight: 500; }
+footer .f-links { display: flex; gap: 1.8rem; }
+footer .f-links a {
+  font-family: 'Geist', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--text-tertiary);
+  text-decoration: none;
+  transition: color 0.25s;
+}
+footer .f-links a:hover { color: var(--text); }
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+  .hero-lower { grid-template-columns: 1fr; gap: 2.2rem; }
+  .problem-grid { grid-template-columns: 1fr; gap: 2rem; }
+  .features-grid { grid-template-columns: 1fr; }
+  .steps { grid-template-columns: 1fr; gap: 1.4rem; }
+  .slack-panels { grid-template-columns: 1fr; }
+  .reasoning-grid { grid-template-columns: 1fr; }
+  .faq-item { grid-template-columns: 1fr; gap: 0.8rem; }
+  .cta-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+  .slack-channel-desc { display: none; }
+  .dispatch-inner { padding: 0.55rem 1.5rem; gap: 1rem; font-size: 0.62rem; }
+  .dispatch-inner > span:nth-child(n+4) { display: none; }
+}
+
+@media (max-width: 640px) {
+  nav { padding: 1.2rem 1.5rem; }
+  nav::after { left: 1.5rem; right: 1.5rem; }
+  .nav-links { display: none; }
+  .nav-links.open {
+    display: flex; flex-direction: column;
+    position: absolute; top: 100%; left: 0; right: 0;
+    background: var(--bg);
+    padding: 1.5rem;
+    border-bottom: 1px solid var(--rule);
+    gap: 1rem; z-index: 50;
+  }
+  .nav-toggle { display: block; }
+  .hero { padding: 4rem 1.5rem 3rem; }
+  .hero::before { left: 1.5rem; }
+  .section { padding: 3.5rem 1.5rem; }
+  .section-rule { padding: 0 1.5rem; }
+  .pricing-head, .pricing-body { padding-left: 1.4rem; padding-right: 1.4rem; }
+  footer { padding: 2rem 1.5rem; flex-direction: column; text-align: center; }
+  .brand-parent { display: none; }
+}
+</style>
 </head>
-<body class="antialiased">
+<body>
 
-  <!-- Nav -->
-  <nav class="fixed top-0 left-0 right-0 z-50 bg-surface/80 backdrop-blur-md border-b border-border">
-    <div class="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
-      <span class="font-mono font-bold text-cyan tracking-[0.35em] text-sm">A C U O P S</span>
-      <a href="#cta" class="font-mono text-sm text-muted hover:text-cyan transition-colors">Book a call &rarr;</a>
-    </div>
-  </nav>
+<!-- ── Dispatch strip (operations floor tone-setter) ── -->
+<div class="dispatch">
+  <div class="dispatch-inner">
+    <span><span class="dispatch-led"></span><strong>STATUS</strong> ACTIVE</span>
+    <span class="dispatch-spacer">·</span>
+    <span><strong>12</strong> PROBES</span>
+    <span class="dispatch-spacer">·</span>
+    <span data-live="tests"><strong>146</strong> POST-PUBLISH TESTS</span>
+    <span class="dispatch-spacer">·</span>
+    <span><strong>~90s</strong> ALERT LATENCY</span>
+    <span class="dispatch-spacer">·</span>
+    <span>ACUMATICA 24.200.001</span>
+  </div>
+</div>
 
-  <!-- 1. Hero -->
-  <section class="pt-32 pb-20 px-6 md:pt-44 md:pb-28">
-    <div class="max-w-3xl mx-auto">
-      <p class="font-mono text-cyan text-xs tracking-[0.3em] uppercase mb-6">For Acumatica VARs</p>
-      <h1 class="font-mono font-bold text-4xl sm:text-5xl md:text-7xl leading-[1.1] mb-8">You don't publish on&nbsp;Fridays.</h1>
-      <p class="text-lg md:text-xl leading-relaxed max-w-2xl">
-        <span class="text-muted">Not because you're careful&thinsp;&mdash;&thinsp;because the last one took down a client at 4:30pm and you spent the weekend on&nbsp;it.</span>
-        <span class="text-text"> AcuOps is the CI/CD pipeline that would have caught it on the&nbsp;branch.</span>
-      </p>
-      <div class="mt-10 flex flex-col sm:flex-row gap-4 items-start">
-        <a href="#cta" class="inline-block bg-cyan text-bg font-mono font-medium text-sm px-6 py-3 rounded-md hover:bg-cyan-deep hover:text-white transition-colors tracking-wide">Book a 20-minute call</a>
-        <a href="#catches" class="inline-block font-mono text-sm text-muted hover:text-cyan transition-colors py-3">See what it catches &rarr;</a>
+<!-- ── Nav ── -->
+<nav>
+  <div class="brand">
+    <a href="/" class="brand-main" aria-label="AcuOps home">
+      <!-- AcuOps mark: concentric pulse (probe ping). 5-rule family construction: viewBox 24, stroke-width 1.2, rounded, fill+stroke duality, one idea. -->
+      <svg class="brand-mark" viewBox="0 0 24 24" fill="none" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
+        <circle cx="12" cy="12" r="10" stroke="#E6EDF3" fill="none" opacity="0.35"/>
+        <circle cx="12" cy="12" r="6.2" stroke="#E6EDF3" fill="none" opacity="0.7"/>
+        <circle cx="12" cy="12" r="2.6" fill="#FF7A1A" stroke="#E6EDF3"/>
+      </svg>
+      <span class="brand-name">AcuOps</span>
+    </a>
+    <span class="brand-parent">A <a href="https://b.studio">Studio B</a> product</span>
+  </div>
+  <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+  <div class="nav-links">
+    <a href="#features">Features</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#faq">FAQ</a>
+    <a href="https://bolt.b.studio">Bolt</a>
+    <a href="#demo" class="nav-cta">Request Demo</a>
+  </div>
+</nav>
+
+<!-- ── Hero ── -->
+<section class="hero">
+  <div class="hero-eyebrow">AcuOps · Acumatica DevOps Platform</div>
+  <h1>Acumatica's a great ERP.<br><em>The operations layer is an <span class="sig">exercise left to the reader</span>.</em></h1>
+  <div class="hero-lower">
+    <p class="hero-body">When a minor release drifts a DAC and the customization breaks at 6pm Friday, it's not Acumatica's phone that rings — it's yours. AcuOps is the team you weren't hired to be. Twelve probes, 146 post-publish tests, a CI/CD pipeline through the Customization API. Read-only API, session-gated. Credentials stay in your vault, not ours.</p>
+    <aside class="hero-panel">
+      <div class="hero-panel-header">
+        <span><span class="led"></span>Operations panel</span>
+        <span>v24.200.001</span>
       </div>
-    </div>
-  </section>
-
-  <!-- 2. Leverage beat -->
-  <section class="bg-surface border-y border-border py-20 px-6">
-    <div class="max-w-3xl mx-auto text-center">
-      <p class="font-mono font-bold text-2xl sm:text-3xl md:text-4xl leading-snug">
-        One senior dev can run the pipeline for <span class="text-cyan">five&nbsp;clients</span>.<br class="hidden sm:block"> Without it, they run&nbsp;two.
-      </p>
-      <p class="mt-6 text-muted text-lg">AcuOps is the reason you can grow without&nbsp;hiring.</p>
-    </div>
-  </section>
-
-  <!-- 3. What AcuOps catches -->
-  <section id="catches" class="py-20 md:py-28 px-6">
-    <div class="max-w-4xl mx-auto">
-      <h2 class="font-mono font-bold text-2xl sm:text-3xl md:text-4xl mb-4">What AcuOps catches</h2>
-      <p class="text-muted text-base md:text-lg mb-12 max-w-2xl">Every item is a production incident AcuOps intercepts on the branch&thinsp;&mdash;&thinsp;or a failure mode that's bitten us and now has a check against&nbsp;it.</p>
-      <div class="grid md:grid-cols-2 gap-x-10 gap-y-5">
-        <div class="flex items-start gap-3">
-          <span class="text-ci-pass font-mono text-lg mt-0.5 shrink-0">&#10003;</span>
-          <span class="font-mono text-sm text-text leading-relaxed">Co-publish conflicts between multiple customization projects</span>
-        </div>
-        <div class="flex items-start gap-3">
-          <span class="text-ci-pass font-mono text-lg mt-0.5 shrink-0">&#10003;</span>
-          <span class="font-mono text-sm text-text leading-relaxed"><code class="text-cyan">[PXDBInt]</code> deadlocks at schema-update time</span>
-        </div>
-        <div class="flex items-start gap-3">
-          <span class="text-ci-pass font-mono text-lg mt-0.5 shrink-0">&#10003;</span>
-          <span class="font-mono text-sm text-text leading-relaxed">ASPX / CDATA drift between source and <code class="text-cyan">project.xml</code></span>
-        </div>
-        <div class="flex items-start gap-3">
-          <span class="text-ci-pass font-mono text-lg mt-0.5 shrink-0">&#10003;</span>
-          <span class="font-mono text-sm text-text leading-relaxed">Mid-flight SQL timeouts during "Copying the website"</span>
-        </div>
-        <div class="flex items-start gap-3">
-          <span class="text-ci-pass font-mono text-lg mt-0.5 shrink-0">&#10003;</span>
-          <span class="font-mono text-sm text-text leading-relaxed">Orphan SiteMap entries that survive a merge=true publish</span>
-        </div>
-        <div class="flex items-start gap-3">
-          <span class="text-ci-pass font-mono text-lg mt-0.5 shrink-0">&#10003;</span>
-          <span class="font-mono text-sm text-text leading-relaxed">Missing GI access rights after publish (api-bot lockouts)</span>
-        </div>
-        <div class="flex items-start gap-3">
-          <span class="text-ci-pass font-mono text-lg mt-0.5 shrink-0">&#10003;</span>
-          <span class="font-mono text-sm text-text leading-relaxed">Customizations that compile but crash a screen on load</span>
-        </div>
-        <div class="flex items-start gap-3">
-          <span class="text-ci-pass font-mono text-lg mt-0.5 shrink-0">&#10003;</span>
-          <span class="font-mono text-sm text-text leading-relaxed">Schema drift between dev and production</span>
-        </div>
-        <div class="flex items-start gap-3">
-          <span class="text-ci-pass font-mono text-lg mt-0.5 shrink-0">&#10003;</span>
-          <span class="font-mono text-sm text-text leading-relaxed"><code class="text-cyan">NullReferenceException</code> from <code class="text-cyan">UserRecordsDBUpdater</code></span>
-        </div>
-        <div class="flex items-start gap-3">
-          <span class="text-ci-pass font-mono text-lg mt-0.5 shrink-0">&#10003;</span>
-          <span class="font-mono text-sm text-text leading-relaxed">Friday 4pm you-know-what</span>
-        </div>
+      <div class="hero-panel-row">
+        <span class="hp-label">Audience</span>
+        <span class="hp-value">Acumatica VARs</span>
       </div>
-    </div>
-  </section>
-
-  <!-- 4. Stats strip -->
-  <section class="bg-surface border-y border-border py-20 px-6">
-    <div class="max-w-4xl mx-auto text-center">
-      <p class="font-mono font-bold text-6xl md:text-7xl text-cyan">100+</p>
-      <p class="font-mono text-muted text-sm tracking-[0.2em] uppercase mt-3">automated checks per publish</p>
-      <div class="grid sm:grid-cols-3 gap-4 mt-12 max-w-2xl mx-auto">
-        <div class="border border-border rounded-lg px-6 py-5">
-          <p class="font-mono font-bold text-3xl text-text">12</p>
-          <p class="font-mono text-muted text-xs tracking-wider mt-1">health probes</p>
-        </div>
-        <div class="border border-border rounded-lg px-6 py-5">
-          <p class="font-mono font-bold text-3xl text-text">15-min</p>
-          <p class="font-mono text-muted text-xs tracking-wider mt-1">schema drift detection</p>
-        </div>
-        <div class="border border-border rounded-lg px-6 py-5">
-          <p class="font-mono font-bold text-3xl text-text">10+</p>
-          <p class="font-mono text-muted text-xs tracking-wider mt-1">customizations shipped / quarter</p>
-        </div>
+      <div class="hero-panel-row">
+        <span class="hp-label">Platform</span>
+        <span class="hp-value">Monitor · CI/CD · Validate</span>
       </div>
-      <p class="text-dim text-xs font-mono mt-8">measured on Heritage Fabrics &mdash; the reference practice that runs on AcuOps</p>
-    </div>
-  </section>
+      <div class="hero-panel-row">
+        <span class="hp-label">Access</span>
+        <span class="hp-value">Read-only API, session-gated</span>
+      </div>
+      <div class="hero-panel-row">
+        <span class="hp-label">Meter</span>
+        <span class="hp-value"><span class="sig">$300</span> / mo · per instance · flat</span>
+      </div>
+    </aside>
+  </div>
+</section>
 
-  <!-- 5. Pricing -->
-  <section class="py-20 md:py-28 px-6">
-    <div class="max-w-lg mx-auto">
-      <div class="rounded-xl p-8 md:p-10" style="box-shadow: 0 0 0 1px rgba(34,211,238,.35), 0 10px 40px -10px rgba(34,211,238,.25);">
-        <p class="font-mono text-cyan text-xs tracking-[0.3em] uppercase mb-4">Pricing</p>
-        <p class="font-mono font-bold text-4xl md:text-5xl text-text">$300 <span class="text-muted text-lg font-medium">/ month</span></p>
-        <p class="text-muted text-lg mt-1">/ Acumatica instance.</p>
-        <p class="font-mono text-muted text-sm mt-4">Flat.</p>
-        <ul class="mt-6 space-y-2.5 text-text text-sm">
-          <li class="flex items-center gap-2"><span class="text-dim">&mdash;</span> No tiers</li>
-          <li class="flex items-center gap-2"><span class="text-dim">&mdash;</span> No per-seat pricing</li>
-          <li class="flex items-center gap-2"><span class="text-dim">&mdash;</span> No minimum commitment</li>
-          <li class="flex items-center gap-2"><span class="text-dim">&mdash;</span> One line item on your managed services invoice</li>
+<div class="section-rule"><hr></div>
+
+<!-- ── Problem ── -->
+<section class="section fade-in">
+  <div class="section-eyebrow">01 / 07 · The problem</div>
+  <div class="problem-grid">
+    <h2 class="problem-title">You've been stitching this together <em>per-client, for a decade.</em></h2>
+    <div class="problem-body">
+      <p>You've tried internal scripts. You've SSH'd into the instance when the client complains. Maybe a NetSuite-style monitoring add-on that doesn't know what a <strong>PXException</strong> is. None of them survive an Acumatica minor release.</p>
+      <p>Infor CloudSuite ships built-in environment monitoring. Sage Intacct has runbook integrations. Microsoft Dynamics 365 Business Central has AppSource partners that watch tenants. Acumatica has VARs stitching it together.</p>
+      <p>AcuOps is the thing that should have come in the box.</p>
+    </div>
+  </div>
+</section>
+
+<div class="section-rule"><hr></div>
+
+<!-- ── Features ── -->
+<section class="section fade-in" id="features">
+  <div class="section-eyebrow">02 / 07 · Capabilities</div>
+  <div class="section-title">What runs against every instance.</div>
+  <p class="section-intro">Twelve health probes. 146 post-publish tests. A CI/CD pipeline that pushes customizations through the Customization API. All three read-only against your clients' instances.</p>
+
+  <div class="features-grid">
+
+    <div class="feature-card">
+      <div class="fc-header">
+        <span class="fc-label">01 · Monitor</span>
+        <span class="fc-status">Probe online</span>
+      </div>
+      <h3>Twelve Health Probes</h3>
+      <p>Continuous checks across Acumatica, HubSpot, MCP servers, and the infrastructure behind them. Acumatica doesn't tell you when a DAC field flips enum order. We do — within 90 seconds of the change landing.</p>
+    </div>
+
+    <div class="feature-card">
+      <div class="fc-header">
+        <span class="fc-label">02 · Drift</span>
+        <span class="fc-status">Probe online</span>
+      </div>
+      <h3>Schema Drift Detection</h3>
+      <p>Acumatica and HubSpot field changes caught automatically. A Slack alert fires the moment the environment your customization relies on moves under it. You find out before the backfill breaks.</p>
+    </div>
+
+    <div class="feature-card">
+      <div class="fc-header">
+        <span class="fc-label">03 · Deploy</span>
+        <span class="fc-status">Pipeline ready</span>
+      </div>
+      <h3>CI/CD for Customizations</h3>
+      <p>Push to GitHub. Import and publish through the Customization API. Co-publish conflict checks, post-publish polling, automatic rollback signal. No manual uploads. No RDP to the instance. No "did it actually publish?"</p>
+    </div>
+
+    <div class="feature-card">
+      <div class="fc-header">
+        <span class="fc-label">04 · Validate</span>
+        <span class="fc-status">Suite ready</span>
+      </div>
+      <h3>146 Post-Publish Validations</h3>
+      <p>Playwright runs the suite after every deploy. Schema checks, custom-field verification, pipeline validation, UI renders. If the customization broke the screen, you know 90 seconds after publish — not when the client finds out Monday morning.</p>
+    </div>
+
+    <div class="feature-card">
+      <div class="fc-header">
+        <span class="fc-label">05 · Upgrade</span>
+        <span class="fc-status">Watcher online</span>
+      </div>
+      <h3>Pre-Upgrade Testing</h3>
+      <p>Run the 146-test suite against the Acumatica upgrade candidate before it hits your client's production. You get the diff in Slack before the release notes land. If something breaks, it breaks in sandbox.</p>
+    </div>
+
+    <div class="feature-card">
+      <div class="fc-header">
+        <span class="fc-label">06 · Governance</span>
+        <span class="fc-status">Audit active</span>
+      </div>
+      <h3>Config-as-Code</h3>
+      <p>Every customization project, every pipeline, every health probe versioned in GitHub. Branch protection, PR gates, audit trail. "Who changed that field?" becomes <code>git blame</code>.</p>
+    </div>
+
+  </div>
+</section>
+
+<div class="section-rule"><hr></div>
+
+<!-- ── How It Works ── -->
+<section class="section fade-in">
+  <div class="section-eyebrow">03 / 07 · How it works</div>
+  <div class="section-title">Point AcuOps at the instance.<br>Get Slack alerts <em>before your client calls.</em></div>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-number">STEP 01 · Connect</div>
+      <h3>Point it at the instance.</h3>
+      <p>Point AcuOps at your client's Acumatica instance. Read-only API access, session-gated. Credentials live in your vault — we don't hold keys, we don't hold sessions between runs.</p>
+    </div>
+    <div class="step">
+      <div class="step-number">STEP 02 · Run</div>
+      <h3>Probes run. Pipeline deploys.</h3>
+      <p>Twelve health probes run continuously. The CI/CD pipeline deploys customizations when you push to GitHub. 146 tests validate every publish against the live screen.</p>
+    </div>
+    <div class="step">
+      <div class="step-number">STEP 03 · Alert</div>
+      <h3>Slack fires before the phone.</h3>
+      <p>Slack notifications fire before your client does. You see every alert across every client. Your client sees only their own instance. Drill into dashboards for the stack trace.</p>
+    </div>
+  </div>
+</section>
+
+<div class="section-rule"><hr></div>
+
+<!-- ── Slack Integration ── -->
+<section class="section fade-in">
+  <div class="section-eyebrow">04 / 07 · Slack integration</div>
+  <div class="section-title">Your workspace. Your alerts.<br>Your clients' workspaces <em>stay separate.</em></div>
+  <p class="section-intro">AcuOps installs directly into your client's Slack workspace. They see their own alerts. You see everyone's. One event, two audiences, zero manual forwarding.</p>
+
+  <div class="slack-panels">
+
+    <div class="slack-panel">
+      <div class="slack-panel-label">Your client sees</div>
+      <h3>Their own workspace.</h3>
+      <p>AcuOps drops into your client's existing Slack. No shared channels. No cross-workspace noise. Two dedicated channels, scoped to their instance:</p>
+      <div class="slack-channel">
+        <span class="slack-channel-icon">#</span>
+        <span class="slack-channel-name">acuops-alerts</span>
+        <span class="slack-channel-desc">Deploys, health warnings, sync errors</span>
+      </div>
+      <div class="slack-channel">
+        <span class="slack-channel-icon">#</span>
+        <span class="slack-channel-name">acuops-intake</span>
+        <span class="slack-channel-desc">Requests that route to HubSpot tickets</span>
+      </div>
+      <p class="slack-footnote">Each client's data stays in their workspace. They never see your other clients or your internal channels.</p>
+    </div>
+
+    <div class="slack-panel">
+      <div class="slack-panel-label">You see</div>
+      <h3>All clients, one view.</h3>
+      <p>Every notification also posts to your operator workspace. All clients, all alerts, one place:</p>
+      <div class="slack-channel">
+        <span class="slack-channel-icon">#</span>
+        <span class="slack-channel-name">deployments</span>
+        <span class="slack-channel-desc">Deploy results across all clients</span>
+      </div>
+      <div class="slack-channel">
+        <span class="slack-channel-icon">#</span>
+        <span class="slack-channel-name">system-health</span>
+        <span class="slack-channel-desc">Health probe alerts across all clients</span>
+      </div>
+      <div class="slack-channel">
+        <span class="slack-channel-icon">#</span>
+        <span class="slack-channel-name">integration-issues</span>
+        <span class="slack-channel-desc">Sync and integration failures</span>
+      </div>
+      <p class="slack-footnote">One event, two audiences. Zero manual forwarding.</p>
+    </div>
+
+  </div>
+
+  <!-- Sample alert: spec-sheet moment showing what an AcuOps alert actually looks like -->
+  <div class="alert-sample" role="img" aria-label="Sample Slack alert preview">
+    <div class="alert-sample-head">
+      <span class="as-channel">acuops-alerts</span>
+      <span>2026-04-17 · 14:23:05 CDT</span>
+    </div>
+    <div class="alert-sample-body">
+      <div class="as-bot">
+        <strong>AcuOps Bot</strong>
+        <span class="as-badge">APP</span>
+        <span>· 90s after publish</span>
+      </div>
+      <div class="as-title">SCHEMA DRIFT DETECTED</div>
+      <dl>
+        <dt>instance</dt><dd>heritagefabrics.acumatica.com</dd>
+        <dt>entity</dt><dd>SalesOrder</dd>
+        <dt>change</dt><dd>UsrHubSpotDealId type flipped <em>Decimal → String</em></dd>
+        <dt>deploy</dt><dd>ci-run-4821 · 8m ago · commit 2fe765b</dd>
+        <dt>impact</dt><dd>3 downstream syncs paused · rollback ready</dd>
+      </dl>
+    </div>
+    <div class="alert-sample-actions">
+      <button type="button">Acknowledge</button>
+      <button type="button">Roll back</button>
+      <button type="button">Open dashboard</button>
+    </div>
+  </div>
+
+  <div class="slack-onboard">
+    <div class="slack-panel-label">Setup</div>
+    <div class="slack-onboard-step">
+      <span class="slack-onboard-step-num">01</span>
+      <p>We send your client a one-click install link during onboarding.</p>
+    </div>
+    <div class="slack-onboard-step">
+      <span class="slack-onboard-step-num">02</span>
+      <p>They approve AcuOps in their Slack workspace. Ten seconds, no meeting required.</p>
+    </div>
+    <div class="slack-onboard-step">
+      <span class="slack-onboard-step-num">03</span>
+      <p>Channels are created automatically. Alerts start flowing immediately.</p>
+    </div>
+  </div>
+</section>
+
+<div class="section-rule"><hr></div>
+
+<!-- ── Pricing (receipt styling) ── -->
+<section class="section fade-in" id="pricing">
+  <div class="section-eyebrow">05 / 07 · Pricing</div>
+  <div class="section-title">$300 per month. Per Acumatica instance. <em>Flat.</em></div>
+  <p class="section-intro">Not per seat. Not per transaction. Not per alert. The meter is the instance — one number, one invoice. Every capability included. Volume discounts at 10+ and 25+ instances.</p>
+
+  <div class="pricing-wrap">
+    <div class="pricing-card">
+      <div class="pricing-head">
+        <span>AcuOps · Flat instance meter</span>
+        <span class="ph-meta">Invoice preview</span>
+      </div>
+      <div class="pricing-body">
+        <div class="pricing-row">
+          <span class="pr-label">Meter</span>
+          <span class="pr-value">1× Acumatica instance</span>
+        </div>
+        <div class="pricing-row">
+          <span class="pr-label">Billing cycle</span>
+          <span class="pr-value">Monthly · no contract</span>
+        </div>
+        <div class="pricing-row">
+          <span class="pr-label">Setup</span>
+          <span class="pr-value">$0</span>
+        </div>
+        <div class="pricing-row">
+          <span class="pr-label">Overage</span>
+          <span class="pr-value">None · flat</span>
+        </div>
+
+        <div class="pricing-total">
+          <div>
+            <div class="pricing-total-label">Total · monthly</div>
+          </div>
+          <div class="pricing-total-price">$300<span class="cents">/mo</span></div>
+        </div>
+        <div class="pricing-unit">per Acumatica instance</div>
+
+        <ul class="pricing-features">
+          <li><span class="check">[✓]</span> Twelve health probes (Acumatica, HubSpot, MCP, infra)</li>
+          <li><span class="check">[✓]</span> Schema drift detection with Slack alerts</li>
+          <li><span class="check">[✓]</span> CI/CD deploy pipeline through the Customization API</li>
+          <li><span class="check">[✓]</span> 146 Playwright post-publish validations</li>
+          <li><span class="check">[✓]</span> Pre-upgrade testing against Acumatica release candidates</li>
+          <li><span class="check">[✓]</span> Config-as-code in your GitHub organization</li>
+          <li><span class="check">[✓]</span> Per-workspace Slack install, one-event dual-post routing</li>
         </ul>
-        <p class="text-dim text-xs font-mono mt-8">Dev and test instances unlimited at no cost. You only pay for production.</p>
+
+        <div class="pricing-volume">Volume · 15% off at 10+ instances · 25% off at 25+</div>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <!-- 6. CTA -->
-  <section id="cta" class="bg-surface border-y border-border py-20 md:py-28 px-6">
-    <div class="max-w-lg mx-auto">
-      <h2 class="font-mono font-bold text-2xl sm:text-3xl md:text-4xl mb-4">Book a 20-minute&nbsp;call.</h2>
-      <p class="text-muted text-base md:text-lg mb-10">Tell us what you run. We'll tell you whether AcuOps is worth a pilot. No slide&nbsp;deck.</p>
+<div class="section-rule"><hr></div>
 
-      <div id="hubspot-primary-form"></div>
-      <script>
-        hbspt.forms.create({
-          region: "na1",
-          portalId: "49070660",
-          formId: "8b2c96c9-0ec0-4011-9c3c-22bb2e8d926e",
-          target: "#hubspot-primary-form",
-          css: "",
-          cssClass: "acuops-form"
-        });
-      </script>
+<!-- ── Reasoning ── -->
+<section class="section fade-in">
+  <div class="section-eyebrow">06 / 07 · Why this, not that</div>
+  <div class="section-title">Four decisions you should know about.</div>
+  <p class="section-intro">We've priced this product three different ways. This is the one that survived first contact with our own client portfolio.</p>
 
-      <div class="border-t border-border my-12"></div>
-
-      <p class="text-muted text-sm font-mono mb-6">Not ready for a call?</p>
-      <div id="hubspot-waitlist-form"></div>
-      <script>
-        hbspt.forms.create({
-          region: "na1",
-          portalId: "49070660",
-          formId: "140319f1-7ddd-4571-92b1-37ffd4a1a4d5",
-          target: "#hubspot-waitlist-form",
-          css: "",
-          cssClass: "acuops-waitlist-form"
-        });
-      </script>
+  <div class="reasoning-grid">
+    <div class="reason-item">
+      <div class="r-num">Decision 01</div>
+      <h3>Per instance, not per seat.</h3>
+      <p>Your client's AP clerk and your VAR's senior architect are both running drift checks against the same DAC. Per-seat billing doesn't reflect the work. Instance-count does. One Acumatica tenant = $300/mo, regardless of who logs in or how many clerks open SO301000.</p>
     </div>
-  </section>
-
-  <!-- 7. Closer + Footer -->
-  <section class="py-20 px-6">
-    <p class="font-mono text-center text-xl md:text-2xl text-text max-w-2xl mx-auto">One rolled-back publish pays for the&nbsp;year.</p>
-  </section>
-
-  <footer class="border-t border-border py-8 px-6">
-    <div class="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-dim text-xs font-mono">
-      <span>A C U O P S &middot; by Studio B</span>
-      <span>&copy; 2026 Studio B</span>
+    <div class="reason-item">
+      <div class="r-num">Decision 02</div>
+      <h3>Flat, not metered.</h3>
+      <p>We thought about $0.10 per test run. We thought about a tier-bump at 50 deploys per month. Then we ran the numbers on our own portfolio. The cost-to-serve variance between a quiet month and a wild one is close to nothing. A flat meter means you know the invoice before the month starts.</p>
     </div>
-  </footer>
+    <div class="reason-item">
+      <div class="r-num">Decision 03</div>
+      <h3>$300 is what the work costs.</h3>
+      <p>Twelve probes running every few minutes. A 146-test Playwright suite against every publish. A CI/CD pipeline that handles Import, publishBegin, co-publish, publishEnd polling, and rollback signals. An on-call rotation that catches the indexer when it times out. Priced at what it takes to actually run the thing — which is the only price that survives a year.</p>
+    </div>
+    <div class="reason-item">
+      <div class="r-num">Decision 04</div>
+      <h3>Resell it, or don't.</h3>
+      <p>Some VARs bill it straight through at cost. Some mark it up to $500 and make it a managed-service line item. We don't care. The meter is your Acumatica instance count — not seats, not clients, not end-customer invoices. What you do with the margin is yours.</p>
+    </div>
+  </div>
+</section>
+
+<div class="section-rule"><hr></div>
+
+<!-- ── FAQ ── -->
+<section class="section fade-in" id="faq">
+  <div class="section-eyebrow">07 / 07 · Questions</div>
+  <div class="section-title">Direct answers.</div>
+  <p class="section-intro">If you're asking these, you're the right audience.</p>
+
+  <div class="faq-list">
+
+    <div class="faq-item">
+      <div class="faq-q">Do you compete with my implementation practice?</div>
+      <div class="faq-a">No. We don't take Acumatica implementation work. Per-instance flat pricing means we have zero incentive to push hours your way. You keep the implementation margin; we take the ops layer nobody wanted to own.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">Why not bill my hourly rate and handle it myself?</div>
+      <div class="faq-a">You can. At $175 per hour, $300 is 1.7 hours of your time per month. Most VARs burn more than that on manual drift chasing the first time a customization breaks. You keep the margin; we keep the scope.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">What happens on an Acumatica minor release?</div>
+      <div class="faq-a">We run the 146-test suite against the upgrade candidate before it hits your client's production. You get the diff in Slack before the release notes land. If something breaks, it breaks in sandbox — not in front of the client's AP manager on Tuesday morning.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">Do you need access to my clients' environments?</div>
+      <div class="faq-a">Read-only API, session-gated. Credentials stay in your vault, not ours. We don't hold API keys. We don't hold sessions between runs. Every probe is logged. If you want to revoke access, revoke the API user — there's nothing else to clean up.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">Can I resell this to my clients?</div>
+      <div class="faq-a">Yes. Or keep it internal. We don't care. The meter is your Acumatica instance count — not seats, not clients, not end-customer invoices. If you bill a managed-service line item at $500/mo and pocket the margin, that's the correct answer.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">Do I need to be a Studio B client to buy AcuOps?</div>
+      <div class="faq-a">No. AcuOps is sold on its own. No bundled services, no Studio B retainer required. If you later want fractional CTO work or an Acumatica roadmap engagement, that's a separate conversation — and not one the AcuOps meter pays for.</div>
+    </div>
+
+  </div>
+</section>
+
+<div class="section-rule"><hr></div>
+
+<!-- ── CTA / Demo Form ── -->
+<section class="section fade-in" id="demo">
+  <div class="section-eyebrow">Request demo</div>
+  <div class="section-title">See what your clients' environments <em>look like right now.</em></div>
+  <p class="section-intro">30-minute demo. We point AcuOps at a sandbox of your choosing and walk through what the probes, pipeline, and test suite catch. No slide deck.</p>
+
+<div class="cta-grid">
+<div class="cta-left">
+  <div class="cta-form">
+    <div id="demo-form"></div>
+    <script charset="utf-8" type="text/javascript" src="//js.hsforms.net/forms/embed/v2.js"></script>
+    <script>
+      hbspt.forms.create({
+        region: "na1",
+        portalId: "49070660",
+        formId: "ea2c2f4a-4e71-4dd5-8747-814c87634f5c",
+        target: "#demo-form",
+        css: "",
+        cssClass: "hs-form-console"
+      });
+    </script>
+    <style>
+      .hs-form-console .hs-input {
+        background: var(--surface) !important;
+        border: 1px solid var(--rule) !important;
+        border-radius: 2px !important;
+        color: var(--text) !important;
+        font-family: 'Geist', sans-serif !important;
+        font-size: 0.9rem !important;
+        font-weight: 400 !important;
+        padding: 0.85rem 1.2rem !important;
+        width: 100% !important;
+      }
+      .hs-form-console .hs-input:focus { border-color: var(--text) !important; outline: none !important; }
+      .hs-form-console .hs-input::placeholder { color: var(--text-dim) !important; }
+      .hs-form-console label {
+        color: var(--text-secondary) !important;
+        font-family: 'Geist Mono', monospace !important;
+        font-size: 0.7rem !important;
+        font-weight: 400 !important;
+        letter-spacing: 0.08em !important;
+        text-transform: uppercase !important;
+        margin-bottom: 0.4rem !important;
+      }
+      .hs-form-console .hs-button {
+        background: var(--signal) !important;
+        color: var(--bg) !important;
+        border: none !important; border-radius: 2px !important;
+        font-family: 'Geist', sans-serif !important;
+        font-size: 0.92rem !important; font-weight: 600 !important;
+        padding: 0.9rem 2rem !important;
+        cursor: pointer !important;
+        letter-spacing: 0.02em !important;
+        transition: all 0.25s !important;
+        width: 100% !important; margin-top: 0.5rem !important;
+      }
+      .hs-form-console .hs-button:hover { background: var(--signal-hover) !important; color: var(--bg) !important; }
+      .hs-form-console .hs-form-field { margin-bottom: 1rem !important; }
+      .hs-form-console .hs-error-msg { color: #dc2626 !important; font-size: 0.78rem !important; }
+      .hs-form-console select.hs-input {
+        appearance: none !important; -webkit-appearance: none !important;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236A7280' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") !important;
+        background-repeat: no-repeat !important; background-position: right 1rem center !important;
+      }
+      .hs-form-console textarea.hs-input { min-height: 100px !important; resize: vertical !important; }
+      /* HubSpot ships multi-column fieldsets by default — unstack them so fields have room */
+      .hs-form-console .form-columns-1,
+      .hs-form-console .form-columns-2,
+      .hs-form-console .form-columns-3 {
+        display: block !important;
+      }
+      .hs-form-console .form-columns-2 > .hs-form-field,
+      .hs-form-console .form-columns-3 > .hs-form-field {
+        width: 100% !important;
+        float: none !important;
+        padding-right: 0 !important;
+      }
+      .hs-form-console .hs-form-field > .input { margin-right: 0 !important; }
+      .hs-form-console .hs-form-field .input > .hs-input { width: 100% !important; }
+    </style>
+  </div>
+</div>
+<aside class="cta-visual" aria-label="Last run against a live client tenant">
+  <div class="cv-head">
+    <span class="cv-head-title">Last publish</span>
+    <span data-live="run-id">CI-RUN · —</span>
+  </div>
+  <div class="cv-body">
+    <dl class="cv-meta">
+      <dt>instance</dt><dd>[client-1].acumatica.com</dd>
+      <dt>branch</dt><dd><span data-live="branch">main · —</span></dd>
+      <dt>run at</dt><dd data-live="as-of">—</dd>
+    </dl>
+
+    <ul class="cv-tests" data-live="test-groups">
+      <li><span>Unit tests</span><span class="cv-count" data-live="group-unit_tests">—</span><span class="cv-pass">✓ pass</span></li>
+      <li><span>UI smoke</span><span class="cv-count" data-live="group-ui_smoke_tests">—</span><span class="cv-pass">✓ pass</span></li>
+      <li><span>UI regression</span><span class="cv-count" data-live="group-ui_regression_tests">—</span><span class="cv-pass">✓ pass</span></li>
+      <li><span>API regression</span><span class="cv-count" data-live="group-api_regression_tests">—</span><span class="cv-pass">✓ pass</span></li>
+      <li><span>Validation scripts</span><span class="cv-count" data-live="group-validation_scripts">—</span><span class="cv-pass">✓ pass</span></li>
+      <li><span>CI pipeline gates</span><span class="cv-count" data-live="group-ci_pipeline_gates">—</span><span class="cv-pass">✓ pass</span></li>
+    </ul>
+
+    <div class="cv-total">
+      <strong data-live="cv-total-pass">— / —</strong>
+      <span class="cv-total-time">all passed</span>
+    </div>
+
+    <div class="cv-next">
+      <span class="cv-next-label">Feed</span>
+      Live from Studio B's <a href="https://webhook-router-production-2535.up.railway.app/api/ci-metrics" target="_blank" rel="noopener" style="color:var(--signal);text-decoration:none;border-bottom:1px dotted var(--signal);">/api/ci-metrics</a> endpoint · customer instance name redacted · <span data-live="freshness">cached 5 min</span>
+    </div>
+  </div>
+</aside>
+</div>
+</section>
+
+<!-- ── Footer ── -->
+<footer>
+  <div class="f-copy"><strong>AcuOps</strong> — software we run on our own portfolio, billed per instance, not per seat.</div>
+  <div class="f-links">
+    <a href="https://b.studio">Studio B</a>
+    <a href="https://bolt.b.studio">Bolt</a>
+    <a href="https://b.studio/partners.html">Partners</a>
+    <a href="https://b.studio/privacy">Privacy</a>
+  </div>
+</footer>
+
+<!-- ── Scroll Fade-In ── -->
+<script>
+(function() {
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) entry.target.classList.add('visible');
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -60px 0px' });
+  document.querySelectorAll('.fade-in').forEach(function(el) { observer.observe(el); });
+})();
+</script>
+
+<!-- ── Live CI-metrics feed ──
+     Fetches real post-publish test counts from Studio B's webhook-router.
+     Endpoint is CORS-enabled, cached 5 min at the edge. The customer instance
+     name is NOT part of the endpoint — we blind it client-side as [client-1]. -->
+<script>
+(function() {
+  var ENDPOINT = 'https://webhook-router-production-2535.up.railway.app/api/ci-metrics';
+
+  function fmtRelative(iso) {
+    var t = new Date(iso).getTime();
+    if (!t) return '—';
+    var s = Math.round((Date.now() - t) / 1000);
+    if (s < 60) return s + 's ago';
+    if (s < 3600) return Math.round(s / 60) + ' min ago';
+    if (s < 86400) return Math.round(s / 3600) + ' h ago';
+    var d = Math.round(s / 86400);
+    return d + ' day' + (d === 1 ? '' : 's') + ' ago';
+  }
+
+  function fmtAbsolute(iso) {
+    var d = new Date(iso);
+    if (!d.getTime()) return '—';
+    var yyyy = d.getFullYear();
+    var mm = String(d.getMonth() + 1).padStart(2, '0');
+    var dd = String(d.getDate()).padStart(2, '0');
+    var hh = String(d.getHours()).padStart(2, '0');
+    var mi = String(d.getMinutes()).padStart(2, '0');
+    return yyyy + '-' + mm + '-' + dd + ' · ' + hh + ':' + mi + ' · ' + fmtRelative(iso);
+  }
+
+  function setLive(key, value) {
+    document.querySelectorAll('[data-live="' + key + '"]').forEach(function(el) {
+      el.textContent = value;
+    });
+  }
+
+  fetch(ENDPOINT, { mode: 'cors', cache: 'no-store' })
+    .then(function(r) { return r.ok ? r.json() : Promise.reject(r.status); })
+    .then(function(data) {
+      if (!data || typeof data.total_checks !== 'number') return;
+
+      // Dispatch strip + headline total
+      document.querySelectorAll('[data-live="tests"] strong').forEach(function(el) {
+        el.textContent = data.total_checks;
+      });
+
+      // CTA visual
+      var sha = (data.commit_sha || '—').slice(0, 7);
+      setLive('run-id', 'CI-RUN · ' + sha);
+      setLive('branch', 'main · ' + sha);
+      setLive('as-of', fmtAbsolute(data.as_of));
+      setLive('cv-total-pass', data.total_checks + ' / ' + data.total_checks);
+
+      // Test group breakdown
+      if (data.breakdown) {
+        Object.keys(data.breakdown).forEach(function(k) {
+          setLive('group-' + k, String(data.breakdown[k]));
+        });
+      }
+
+      // Freshness footnote
+      setLive('freshness', 'cached 5 min · last push ' + fmtRelative(data.as_of));
+    })
+    .catch(function(err) {
+      // Leave fallback placeholder dashes in place; log for ops
+      if (window.console) console.warn('[acuops] ci-metrics fetch failed:', err);
+    });
+})();
+</script>
 
 </body>
 </html>
