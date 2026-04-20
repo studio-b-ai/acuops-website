@@ -20,7 +20,7 @@
 <style>
 /* ══════════════════════════════════════════════════
    AcuOps — "Mission Control"
-   Deep slate + burnt orange + phosphor green.
+   Deep slate + terminal green + phosphor green.
    Dark dashboard register. VAR-facing. Infrastructural.
 
    Rhymes with Studio B (Broadsheet Verde) and Bolt (Cut Sheet).
@@ -54,9 +54,9 @@
   --ink-06: rgba(19, 24, 33, 0.06);
 
   /* Signal system */
-  --signal: #FF7A1A;               /* burnt orange — between vermillion & yellow */
-  --signal-hover: #FF9447;
-  --signal-dim: rgba(255, 122, 26, 0.18);
+  --signal: #10B981;               /* terminal green — canonical AcuOps spot per brand guide */
+  --signal-hover: #34D399;
+  --signal-dim: rgba(16, 185, 129, 0.15);
 
   --pulse: #3FB950;                /* phosphor green LED */
   --alert: #F85149;                /* critical red, rare */
@@ -230,7 +230,7 @@ nav::after {
   color: var(--bg) !important;
   background: var(--signal);
   padding: 0.5rem 1.3rem;
-  border-radius: 2px;
+  border-radius: 0;
   font-weight: 600 !important;
   transition: all 0.25s !important;
 }
@@ -326,7 +326,7 @@ nav::after {
   color: var(--text);
   border: 1px solid var(--printout-rule);
   border-top: 3px solid var(--signal);
-  border-radius: 2px;
+  border-radius: 0;
   padding: 1.5rem 1.6rem;
   font-family: 'Geist Mono', monospace;
   box-shadow: 0 14px 44px rgba(0, 0, 0, 0.35);
@@ -448,7 +448,7 @@ nav::after {
   font-size: 0.92em;
   background: var(--signal-dim);
   padding: 0.05em 0.35em;
-  border-radius: 2px;
+  border-radius: 0;
 }
 
 /* ── Features: rack-style cards with status dots ── */
@@ -461,7 +461,7 @@ nav::after {
 .feature-card {
   background: var(--surface);
   border: 1px solid var(--rule-light);
-  border-radius: 2px;
+  border-radius: 0;
   padding: 1.9rem 1.7rem 1.7rem;
   position: relative;
   overflow: hidden;
@@ -538,7 +538,7 @@ nav::after {
   color: var(--text);
   background: var(--bg);
   padding: 0.08em 0.4em;
-  border-radius: 2px;
+  border-radius: 0;
 }
 
 /* ── How it works: editorial numbered grid with ink top-rules ── */
@@ -578,7 +578,7 @@ nav::after {
 .slack-panel {
   background: var(--surface);
   border: 1px solid var(--rule-light);
-  border-radius: 2px;
+  border-radius: 0;
   padding: 2rem 1.7rem;
 }
 .slack-panel-label {
@@ -644,7 +644,7 @@ nav::after {
   background: var(--surface-2);
   border: 1px solid var(--rule);
   color: var(--text);
-  border-radius: 2px;
+  border-radius: 0;
   overflow: hidden;
   font-family: 'Geist Mono', monospace;
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
@@ -684,7 +684,7 @@ nav::after {
   background: var(--signal);
   color: var(--text);
   padding: 0.1em 0.45em;
-  border-radius: 2px;
+  border-radius: 0;
   font-size: 0.64rem;
   font-weight: 600;
   letter-spacing: 0.06em;
@@ -724,7 +724,7 @@ nav::after {
   color: var(--text);
   border: 1px solid rgba(238, 234, 226, 0.2);
   padding: 0.4rem 0.9rem;
-  border-radius: 2px;
+  border-radius: 0;
   font-family: 'Geist Mono', monospace;
   font-size: 0.68rem;
   font-weight: 500;
@@ -776,7 +776,7 @@ nav::after {
   background: var(--printout);
   color: var(--text);
   border: 1px solid var(--printout-rule);
-  border-radius: 2px;
+  border-radius: 0;
   padding: 0;
   font-family: 'Geist Mono', monospace;
   overflow: hidden;
@@ -967,7 +967,7 @@ nav::after {
   background: var(--surface-2);
   border: 1px solid var(--rule);
   color: var(--text);
-  border-radius: 2px;
+  border-radius: 0;
   overflow: hidden;
   font-family: 'Geist Mono', monospace;
   box-shadow: 0 14px 44px rgba(0, 0, 0, 0.4);
@@ -1148,11 +1148,12 @@ footer .f-links a:hover { color: var(--text); }
 <nav>
   <div class="brand">
     <a href="/" class="brand-main" aria-label="AcuOps home">
-      <!-- AcuOps mark: concentric pulse (probe ping). 5-rule family construction: viewBox 24, stroke-width 1.2, rounded, fill+stroke duality, one idea. -->
+      <!-- AcuOps mark: pipeline <·> — canonical per brand guide 2026-04. -->
       <svg class="brand-mark" viewBox="0 0 24 24" fill="none" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
-        <circle cx="12" cy="12" r="10" stroke="#E6EDF3" fill="none" opacity="0.35"/>
-        <circle cx="12" cy="12" r="6.2" stroke="#E6EDF3" fill="none" opacity="0.7"/>
-        <circle cx="12" cy="12" r="2.6" fill="#FF7A1A" stroke="#E6EDF3"/>
+        <path d="M5 7 L2 12 L5 17" stroke="#10B981" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M19 7 L22 12 L19 17" stroke="#10B981" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="12" cy="12" r="2.5" fill="#10B981" stroke="#065F46" stroke-width="1.2"/>
+        <path d="M9 12 H7 M17 12 H15" stroke="#10B981" stroke-width="1.2" stroke-linecap="round"/>
       </svg>
       <span class="brand-name">AcuOps</span>
     </a>
@@ -1563,7 +1564,7 @@ footer .f-links a:hover { color: var(--text); }
       .hs-form-console .hs-input {
         background: var(--surface) !important;
         border: 1px solid var(--rule) !important;
-        border-radius: 2px !important;
+        border-radius: 0 !important;
         color: var(--text) !important;
         font-family: 'Geist', sans-serif !important;
         font-size: 0.9rem !important;
@@ -1585,7 +1586,7 @@ footer .f-links a:hover { color: var(--text); }
       .hs-form-console .hs-button {
         background: var(--signal) !important;
         color: var(--bg) !important;
-        border: none !important; border-radius: 2px !important;
+        border: none !important; border-radius: 0 !important;
         font-family: 'Geist', sans-serif !important;
         font-size: 0.92rem !important; font-weight: 600 !important;
         padding: 0.9rem 2rem !important;
