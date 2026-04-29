@@ -2,16 +2,40 @@
   "client_label": "[client-1].acumatica.com",
   "branch": "main",
   "sha_short": "b92e9a7",
-  "run_at_iso": "2026-04-27T23:43:14Z",
-  "run_at_relative": "1 day ago",
+  "run_at_iso": "2026-04-27T23:43:41Z",
   "workflow_name": "AcuOps (Heritage Fabrics)",
   "conclusion": "success",
   "categories": [
-    {"label": "Auth",            "passed": 1,  "total": 1,  "status": "pass"},
-    {"label": "Entity health",   "passed": 7,  "total": 7,  "status": "pass"},
-    {"label": "Custom fields",   "passed": 8,  "total": 8,  "status": "pass"},
-    {"label": "End-to-end",      "passed": 4,  "total": 5,  "status": "warn"},
-    {"label": "GI health",       "passed": 1,  "total": 1,  "status": "pass"}
+    {
+      "label": "Auth",
+      "passed": 1,
+      "total": 1,
+      "status": "pass"
+    },
+    {
+      "label": "Entity health",
+      "passed": 7,
+      "total": 7,
+      "status": "pass"
+    },
+    {
+      "label": "Custom fields",
+      "passed": 8,
+      "total": 8,
+      "status": "pass"
+    },
+    {
+      "label": "End-to-end",
+      "passed": 4,
+      "total": 5,
+      "status": "warn"
+    },
+    {
+      "label": "GI health",
+      "passed": 1,
+      "total": 1,
+      "status": "pass"
+    }
   ],
   "total": {
     "passed": 21,
@@ -19,6 +43,6 @@
     "failed": 0,
     "total": 22
   },
-  "source": "studio b. CI · verify-result.json",
-  "cached_at_iso": "2026-04-27T23:43:14Z"
+  "source": "studio b. CI \u00b7 verify-result.json",
+  "cached_at_iso": "2026-04-29T05:54:00Z"
 }
