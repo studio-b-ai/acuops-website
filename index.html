@@ -20,38 +20,21 @@
 <!-- HubSpot Tracking Code -->
 <script type="text/javascript" id="hs-script-loader" async defer src="//js.hs-scripts.com/49070660.js"></script>
 
-<!-- ── Audience init — runs before paint to prevent FOUC ──
-     Priority chain: URL param > localStorage > default (reseller).
-     Sets data-audience on <body> before CSS paints, so the correct
-     paired-span copy is visible on first paint with zero flash. -->
+<!-- ── Audience init ──
+     Toggle hidden for now (copy + UX iteration deferred). Dual-audience
+     markup stays in HTML so a one-PR revert re-enables it. Until then,
+     force reseller and clear any stale URL param + localStorage. -->
 <script>
 (function() {
-  var STORAGE_KEY = 'acuops.audience';
-  var VALID = { 'reseller': true, 'in-house': true };
-
-  // 1. URL param
-  var param = new URLSearchParams(window.location.search).get('audience');
-  if (param && VALID[param]) {
-    document.documentElement.setAttribute('data-audience-init', param);
-    try { localStorage.setItem(STORAGE_KEY, param); } catch(e) {}
-    // Strip param from URL without adding a history entry
-    var url = new URL(window.location.href);
-    url.searchParams.delete('audience');
-    history.replaceState(null, '', url.pathname + (url.search || '') + url.hash);
-    return;
-  }
-
-  // 2. localStorage
+  document.documentElement.setAttribute('data-audience-init', 'reseller');
   try {
-    var stored = localStorage.getItem(STORAGE_KEY);
-    if (stored && VALID[stored]) {
-      document.documentElement.setAttribute('data-audience-init', stored);
-      return;
+    var url = new URL(window.location.href);
+    if (url.searchParams.has('audience')) {
+      url.searchParams.delete('audience');
+      history.replaceState(null, '', url.pathname + (url.search || '') + url.hash);
     }
   } catch(e) {}
-
-  // 3. Default
-  document.documentElement.setAttribute('data-audience-init', 'reseller');
+  try { localStorage.removeItem('acuops.audience'); } catch(e) {}
 })();
 </script>
 
@@ -291,7 +274,12 @@ nav::after {
   background: var(--text); margin: 4px 0; transition: all 0.3s;
 }
 
-/* ── Audience Toggle ── */
+/* ── Audience Toggle ──
+   Hidden globally for now (copy + UX iteration deferred). Markup stays
+   in HTML so a one-PR revert re-enables. The styling rules below are
+   dead until then but kept verbatim for clean revert. */
+.audience-toggle,
+.mobile-toggle-band { display: none !important; }
 .audience-toggle {
   display: inline-flex;
   align-items: stretch;
