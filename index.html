@@ -15,7 +15,7 @@
 <link rel="canonical" href="https://acuops.com">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@300;400;500;600&family=Caveat:wght@400;600&display=swap" rel="stylesheet">
 
 <!-- HubSpot Tracking Code -->
 <script type="text/javascript" id="hs-script-loader" async defer src="//js.hs-scripts.com/49070660.js"></script>
@@ -231,13 +231,20 @@ nav::after {
 .nav-links a.current { color: var(--signal); }
 .nav-cta {
   color: var(--bg) !important;
-  background: var(--signal);
-  padding: 0.5rem 1.3rem;
-  border-radius: 0;
+  background: var(--signal) !important;
+  padding: 0.5rem 1.3rem !important;
+  border-radius: 0 !important;
+  font-family: 'Geist Mono', monospace !important;
   font-weight: 600 !important;
-  transition: all 0.25s !important;
+  font-size: 0.74rem !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+  transition: background 0.25s, color 0.25s !important;
 }
-.nav-cta:hover { background: var(--signal-hover) !important; color: var(--bg) !important; }
+.nav-cta:hover {
+  background: var(--printout) !important;
+  color: var(--signal) !important;
+}
 
 .nav-toggle { display: none; background: none; border: none; cursor: pointer; padding: 0.5rem; }
 .nav-toggle span {
@@ -1128,6 +1135,85 @@ footer .f-links a:hover { color: var(--text); }
   footer { padding: 2rem 1.5rem; flex-direction: column; text-align: center; }
   .brand-parent { display: none; }
 }
+
+/* ── Hero annotation ── */
+/* Wrapper holds the punchline + absolutely-positioned annotation overlay */
+.hero-punchline-wrap {
+  position: relative;
+  display: inline;
+}
+
+/* The word "exercise" gets a circle drawn around it */
+.exercise-word {
+  position: relative;
+  display: inline;
+}
+
+/* SVG circle orbits the word — absolutely positioned over it */
+.exercise-circle {
+  position: absolute;
+  /* Sized/positioned via inline style for word-level precision */
+  pointer-events: none;
+  overflow: visible;
+}
+
+/* Animation: circle draws itself */
+@keyframes drawCircle {
+  from { stroke-dashoffset: 320; }
+  to   { stroke-dashoffset: 0; }
+}
+@keyframes fadeInAnnotation {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.exercise-circle path {
+  stroke-dasharray: 320;
+  stroke-dashoffset: 320;
+  animation: drawCircle 0.6s cubic-bezier(0.16, 1, 0.3, 1) 1.15s both;
+}
+
+/* Margin annotation — floated right of the punchline line */
+.hero-margin-note {
+  font-family: 'Caveat', cursive;
+  font-weight: 600;
+  font-size: 1.35rem;
+  color: #34D399;
+  transform: rotate(-4deg);
+  transform-origin: left center;
+  white-space: nowrap;
+  position: absolute;
+  top: 50%;
+  /* Sits to the right of the h1 text block */
+  left: calc(100% + 2.5rem);
+  translate: 0 -50%;
+  animation: fadeInAnnotation 0.5s ease-out 1.75s both;
+  pointer-events: none;
+  line-height: 1.2;
+}
+
+/* Compact inline annotation shown on mobile / narrow.
+   Default hidden; shown below 900px via media query. */
+.hero-margin-note-inline {
+  font-family: 'Caveat', cursive;
+  font-weight: 600;
+  font-size: 1.15rem;
+  color: #34D399;
+  margin-top: 0.5rem;
+  display: none;
+  animation: fadeInAnnotation 0.5s ease-out 1.75s both;
+}
+
+/* Hide the floating note below 900px — the h1 is stacked and the right rail vanishes */
+@media (max-width: 900px) {
+  .hero-margin-note {
+    display: none;
+  }
+  /* Show a compact inline version instead */
+  .hero-margin-note-inline {
+    display: block;
+  }
+}
 </style>
 </head>
 <body>
@@ -1171,14 +1257,30 @@ footer .f-links a:hover { color: var(--text); }
     <a href="#faq">FAQ</a>
     <a href="https://bolt.b.studio">Bolt</a>
     <a href="/license">License</a>
-    <a href="#demo" class="nav-cta">Request Demo</a>
+    <a href="#demo" class="nav-cta">REQUEST DEMO &rarr;</a>
   </div>
 </nav>
 
 <!-- ── Hero ── -->
 <section class="hero">
   <div class="hero-eyebrow">AcuOps · Acumatica DevOps Platform</div>
-  <h1>Acumatica's a great ERP.<br><em>The operations layer is an <span class="sig">exercise left to the reader</span>.</em></h1>
+  <h1>Acumatica's a great ERP.<br><em>The operations layer is an <span class="sig"><span class="hero-punchline-wrap"><span class="exercise-word">exercise
+      <!-- Hand-drawn circle around "exercise" — one-pass SVG path with slight wobble -->
+      <svg class="exercise-circle" aria-hidden="true"
+           style="left:-0.14em; top:-0.2em; width:3.8em; height:1.55em;"
+           viewBox="0 0 76 31" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path
+          d="M 4 20 C 5 27, 16 31, 30 30 C 44 29, 62 29, 70 24 C 75 21, 76 15, 72 9 C 68 3, 56 1, 38 1 C 22 1, 9 3, 4 9 C 0 14, 1 18, 4 20 Z"
+          stroke="#10B981"
+          stroke-width="2.2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          fill="none"
+        />
+      </svg>
+    </span> left to the reader</span>.<span class="hero-margin-note">&#8592; this is the part where you eat the cost.</span></span></em></h1>
+  <!-- Mobile/narrow-viewport inline version of the annotation -->
+  <div class="hero-margin-note-inline">&#8592; this is the part where you eat the cost.</div>
   <div class="hero-lower">
     <p class="hero-body">When a minor release drifts a DAC and the customization breaks at 6pm Friday, it's not Acumatica's phone that rings — it's yours. AcuOps is the team you weren't hired to be. Twelve probes, 146 post-publish tests, a CI/CD pipeline through the Customization API. Read-only API, session-gated. Credentials stay in your vault, not ours.</p>
     <aside class="hero-panel">
@@ -1561,7 +1663,11 @@ footer .f-links a:hover { color: var(--text); }
         formId: "ea2c2f4a-4e71-4dd5-8747-814c87634f5c",
         target: "#demo-form",
         css: "",
-        cssClass: "hs-form-console"
+        cssClass: "hs-form-console",
+        onFormReady: function($form) {
+          var btn = $form[0].querySelector('.hs-button');
+          if (btn) { btn.value = 'REQUEST DEMO →'; }
+        }
       });
     </script>
     <style>
@@ -1591,15 +1697,19 @@ footer .f-links a:hover { color: var(--text); }
         background: var(--signal) !important;
         color: var(--bg) !important;
         border: none !important; border-radius: 0 !important;
-        font-family: 'Geist', sans-serif !important;
-        font-size: 0.92rem !important; font-weight: 600 !important;
+        font-family: 'Geist Mono', monospace !important;
+        font-size: 0.8rem !important; font-weight: 600 !important;
+        letter-spacing: 0.08em !important;
+        text-transform: uppercase !important;
         padding: 0.9rem 2rem !important;
         cursor: pointer !important;
-        letter-spacing: 0.02em !important;
-        transition: all 0.25s !important;
+        transition: background 0.25s, color 0.25s !important;
         width: 100% !important; margin-top: 0.5rem !important;
       }
-      .hs-form-console .hs-button:hover { background: var(--signal-hover) !important; color: var(--bg) !important; }
+      .hs-form-console .hs-button:hover {
+        background: var(--printout) !important;
+        color: var(--signal) !important;
+      }
       .hs-form-console .hs-form-field { margin-bottom: 1rem !important; }
       .hs-form-console .hs-error-msg { color: #dc2626 !important; font-size: 0.78rem !important; }
       .hs-form-console select.hs-input {
