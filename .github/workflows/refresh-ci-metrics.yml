@@ -37,12 +37,19 @@ jobs:
         run: |
           set -euo pipefail
 
-          # Most recent successful run of the main AcuOps CI workflow on main branch
-          # gh api returns NDJSON when --jq filters to multiple objects; pipe head -1
-          RUN_JSON=$(gh api \
-            "repos/studio-b-ai/client-asthetik/actions/runs?status=success&per_page=20&branch=main" \
-            --jq '.workflow_runs[] | select(.name == "AcuOps (Heritage Fabrics)")' \
-            | head -1)
+          # Most recent successful AcuOps CI run on main — fetch full JSON then
+          # extract the first matching run in Python (avoids SIGPIPE from head -1
+          # on a streaming pipe with set -o pipefail).
+          RUNS_JSON=$(gh api \
+            "repos/studio-b-ai/client-asthetik/actions/runs?status=success&per_page=20&branch=main")
+
+          RUN_JSON=$(echo "$RUNS_JSON" | python3 -c "
+          import json, sys
+          runs = json.load(sys.stdin)['workflow_runs']
+          match = next((r for r in runs if r['name'] == 'AcuOps (Heritage Fabrics)'), None)
+          if match:
+              print(json.dumps(match))
+          ")
 
           if [ -z "$RUN_JSON" ]; then
             echo "No successful AcuOps (Heritage Fabrics) run found on main; skipping update"
@@ -59,10 +66,16 @@ jobs:
           echo "Found run $RUN_ID: $BRANCH@${SHA:0:7} ($CONCLUSION) at $RUN_AT"
 
           # Find the verify-result-production artifact for this run
-          ARTIFACT_ID=$(gh api \
-            "repos/studio-b-ai/client-asthetik/actions/runs/$RUN_ID/artifacts" \
-            --jq '.artifacts[] | select(.name == "verify-result-production") | .id' \
-            | head -1)
+          ARTIFACTS_JSON=$(gh api \
+            "repos/studio-b-ai/client-asthetik/actions/runs/$RUN_ID/artifacts")
+
+          ARTIFACT_ID=$(echo "$ARTIFACTS_JSON" | python3 -c "
+          import json, sys
+          arts = json.load(sys.stdin)['artifacts']
+          match = next((a for a in arts if a['name'] == 'verify-result-production'), None)
+          if match:
+              print(match['id'])
+          ")
 
           if [ -z "$ARTIFACT_ID" ]; then
             echo "No verify-result-production artifact found for run $RUN_ID; skipping update"
