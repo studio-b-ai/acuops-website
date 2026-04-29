@@ -16,7 +16,7 @@
 <link rel="canonical" href="https://acuops.com/license">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@300;400;500;600&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
 
 <!-- HubSpot Tracking Code -->
 <script type="text/javascript" id="hs-script-loader" async defer src="//js.hs-scripts.com/49070660.js"></script>
@@ -420,6 +420,96 @@ footer {
 }
 .footer-inner a { color: var(--text-tertiary); text-decoration: none; }
 .footer-inner a:hover { color: var(--signal); }
+
+/* ══════════════════════════════════════════════════
+   PR 5b — Comic Book DNA visual pass
+   Half-tone headers · caution-stripe corners · Caveat accents
+   Asymmetric desktop panel layout for status body
+   ══════════════════════════════════════════════════ */
+
+/* Half-tone dot pattern — used on status-header */
+.status-header {
+  background-image: radial-gradient(circle, rgba(16,185,129,0.18) 1px, transparent 1px);
+  background-size: 12px 12px;
+  background-position: 0 0;
+  position: relative;
+}
+/* Overlay dark gradient so the dots fade out left→right */
+.status-header::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to right, var(--surface) 0%, transparent 30%, var(--surface) 100%);
+  pointer-events: none;
+}
+.status-header > * { position: relative; } /* sit above ::before overlay */
+
+/* Caution-stripe corners on status card — top-left + bottom-right micro accents */
+.status-card {
+  position: relative;
+}
+.status-card::before,
+.status-card::after {
+  content: '';
+  position: absolute;
+  width: 28px;
+  height: 28px;
+  pointer-events: none;
+  z-index: 2;
+  background: repeating-linear-gradient(
+    -45deg,
+    var(--signal) 0px,
+    var(--signal) 3px,
+    transparent 3px,
+    transparent 8px
+  );
+  opacity: 0.55;
+}
+.status-card::before { top: -1px; left: -1px; border-radius: 6px 0 0 0; }
+.status-card::after  { bottom: -1px; right: -1px; border-radius: 0 0 6px 0; }
+.status-card.visible::before,
+.status-card.visible::after { display: block; }
+
+/* Grace period: amber-tinted caution stripes */
+.status-card.state-grace::before,
+.status-card.state-grace::after {
+  background: repeating-linear-gradient(
+    -45deg,
+    var(--warn) 0px,
+    var(--warn) 3px,
+    transparent 3px,
+    transparent 8px
+  );
+}
+
+/* Caveat font for status label — the "hand-lettered accent" */
+.status-label {
+  font-family: 'Caveat', cursive;
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: none; /* override the mono uppercase */
+}
+.status-label em {
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.72rem;
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* Asymmetric desktop layout: status left (wider), instance right */
+@media (min-width: 640px) {
+  .status-body {
+    grid-template-columns: 1.4fr 1fr;
+    grid-template-rows: auto auto;
+  }
+  /* Org + tier in left column, instances + grace in right */
+  .stat-block:nth-child(1) { grid-column: 1; grid-row: 1; }
+  .stat-block:nth-child(2) { grid-column: 1; grid-row: 2; }
+  .stat-block:nth-child(3) { grid-column: 2; grid-row: 1; }
+  .stat-block:nth-child(4) { grid-column: 2; grid-row: 2; }
+}
 </style>
 </head>
 <body>
@@ -579,6 +669,7 @@ footer {
     var bar = document.getElementById('instance-bar');
 
     dot.className = 'status-dot ' + data.status;
+    card.className = 'status-card visible' + (data.status === 'grace' ? ' state-grace' : '');
 
     var labelText = data.status === 'active' ? 'ACTIVE' : 'GRACE PERIOD';
     label.innerHTML = labelText +
