@@ -1,0 +1,54 @@
+name: OG Tags Lint
+
+on:
+  pull_request:
+    paths:
+      - '**/*.html'
+  push:
+    branches:
+      - main
+    paths:
+      - '**/*.html'
+
+jobs:
+  og-tags:
+    name: Verify required OG / Twitter Card meta tags
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check index.html for required OG tags
+        run: |
+          python3 - <<'EOF'
+          import re, sys
+
+          REQUIRED = [
+              (r"""<meta\s+property=["']og:type["']\s+content=["']website["']""",        "og:type=website"),
+              (r"""<meta\s+property=["']og:site_name["']\s+content=""",                   "og:site_name"),
+              (r"""<meta\s+property=["']og:title["']\s+content=""",                       "og:title"),
+              (r"""<meta\s+property=["']og:description["']\s+content=""",                 "og:description"),
+              (r"""<meta\s+property=["']og:url["']\s+content=""",                         "og:url"),
+              (r"""<meta\s+name=["']twitter:card["']\s+content=["']summary_large_image["']""", "twitter:card=summary_large_image"),
+              (r"""<meta\s+name=["']twitter:title["']\s+content=""",                      "twitter:title"),
+          ]
+          WARN = [
+              (r"""<meta\s+name=["']twitter:description["']\s+content=""", "twitter:description"),
+          ]
+
+          target = "index.html"
+          content = open(target).read()
+
+          for pattern, label in WARN:
+              if not re.search(pattern, content, re.IGNORECASE):
+                  print(f"WARNING: {target}: missing {label} (recommended but not required)")
+
+          missing = [label for pattern, label in REQUIRED
+                     if not re.search(pattern, content, re.IGNORECASE)]
+          if missing:
+              print(f"FAIL: {target}: missing required OG/Twitter tags: {missing}")
+              print("See CLAUDE.md Rule #47 — every product site ships og:type, og:site_name,")
+              print("og:title, og:description, og:url, twitter:card=summary_large_image, twitter:title.")
+              sys.exit(1)
+
+          print(f"PASS: {target}: all 7 required OG/Twitter tags present")
+          EOF
