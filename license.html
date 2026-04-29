@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AcuOps — License Status</title>
+<meta name="description" content="Check your AcuOps license key status, tier, instance count, and expiry.">
+<meta property="og:title" content="AcuOps — License Status">
+<meta property="og:description" content="Check your AcuOps license key status, tier, instance count, and expiry.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://acuops.com/license">
+<meta property="og:site_name" content="AcuOps">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="AcuOps — License Status">
+<meta name="twitter:description" content="Check your AcuOps license key status, tier, instance count, and expiry.">
+<link rel="canonical" href="https://acuops.com/license">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<!-- HubSpot Tracking Code -->
+<script type="text/javascript" id="hs-script-loader" async defer src="//js.hs-scripts.com/49070660.js"></script>
+
+<style>
+/* ══════════════════════════════════════════════════
+   AcuOps License Status — Mission Control register
+   Same token set as index.html. Dark slate + terminal green.
+   ══════════════════════════════════════════════════ */
+
+:root {
+  --bg: #0D1117;
+  --surface: #161B22;
+  --surface-2: #1C242E;
+  --console: #090D12;
+  --rule: #30363D;
+  --rule-light: #21262D;
+  --signal: #10B981;
+  --signal-hover: #34D399;
+  --signal-dim: rgba(16, 185, 129, 0.15);
+  --pulse: #3FB950;
+  --alert: #F85149;
+  --warn: #F0A330;
+  --text: #E6EDF3;
+  --text-secondary: #B1BAC4;
+  --text-tertiary: #7D8590;
+  --text-dim: #484F58;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Geist', sans-serif;
+  font-weight: 400;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  /* Schematic grid — matches index.html */
+  background-image:
+    linear-gradient(to right, rgba(230,237,243,0.028) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(230,237,243,0.028) 1px, transparent 1px),
+    linear-gradient(to right, rgba(230,237,243,0.014) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(230,237,243,0.014) 1px, transparent 1px);
+  background-size: 64px 64px, 64px 64px, 16px 16px, 16px 16px;
+}
+
+/* CRT grain */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.25;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 256px 256px;
+  mix-blend-mode: overlay;
+}
+
+/* ── Nav — identical to index.html ── */
+nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(13,17,23,0.88);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--rule-light);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2.5rem;
+  height: 60px;
+  max-width: 100%;
+}
+
+.brand { display: flex; align-items: center; gap: 0.75rem; }
+.brand-main { display: flex; align-items: center; gap: 0.55rem; text-decoration: none; }
+.brand-mark { width: 28px; height: 28px; }
+.brand-name { font-family: 'Geist Mono', monospace; font-weight: 600; font-size: 0.95rem; letter-spacing: 0.04em; color: var(--text); }
+.brand-parent { font-size: 0.72rem; color: var(--text-tertiary); border-left: 1px solid var(--rule); padding-left: 0.75rem; }
+.brand-parent a { color: var(--signal); text-decoration: none; }
+
+.nav-links { display: flex; align-items: center; gap: 1.5rem; }
+.nav-links a { font-size: 0.82rem; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
+.nav-links a:hover { color: var(--signal); }
+.nav-links a.nav-cta {
+  background: var(--signal);
+  color: #000;
+  padding: 0.38rem 0.85rem;
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 0.78rem;
+  letter-spacing: 0.03em;
+}
+.nav-links a.nav-cta:hover { background: var(--signal-hover); color: #000; }
+
+.nav-toggle { display: none; }
+
+@media (max-width: 640px) {
+  nav { padding: 0 1.25rem; }
+  .nav-toggle {
+    display: flex; flex-direction: column; gap: 4px; background: none; border: none; cursor: pointer; padding: 4px;
+  }
+  .nav-toggle span { display: block; width: 20px; height: 1.5px; background: var(--text-secondary); }
+  .nav-links { display: none; position: absolute; top: 60px; left: 0; right: 0; background: var(--surface); border-bottom: 1px solid var(--rule); flex-direction: column; align-items: flex-start; padding: 1rem 1.5rem; gap: 1rem; }
+  .nav-links.open { display: flex; }
+}
+
+/* ── Dispatch strip ── */
+.dispatch {
+  background: var(--console);
+  border-bottom: 1px solid var(--rule-light);
+  color: var(--text);
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.68rem;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.dispatch-inner {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0.55rem 2.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1.6rem;
+}
+.dispatch-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--pulse);
+  box-shadow: 0 0 6px var(--pulse);
+  animation: blink 2.5s ease-in-out infinite;
+  flex-shrink: 0;
+}
+@keyframes blink { 0%,100%{opacity:1;} 50%{opacity:0.35;} }
+
+/* ── Main layout ── */
+main {
+  flex: 1;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 3rem 2.5rem 4rem;
+  width: 100%;
+}
+
+.page-eyebrow {
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--signal);
+  margin-bottom: 0.75rem;
+}
+
+h1 {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  margin-bottom: 0.5rem;
+  line-height: 1.25;
+}
+
+.page-sub {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  margin-bottom: 2.5rem;
+  max-width: 540px;
+}
+
+/* ── Key input panel ── */
+.key-panel {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.key-panel label {
+  display: block;
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: 0.6rem;
+}
+
+.key-row {
+  display: flex;
+  gap: 0.6rem;
+  align-items: stretch;
+}
+
+.key-input {
+  flex: 1;
+  background: var(--surface-2);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  color: var(--text);
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.82rem;
+  padding: 0.6rem 0.85rem;
+  outline: none;
+  transition: border-color 0.2s;
+  min-width: 0;
+}
+.key-input::placeholder { color: var(--text-dim); }
+.key-input:focus { border-color: var(--signal); }
+
+.check-btn {
+  background: var(--signal);
+  color: #000;
+  border: none;
+  border-radius: 4px;
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  padding: 0.6rem 1.2rem;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.2s, opacity 0.2s;
+  flex-shrink: 0;
+}
+.check-btn:hover { background: var(--signal-hover); }
+.check-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* ── Status card ── */
+.status-card {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  overflow: hidden;
+  display: none; /* shown via JS */
+}
+.status-card.visible { display: block; }
+
+.status-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--rule);
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.status-dot {
+  width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+}
+.status-dot.active  { background: var(--signal); box-shadow: 0 0 6px var(--signal); animation: blink 2.5s ease-in-out infinite; }
+.status-dot.grace   { background: var(--warn); box-shadow: 0 0 6px var(--warn); animation: blink 1.5s ease-in-out infinite; }
+.status-dot.expired { background: var(--alert); }
+.status-dot.unknown { background: var(--text-dim); }
+.status-dot.loading { background: var(--text-dim); animation: blink 1s ease-in-out infinite; }
+
+.status-label {
+  flex: 1;
+}
+.status-label em { font-style: normal; color: var(--text-tertiary); font-weight: 400; margin-left: 0.5rem; }
+
+.status-body {
+  padding: 1.25rem 1.5rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+}
+
+@media (max-width: 540px) {
+  .status-body { grid-template-columns: 1fr; }
+}
+
+.stat-block {}
+.stat-label {
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: 0.3rem;
+}
+.stat-value {
+  font-size: 0.9rem;
+  color: var(--text);
+  font-weight: 500;
+}
+.stat-value.mono {
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.82rem;
+}
+
+/* Instance progress bar */
+.instance-bar-wrap {
+  margin-top: 0.4rem;
+  height: 4px;
+  background: var(--rule);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.instance-bar-fill {
+  height: 100%;
+  background: var(--signal);
+  border-radius: 2px;
+  transition: width 0.4s ease;
+}
+.instance-bar-fill.warn { background: var(--warn); }
+
+/* Status footer — grace warning / renew CTA */
+.status-footer {
+  display: none;
+  padding: 0.85rem 1.5rem;
+  border-top: 1px solid var(--rule);
+  background: var(--surface-2);
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.status-footer.visible { display: flex; }
+
+.status-footer-msg {
+  flex: 1;
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  min-width: 200px;
+}
+.status-footer-msg strong { color: var(--text); }
+
+.renew-btn {
+  background: transparent;
+  color: var(--signal);
+  border: 1px solid var(--signal);
+  border-radius: 4px;
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.73rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  padding: 0.4rem 0.9rem;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.2s;
+  white-space: nowrap;
+}
+.renew-btn:hover { background: var(--signal-dim); }
+.renew-btn.urgent { color: var(--alert); border-color: var(--alert); }
+.renew-btn.urgent:hover { background: rgba(248,81,73,0.1); }
+
+/* Error/unknown card */
+.error-card {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  padding: 1.25rem 1.5rem;
+  display: none;
+}
+.error-card.visible { display: block; }
+.error-card-header {
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--alert);
+  margin-bottom: 0.5rem;
+}
+.error-card-header.warn { color: var(--warn); }
+.error-card p {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+.error-card p a { color: var(--signal); }
+.error-card p strong { color: var(--text); }
+
+/* ── Footer ── */
+footer {
+  border-top: 1px solid var(--rule-light);
+  padding: 1.5rem 2.5rem;
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+  font-family: 'Geist Mono', monospace;
+  letter-spacing: 0.05em;
+}
+.footer-inner {
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.footer-inner a { color: var(--text-tertiary); text-decoration: none; }
+.footer-inner a:hover { color: var(--signal); }
+</style>
+</head>
+<body>
+
+<!-- ── Nav ── -->
+<nav>
+  <div class="brand">
+    <a href="/" class="brand-main" aria-label="AcuOps home">
+      <svg class="brand-mark" viewBox="0 0 24 24" fill="none" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
+        <path d="M5 7 L2 12 L5 17" stroke="#10B981" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M19 7 L22 12 L19 17" stroke="#10B981" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="12" cy="12" r="2.5" fill="#10B981" stroke="#065F46" stroke-width="1.2"/>
+        <path d="M9 12 H7 M17 12 H15" stroke="#10B981" stroke-width="1.2" stroke-linecap="round"/>
+      </svg>
+      <span class="brand-name">AcuOps</span>
+    </a>
+    <span class="brand-parent">A <a href="https://b.studio">Studio B</a> product</span>
+  </div>
+  <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+  <div class="nav-links">
+    <a href="/#features">Features</a>
+    <a href="/#pricing">Pricing</a>
+    <a href="/#faq">FAQ</a>
+    <a href="https://bolt.b.studio">Bolt</a>
+    <a href="/license" style="color: var(--signal);">License</a>
+    <a href="/#demo" class="nav-cta">Request Demo</a>
+  </div>
+</nav>
+
+<!-- ── Dispatch strip ── -->
+<div class="dispatch">
+  <div class="dispatch-inner">
+    <span class="dispatch-dot"></span>
+    <span>License Status &middot; acuops.com/license</span>
+  </div>
+</div>
+
+<!-- ── Main ── -->
+<main>
+
+  <div class="page-eyebrow">&#60;&middot;&#62; AcuOps &mdash; License</div>
+  <h1>License Status</h1>
+  <p class="page-sub">Paste your AcuOps license key to check status, tier, and instance count.</p>
+
+  <!-- Key input panel -->
+  <div class="key-panel">
+    <label for="license-key-input">License Key</label>
+    <div class="key-row">
+      <input
+        id="license-key-input"
+        class="key-input"
+        type="text"
+        placeholder="ak_live_..."
+        autocomplete="off"
+        autocorrect="off"
+        spellcheck="false"
+      >
+      <button class="check-btn" id="check-btn" onclick="checkLicense()">Check &rarr;</button>
+    </div>
+  </div>
+
+  <!-- Status card (active / grace) -->
+  <div class="status-card" id="status-card">
+    <div class="status-header">
+      <span class="status-dot" id="status-dot"></span>
+      <span class="status-label" id="status-label"></span>
+    </div>
+    <div class="status-body">
+      <div class="stat-block">
+        <div class="stat-label">Org</div>
+        <div class="stat-value" id="stat-org">—</div>
+      </div>
+      <div class="stat-block">
+        <div class="stat-label">Tier</div>
+        <div class="stat-value mono" id="stat-tier">—</div>
+      </div>
+      <div class="stat-block">
+        <div class="stat-label">Instances</div>
+        <div class="stat-value mono" id="stat-instances">—</div>
+        <div class="instance-bar-wrap">
+          <div class="instance-bar-fill" id="instance-bar" style="width: 0%"></div>
+        </div>
+      </div>
+      <div class="stat-block">
+        <div class="stat-label">Grace Period Ends</div>
+        <div class="stat-value mono" id="stat-grace">—</div>
+      </div>
+    </div>
+    <div class="status-footer" id="status-footer">
+      <div class="status-footer-msg" id="status-footer-msg"></div>
+      <a href="mailto:sales@acuops.com" class="renew-btn" id="renew-btn">Renew &rarr;</a>
+    </div>
+  </div>
+
+  <!-- Error / unknown card -->
+  <div class="error-card" id="error-card">
+    <div class="error-card-header" id="error-header">Error</div>
+    <p id="error-msg"></p>
+  </div>
+
+</main>
+
+<!-- ── Footer ── -->
+<footer>
+  <div class="footer-inner">
+    <span>&copy; 2026 Studio B. AcuOps is a Studio B product.</span>
+    <span>
+      <a href="/">acuops.com</a>
+      &nbsp;&middot;&nbsp;
+      <a href="https://b.studio">b.studio</a>
+      &nbsp;&middot;&nbsp;
+      <a href="mailto:support@acuops.com">support@acuops.com</a>
+    </span>
+  </div>
+</footer>
+
+<script>
+(function() {
+  var API = 'https://studiob-api-production-2df4.up.railway.app/api/v1/acuops/licenses/validate';
+  var STORAGE_KEY = 'acuops_license_key';
+
+  // Restore from localStorage or URL param
+  var params = new URLSearchParams(window.location.search);
+  var preKey = params.get('key') || localStorage.getItem(STORAGE_KEY) || '';
+  var input = document.getElementById('license-key-input');
+  if (preKey) {
+    input.value = preKey;
+    // Auto-submit if key came from URL param
+    if (params.get('key')) {
+      window.addEventListener('DOMContentLoaded', function() { checkLicense(); });
+    }
+  }
+
+  // Enter key submits
+  input.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') checkLicense();
+  });
+
+  function fmt(iso) {
+    if (!iso) return '—';
+    var d = new Date(iso);
+    if (!d.getTime()) return '—';
+    return d.getFullYear() + '-' +
+      String(d.getMonth() + 1).padStart(2, '0') + '-' +
+      String(d.getDate()).padStart(2, '0');
+  }
+
+  function showStatus(data) {
+    var card = document.getElementById('status-card');
+    var dot = document.getElementById('status-dot');
+    var label = document.getElementById('status-label');
+    var footer = document.getElementById('status-footer');
+    var footerMsg = document.getElementById('status-footer-msg');
+    var renewBtn = document.getElementById('renew-btn');
+    var bar = document.getElementById('instance-bar');
+
+    dot.className = 'status-dot ' + data.status;
+
+    var labelText = data.status === 'active' ? 'ACTIVE' : 'GRACE PERIOD';
+    label.innerHTML = labelText +
+      (data.var_org_name ? ' <em>&mdash; ' + escHtml(data.var_org_name) + '</em>' : '');
+
+    document.getElementById('stat-org').textContent = data.var_org_name || '—';
+    document.getElementById('stat-tier').textContent = data.tier || '—';
+
+    var ic = data.instance_count || 0;
+    var mi = data.max_instances || 1;
+    document.getElementById('stat-instances').textContent = ic + ' / ' + mi;
+
+    var pct = Math.min(100, Math.round((ic / mi) * 100));
+    bar.style.width = pct + '%';
+    bar.className = 'instance-bar-fill' + (pct >= 100 ? ' warn' : '');
+
+    var graceEnds = data.grace_period_ends ? fmt(data.grace_period_ends) : null;
+    document.getElementById('stat-grace').textContent = graceEnds || '—';
+
+    if (data.status === 'grace' && graceEnds) {
+      footer.classList.add('visible');
+      footerMsg.innerHTML = '<strong>Grace period ends ' + escHtml(graceEnds) + '</strong> — renew to restore full access.';
+      renewBtn.className = 'renew-btn urgent';
+    } else if (ic >= mi) {
+      footer.classList.add('visible');
+      footerMsg.innerHTML = '<strong>Instance cap reached</strong> — contact us to upgrade your tier.';
+      renewBtn.textContent = 'Upgrade →';
+      renewBtn.className = 'renew-btn';
+    } else {
+      footer.classList.remove('visible');
+    }
+
+    card.classList.add('visible');
+    document.getElementById('error-card').classList.remove('visible');
+  }
+
+  function showError(headerText, msg, isWarn) {
+    var card = document.getElementById('error-card');
+    var hdr = document.getElementById('error-header');
+    hdr.textContent = headerText;
+    hdr.className = 'error-card-header' + (isWarn ? ' warn' : '');
+    document.getElementById('error-msg').innerHTML = msg;
+    card.classList.add('visible');
+    document.getElementById('status-card').classList.remove('visible');
+  }
+
+  function showLoading() {
+    var card = document.getElementById('status-card');
+    var dot = document.getElementById('status-dot');
+    var label = document.getElementById('status-label');
+    dot.className = 'status-dot loading';
+    label.textContent = 'CHECKING...';
+    document.getElementById('stat-org').textContent = '—';
+    document.getElementById('stat-tier').textContent = '—';
+    document.getElementById('stat-instances').textContent = '—';
+    document.getElementById('stat-grace').textContent = '—';
+    document.getElementById('instance-bar').style.width = '0%';
+    document.getElementById('status-footer').classList.remove('visible');
+    card.classList.add('visible');
+    document.getElementById('error-card').classList.remove('visible');
+  }
+
+  function escHtml(s) {
+    return String(s)
+      .replace(/&/g,'&amp;')
+      .replace(/</g,'&lt;')
+      .replace(/>/g,'&gt;')
+      .replace(/"/g,'&quot;');
+  }
+
+  window.checkLicense = function() {
+    var key = input.value.trim();
+    if (!key) {
+      input.focus();
+      return;
+    }
+
+    localStorage.setItem(STORAGE_KEY, key);
+
+    var btn = document.getElementById('check-btn');
+    btn.disabled = true;
+    showLoading();
+
+    fetch(API, {
+      method: 'POST',
+      mode: 'cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ key: key }),
+    })
+      .then(function(r) {
+        return r.json().then(function(body) { return { status: r.status, body: body }; });
+      })
+      .then(function(res) {
+        btn.disabled = false;
+        if (res.status === 200) {
+          showStatus(res.body);
+        } else if (res.status === 402) {
+          showError(
+            'EXPIRED',
+            'License has expired or been revoked. <a href="mailto:sales@acuops.com">Contact sales@acuops.com</a> to renew.',
+            false
+          );
+        } else if (res.status === 404) {
+          showError(
+            'KEY NOT FOUND',
+            'This key is not in the AcuOps system. <a href="mailto:sales@acuops.com">Email sales@acuops.com</a> to purchase.',
+            true
+          );
+        } else if (res.status === 429) {
+          var retry = res.body.retry_after_seconds || 60;
+          showError(
+            'RATE LIMIT',
+            '<strong>Too many requests.</strong> Try again in ' + retry + ' seconds.',
+            true
+          );
+        } else {
+          showError(
+            'ERROR',
+            'Unexpected response (' + res.status + '). Try again or contact <a href="mailto:support@acuops.com">support@acuops.com</a>.',
+            false
+          );
+        }
+      })
+      .catch(function(err) {
+        btn.disabled = false;
+        showError(
+          'CONNECTION ERROR',
+          'Could not reach AcuOps API. Check your connection and try again.',
+          false
+        );
+        if (window.console) console.warn('[acuops/license] fetch error:', err);
+      });
+  };
+})();
+</script>
+
+</body>
+</html>
