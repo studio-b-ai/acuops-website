@@ -1,8 +1,8 @@
 {
   "client_label": "[client-1].acumatica.com",
   "branch": "main",
-  "sha_short": "b92e9a7",
-  "run_at_iso": "2026-04-27T23:43:41Z",
+  "sha_short": "c336a81",
+  "run_at_iso": "2026-04-29T23:02:53Z",
   "workflow_name": "AcuOps (Heritage Fabrics)",
   "conclusion": "success",
   "categories": [
@@ -26,9 +26,9 @@
     },
     {
       "label": "End-to-end",
-      "passed": 4,
+      "passed": 5,
       "total": 5,
-      "status": "warn"
+      "status": "pass"
     },
     {
       "label": "GI health",
@@ -38,11 +38,11 @@
     }
   ],
   "total": {
-    "passed": 21,
-    "warned": 1,
+    "passed": 22,
+    "warned": 0,
     "failed": 0,
     "total": 22
   },
   "source": "studio b. CI \u00b7 verify-result.json",
-  "cached_at_iso": "2026-04-29T23:02:13Z"
+  "cached_at_iso": "2026-04-29T23:27:16Z"
 }
