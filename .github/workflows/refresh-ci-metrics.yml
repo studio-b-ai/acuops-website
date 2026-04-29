@@ -1,0 +1,160 @@
+name: Refresh CI metrics
+
+on:
+  schedule:
+    # Every 5 minutes — keeps data/ci-metrics.json fresh for the tile on acuops.com
+    - cron: '*/5 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      # Mint a cross-repo read token via the acuops-agent GitHub App so we can
+      # query studio-b-ai/client-asthetik's Actions API.
+      # Per Studio B CLAUDE.md Rule #37: GITHUB_TOKEN cannot cross-repo read;
+      # App installation token is required.
+      - name: Mint acuops-agent token
+        id: app-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ vars.ACUOPS_AGENT_APP_ID }}
+          private-key: ${{ secrets.ACUOPS_AGENT_PRIVATE_KEY }}
+          owner: studio-b-ai
+          repositories: client-asthetik
+
+      - name: Build ci-metrics.json
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+        run: |
+          set -euo pipefail
+
+          # Most recent successful run of the main AcuOps CI workflow on main branch
+          # gh api returns NDJSON when --jq filters to multiple objects; pipe head -1
+          RUN_JSON=$(gh api \
+            "repos/studio-b-ai/client-asthetik/actions/runs?status=success&per_page=20&branch=main" \
+            --jq '.workflow_runs[] | select(.name == "AcuOps (Heritage Fabrics)")' \
+            | head -1)
+
+          if [ -z "$RUN_JSON" ]; then
+            echo "No successful AcuOps (Heritage Fabrics) run found on main; skipping update"
+            exit 0
+          fi
+
+          # Parse run metadata
+          RUN_ID=$(echo "$RUN_JSON" | python3 -c "import json,sys; d=json.loads(sys.stdin.read()); print(d['id'])")
+          SHA=$(echo "$RUN_JSON" | python3 -c "import json,sys; d=json.loads(sys.stdin.read()); print(d['head_sha'])")
+          BRANCH=$(echo "$RUN_JSON" | python3 -c "import json,sys; d=json.loads(sys.stdin.read()); print(d['head_branch'])")
+          RUN_AT=$(echo "$RUN_JSON" | python3 -c "import json,sys; d=json.loads(sys.stdin.read()); print(d['updated_at'])")
+          CONCLUSION=$(echo "$RUN_JSON" | python3 -c "import json,sys; d=json.loads(sys.stdin.read()); print(d['conclusion'])")
+
+          echo "Found run $RUN_ID: $BRANCH@${SHA:0:7} ($CONCLUSION) at $RUN_AT"
+
+          # Find the verify-result-production artifact for this run
+          ARTIFACT_ID=$(gh api \
+            "repos/studio-b-ai/client-asthetik/actions/runs/$RUN_ID/artifacts" \
+            --jq '.artifacts[] | select(.name == "verify-result-production") | .id' \
+            | head -1)
+
+          if [ -z "$ARTIFACT_ID" ]; then
+            echo "No verify-result-production artifact found for run $RUN_ID; skipping update"
+            exit 0
+          fi
+
+          # Download and extract the artifact zip
+          mkdir -p /tmp/verify-result
+          gh api "repos/studio-b-ai/client-asthetik/actions/artifacts/$ARTIFACT_ID/zip" > /tmp/verify.zip
+          unzip -o /tmp/verify.zip -d /tmp/verify-result
+
+          # Parse verify-result.json and write data/ci-metrics.json
+          SHA_SHORT="${SHA:0:7}"
+          python3 - "$SHA_SHORT" "$BRANCH" "$RUN_AT" "$CONCLUSION" <<'PYEOF'
+          import json, datetime, sys
+
+          sha_short, branch, run_at, conclusion = sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4]
+
+          with open('/tmp/verify-result/verify-result.json') as f:
+              v = json.load(f)
+
+          checks = v.get('checks', [])
+
+          # Group checks by name prefix
+          groups = {}
+          for c in checks:
+              prefix = c['name'].split(':')[0]
+              groups.setdefault(prefix, []).append(c)
+
+          label_map = {
+              'login': 'Auth',
+              'entity': 'Entity health',
+              'field': 'Custom fields',
+              'e2e': 'End-to-end',
+              'gi': 'GI health',
+          }
+
+          categories = []
+          for key in ['login', 'entity', 'field', 'e2e', 'gi']:
+              items = groups.get(key, [])
+              if not items:
+                  continue
+              passed = sum(1 for i in items if i['status'] == 'pass')
+              warned = sum(1 for i in items if i['status'] == 'warn')
+              failed = sum(1 for i in items if i['status'] == 'fail')
+              total = len(items)
+              status = 'pass' if failed == 0 and warned == 0 else ('fail' if failed > 0 else 'warn')
+              categories.append({
+                  'label': label_map.get(key, key),
+                  'passed': passed,
+                  'total': total,
+                  'status': status,
+              })
+
+          total_pass = sum(1 for c in checks if c['status'] == 'pass')
+          total_warn = sum(1 for c in checks if c['status'] == 'warn')
+          total_fail = sum(1 for c in checks if c['status'] == 'fail')
+          total_all = len(checks)
+
+          output = {
+              'client_label': '[client-1].acumatica.com',
+              'branch': branch,
+              'sha_short': sha_short,
+              'run_at_iso': run_at,
+              'workflow_name': 'AcuOps (Heritage Fabrics)',
+              'conclusion': conclusion,
+              'categories': categories,
+              'total': {
+                  'passed': total_pass,
+                  'warned': total_warn,
+                  'failed': total_fail,
+                  'total': total_all,
+              },
+              'source': 'studio b. CI · verify-result.json',
+              'cached_at_iso': datetime.datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ'),
+          }
+
+          with open('data/ci-metrics.json', 'w') as f:
+              json.dump(output, f, indent=2)
+              f.write('\n')
+
+          print(f"Written: {total_all} checks ({total_pass} pass, {total_warn} warn, {total_fail} fail)")
+          PYEOF
+
+      - name: Commit if changed
+        run: |
+          git config user.name "acuops-bot"
+          git config user.email "acuops-bot@studio-b-ai.github.com"
+          git add data/ci-metrics.json
+          if git diff --cached --quiet; then
+            echo "No change in ci-metrics.json — skipping commit"
+          else
+            git commit -m "chore: refresh CI metrics ($(date -u +%Y-%m-%dT%H:%M:%SZ))"
+            git push
+          fi
