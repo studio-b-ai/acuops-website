@@ -162,6 +162,8 @@ Two `<button>` elements inside a `role="group"` container, using `aria-pressed`:
 
 **Kevin's call on:** Option A vs B. I lean A — preserves the original sentence rhythm and "not Acumatica's phone that rings" setup lands cleanly.
 
+**Resolved 2026-04-29 by Kevin:** Option A — `"it's not Acumatica's phone that rings — it's the operations floor's"`
+
 ---
 
 ### Hero panel (`.hero-panel` KPI readout)
@@ -280,6 +282,8 @@ This is the most VAR-specific section. The two-workspace story (client workspace
 
 **Kevin's call on:** "Operations sees / IT sees" panel labels — do those match how in-house Acumatica teams are actually organized? If the two intra-company audiences are better named differently, adjust.
 
+**Resolved 2026-04-29 by Kevin:** `Operations sees / IT sees` — labels approved as written.
+
 ---
 
 ### 05 / 07 — Pricing
@@ -364,6 +368,8 @@ This section is fully VAR-framed. All four decisions need rewrites.
 
 **Kevin's call on:** Softer vs. sharper answer for Q1. I recommend softer — the in-house buyer may have a good relationship with their partner.
 
+**Resolved 2026-04-29 by Kevin:** Softer variant — "AcuOps supplements rather than replaces — gives your team visibility without waiting on a project to be open."
+
 ---
 
 ### Demo CTA
@@ -437,17 +443,22 @@ Differing blocks ship in both versions:
 
 ---
 
-## 8. Open Questions for Kevin
+## 8. Open Questions for Kevin — ALL RESOLVED 2026-04-29
 
 1. **Hero body — Option A vs B** (§5, hero body). I recommend A.
+   **Resolved 2026-04-29 by Kevin:** Option A — `"it's not Acumatica's phone that rings — it's the operations floor's"`
 
 2. **Slack panel roles — "Operations sees / IT sees"** — do those labels match how in-house Acumatica teams are organized at a company like Heritage Fabrics? If the actual split is different (e.g., Warehouse / Finance, or Operations / Accounting), rename.
+   **Resolved 2026-04-29 by Kevin:** `Operations sees / IT sees` approved as written.
 
 3. **FAQ partner-answer tone** — softer ("supplements rather than replaces") vs. sharper ("ask them what's in the test suite"). I recommend softer.
+   **Resolved 2026-04-29 by Kevin:** Softer variant — "AcuOps supplements rather than replaces — gives your team visibility without waiting on a project to be open."
 
 4. **Volume tier on pricing** — hide on in-house view? I recommend yes.
+   **Resolved 2026-04-29 by Kevin:** Hidden on in-house view using `data-audience-only="reseller"` paired-span pattern.
 
 5. **Toggle label capitalization** — `RESELLER / IN-HOUSE` (uppercase, Geist Mono) or `Reseller / In-house` (title case)? Uppercase matches the Mission Control register. Confirm.
+   **Resolved 2026-04-29 by Kevin:** `RESELLER / IN-HOUSE` — uppercase, Geist Mono, Mission Control register.
 
 ---
 
