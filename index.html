@@ -1747,23 +1747,22 @@ footer .f-links a:hover { color: var(--text); }
       <dt>run at</dt><dd data-live="as-of">—</dd>
     </dl>
 
-    <ul class="cv-tests" data-live="test-groups">
-      <li><span>Unit tests</span><span class="cv-count" data-live="group-unit_tests">—</span><span class="cv-pass">✓ pass</span></li>
-      <li><span>UI smoke</span><span class="cv-count" data-live="group-ui_smoke_tests">—</span><span class="cv-pass">✓ pass</span></li>
-      <li><span>UI regression</span><span class="cv-count" data-live="group-ui_regression_tests">—</span><span class="cv-pass">✓ pass</span></li>
-      <li><span>API regression</span><span class="cv-count" data-live="group-api_regression_tests">—</span><span class="cv-pass">✓ pass</span></li>
-      <li><span>Validation scripts</span><span class="cv-count" data-live="group-validation_scripts">—</span><span class="cv-pass">✓ pass</span></li>
-      <li><span>CI pipeline gates</span><span class="cv-count" data-live="group-ci_pipeline_gates">—</span><span class="cv-pass">✓ pass</span></li>
+    <ul class="cv-tests" id="cv-test-rows">
+      <li><span>Auth</span><span class="cv-count" data-cv-cat="Auth">1</span><span class="cv-pass" data-cv-status="Auth">✓ pass</span></li>
+      <li><span>Entity health</span><span class="cv-count" data-cv-cat="Entity health">7</span><span class="cv-pass" data-cv-status="Entity health">✓ pass</span></li>
+      <li><span>Custom fields</span><span class="cv-count" data-cv-cat="Custom fields">8</span><span class="cv-pass" data-cv-status="Custom fields">✓ pass</span></li>
+      <li><span>End-to-end</span><span class="cv-count" data-cv-cat="End-to-end">5</span><span class="cv-pass" data-cv-status="End-to-end">✓ pass</span></li>
+      <li><span>GI health</span><span class="cv-count" data-cv-cat="GI health">1</span><span class="cv-pass" data-cv-status="GI health">✓ pass</span></li>
     </ul>
 
     <div class="cv-total">
-      <strong data-live="cv-total-pass">— / —</strong>
-      <span class="cv-total-time">all passed</span>
+      <strong data-live="cv-total-pass">21 / 22</strong>
+      <span class="cv-total-time" data-live="cv-total-label">21 pass · 1 warn · 0 fail</span>
     </div>
 
     <div class="cv-next">
       <span class="cv-next-label">Feed</span>
-      Live from studio b.'s CI pipeline · customer instance name redacted · <span data-live="freshness">cached 5 min</span>
+      Live from studio b.'s CI pipeline · instance name redacted · <span data-live="freshness">refreshed every 5 min</span>
     </div>
   </div>
 </aside>
@@ -1794,13 +1793,13 @@ footer .f-links a:hover { color: var(--text); }
 </script>
 
 <!-- ── Live CI-metrics feed ──
-     Fetches real post-publish test counts from Studio B's webhook-router.
-     Endpoint is CORS-enabled, cached 5 min at the edge. The customer instance
-     name is NOT part of the endpoint — we blind it client-side as [client-1]. -->
+     Reads /data/ci-metrics.json — a static file committed to this repo by a
+     GitHub Actions cron (refresh-ci-metrics.yml) that queries client-asthetik's
+     CI results every 5 minutes. No CORS needed: same-origin GitHub Pages fetch.
+     Customer instance name is blinded to [client-1].acumatica.com in the JSON.
+     On fetch failure the tile keeps its pre-rendered values intact. -->
 <script>
 (function() {
-  var ENDPOINT = 'https://webhook-router-production-2535.up.railway.app/api/ci-metrics';
-
   function fmtRelative(iso) {
     var t = new Date(iso).getTime();
     if (!t) return '—';
@@ -1829,35 +1828,57 @@ footer .f-links a:hover { color: var(--text); }
     });
   }
 
-  fetch(ENDPOINT, { mode: 'cors', cache: 'no-store' })
+  fetch('/data/ci-metrics.json', { cache: 'no-store' })
     .then(function(r) { return r.ok ? r.json() : Promise.reject(r.status); })
     .then(function(data) {
-      if (!data || typeof data.total_checks !== 'number') return;
+      if (!data || !data.sha_short) return;
 
-      // Dispatch strip + headline total
-      document.querySelectorAll('[data-live="tests"] strong').forEach(function(el) {
-        el.textContent = data.total_checks;
-      });
+      // Tile header
+      setLive('run-id', 'CI-RUN · ' + data.sha_short);
+      setLive('branch', (data.branch || 'main') + ' · ' + data.sha_short);
+      setLive('as-of', fmtAbsolute(data.run_at_iso));
 
-      // CTA visual
-      var sha = (data.commit_sha || '—').slice(0, 7);
-      setLive('run-id', 'CI-RUN · ' + sha);
-      setLive('branch', 'main · ' + sha);
-      setLive('as-of', fmtAbsolute(data.as_of));
-      setLive('cv-total-pass', data.total_checks + ' / ' + data.total_checks);
-
-      // Test group breakdown
-      if (data.breakdown) {
-        Object.keys(data.breakdown).forEach(function(k) {
-          setLive('group-' + k, String(data.breakdown[k]));
+      // Per-category rows
+      if (Array.isArray(data.categories)) {
+        data.categories.forEach(function(cat) {
+          // count: show passed/total (e.g. "4 / 5") when there's a warn, otherwise just total
+          var countEl = document.querySelector('[data-cv-cat="' + cat.label + '"]');
+          if (countEl) {
+            countEl.textContent = cat.passed < cat.total
+              ? cat.passed + ' / ' + cat.total
+              : String(cat.total);
+          }
+          // status badge
+          var statusEl = document.querySelector('[data-cv-status="' + cat.label + '"]');
+          if (statusEl) {
+            if (cat.status === 'warn') {
+              statusEl.textContent = '! warn';
+              statusEl.style.color = '#F0AD4E';
+            } else if (cat.status === 'fail') {
+              statusEl.textContent = '✗ fail';
+              statusEl.style.color = '#F85149';
+            } else {
+              statusEl.textContent = '✓ pass';
+            }
+          }
         });
       }
 
-      // Freshness footnote
-      setLive('freshness', 'cached 5 min · last push ' + fmtRelative(data.as_of));
+      // Total row
+      if (data.total) {
+        var t = data.total;
+        setLive('cv-total-pass', t.passed + ' / ' + t.total);
+        var label = t.passed + ' pass';
+        if (t.warned > 0) label += ' · ' + t.warned + ' warn';
+        if (t.failed > 0) label += ' · ' + t.failed + ' fail';
+        setLive('cv-total-label', label);
+      }
+
+      // Freshness footnote — relative from run_at_iso (when the CI ran)
+      setLive('freshness', 'refreshed every 5 min · last run ' + fmtRelative(data.run_at_iso));
     })
     .catch(function(err) {
-      // Leave fallback placeholder dashes in place; log for ops
+      // Pre-rendered values stay intact; log for ops awareness
       if (window.console) console.warn('[acuops] ci-metrics fetch failed:', err);
     });
 })();
