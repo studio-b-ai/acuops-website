@@ -20,6 +20,41 @@
 <!-- HubSpot Tracking Code -->
 <script type="text/javascript" id="hs-script-loader" async defer src="//js.hs-scripts.com/49070660.js"></script>
 
+<!-- ── Audience init — runs before paint to prevent FOUC ──
+     Priority chain: URL param > localStorage > default (reseller).
+     Sets data-audience on <body> before CSS paints, so the correct
+     paired-span copy is visible on first paint with zero flash. -->
+<script>
+(function() {
+  var STORAGE_KEY = 'acuops.audience';
+  var VALID = { 'reseller': true, 'in-house': true };
+
+  // 1. URL param
+  var param = new URLSearchParams(window.location.search).get('audience');
+  if (param && VALID[param]) {
+    document.documentElement.setAttribute('data-audience-init', param);
+    try { localStorage.setItem(STORAGE_KEY, param); } catch(e) {}
+    // Strip param from URL without adding a history entry
+    var url = new URL(window.location.href);
+    url.searchParams.delete('audience');
+    history.replaceState(null, '', url.pathname + (url.search || '') + url.hash);
+    return;
+  }
+
+  // 2. localStorage
+  try {
+    var stored = localStorage.getItem(STORAGE_KEY);
+    if (stored && VALID[stored]) {
+      document.documentElement.setAttribute('data-audience-init', stored);
+      return;
+    }
+  } catch(e) {}
+
+  // 3. Default
+  document.documentElement.setAttribute('data-audience-init', 'reseller');
+})();
+</script>
+
 <style>
 /* ══════════════════════════════════════════════════
    AcuOps — "Mission Control"
@@ -73,6 +108,10 @@
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 html { scroll-behavior: smooth; }
+
+/* ── Audience init — set body data-audience from html attribute before paint ── */
+html[data-audience-init="reseller"] body { }
+html[data-audience-init="in-house"] body { }
 
 body {
   background: var(--bg);
@@ -250,6 +289,141 @@ nav::after {
 .nav-toggle span {
   display: block; width: 22px; height: 2px;
   background: var(--text); margin: 4px 0; transition: all 0.3s;
+}
+
+/* ── Audience Toggle ── */
+.audience-toggle {
+  display: inline-flex;
+  align-items: stretch;
+  border: 1px solid var(--rule);
+  border-radius: 0;
+  background: var(--surface);
+  cursor: pointer;
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.68rem;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  height: 34px;
+  overflow: hidden;
+  padding: 0;
+  gap: 0;
+  flex-shrink: 0;
+  transition: border-color 0.25s;
+}
+.audience-toggle:focus-visible {
+  outline: 2px solid var(--signal);
+  outline-offset: 2px;
+}
+.aud-btn {
+  background: none;
+  border: none;
+  padding: 0 0.9rem;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  color: var(--text-tertiary);
+  transition: background 0.2s ease, color 0.2s ease;
+  white-space: nowrap;
+  height: 100%;
+}
+.aud-btn:focus-visible {
+  outline: 2px solid var(--signal);
+  outline-offset: -2px;
+}
+.aud-btn[aria-pressed="true"] {
+  background: var(--signal);
+  color: var(--bg);
+  font-weight: 600;
+}
+.aud-btn[aria-pressed="false"] {
+  background: transparent;
+  color: var(--text-tertiary);
+}
+.aud-btn-divider {
+  width: 1px;
+  background: var(--rule);
+  flex-shrink: 0;
+  align-self: stretch;
+}
+
+/* Mobile toggle band — shown below nav on ≤640px */
+.mobile-toggle-band {
+  display: none;
+  background: var(--surface);
+  border-bottom: 1px solid var(--rule-light);
+  padding: 0.6rem 1.5rem;
+}
+.mobile-toggle-band .audience-toggle {
+  width: 100%;
+  justify-content: stretch;
+}
+.mobile-toggle-band .aud-btn {
+  flex: 1;
+  text-align: center;
+}
+
+/* ── Paired-span audience rules ──
+   Default: reseller. If JS never runs, reseller copy shows.
+   JS applies data-audience to <body> on init and toggle. */
+[data-audience-only="reseller"],
+[data-audience-only="in-house"] {
+  display: none;
+}
+/* Reseller is default — show reseller spans when body has no data-audience
+   (graceful degradation) OR explicitly reseller */
+body:not([data-audience]) [data-audience-only="reseller"],
+body[data-audience="reseller"] [data-audience-only="reseller"] {
+  display: revert;
+}
+body:not([data-audience]) [data-audience-only="in-house"],
+body[data-audience="reseller"] [data-audience-only="in-house"] {
+  display: none;
+}
+body[data-audience="in-house"] [data-audience-only="in-house"] {
+  display: revert;
+}
+body[data-audience="in-house"] [data-audience-only="reseller"] {
+  display: none;
+}
+/* Block-level paired elements */
+.aud-res-block, .aud-ih-block {
+  display: none;
+}
+body:not([data-audience]) .aud-res-block,
+body[data-audience="reseller"] .aud-res-block {
+  display: block;
+}
+body:not([data-audience]) .aud-ih-block,
+body[data-audience="reseller"] .aud-ih-block {
+  display: none;
+}
+body[data-audience="in-house"] .aud-ih-block {
+  display: block;
+}
+body[data-audience="in-house"] .aud-res-block {
+  display: none;
+}
+/* div-level paired elements (for sections with divs not p) */
+.aud-res-div, .aud-ih-div {
+  display: none;
+}
+body:not([data-audience]) .aud-res-div,
+body[data-audience="reseller"] .aud-res-div {
+  display: block;
+}
+body:not([data-audience]) .aud-ih-div,
+body[data-audience="reseller"] .aud-ih-div {
+  display: none;
+}
+body[data-audience="in-house"] .aud-ih-div {
+  display: block;
+}
+body[data-audience="in-house"] .aud-res-div {
+  display: none;
 }
 
 /* ── Hero ── */
@@ -1127,6 +1301,9 @@ footer .f-links a:hover { color: var(--text); }
     gap: 1rem; z-index: 50;
   }
   .nav-toggle { display: block; }
+  /* Toggle moves to below-nav band on mobile */
+  .nav-audience-toggle { display: none !important; }
+  .mobile-toggle-band { display: block; }
   .hero { padding: 4rem 1.5rem 3rem; }
   .hero::before { left: 1.5rem; }
   .section { padding: 3.5rem 1.5rem; }
@@ -1137,27 +1314,22 @@ footer .f-links a:hover { color: var(--text); }
 }
 
 /* ── Hero annotation ── */
-/* Wrapper holds the punchline + absolutely-positioned annotation overlay */
 .hero-punchline-wrap {
   position: relative;
   display: inline;
 }
 
-/* The word "exercise" gets a circle drawn around it */
 .exercise-word {
   position: relative;
   display: inline;
 }
 
-/* SVG circle orbits the word — absolutely positioned over it */
 .exercise-circle {
   position: absolute;
-  /* Sized/positioned via inline style for word-level precision */
   pointer-events: none;
   overflow: visible;
 }
 
-/* Animation: circle draws itself */
 @keyframes drawCircle {
   from { stroke-dashoffset: 320; }
   to   { stroke-dashoffset: 0; }
@@ -1173,7 +1345,6 @@ footer .f-links a:hover { color: var(--text); }
   animation: drawCircle 0.6s cubic-bezier(0.16, 1, 0.3, 1) 1.15s both;
 }
 
-/* Margin annotation — floated right of the punchline line */
 .hero-margin-note {
   font-family: 'Caveat', cursive;
   font-weight: 600;
@@ -1184,7 +1355,6 @@ footer .f-links a:hover { color: var(--text); }
   white-space: nowrap;
   position: absolute;
   top: 50%;
-  /* Sits to the right of the h1 text block */
   left: calc(100% + 2.5rem);
   translate: 0 -50%;
   animation: fadeInAnnotation 0.5s ease-out 1.75s both;
@@ -1192,8 +1362,6 @@ footer .f-links a:hover { color: var(--text); }
   line-height: 1.2;
 }
 
-/* Compact inline annotation shown on mobile / narrow.
-   Default hidden; shown below 900px via media query. */
 .hero-margin-note-inline {
   font-family: 'Caveat', cursive;
   font-weight: 600;
@@ -1204,15 +1372,9 @@ footer .f-links a:hover { color: var(--text); }
   animation: fadeInAnnotation 0.5s ease-out 1.75s both;
 }
 
-/* Hide the floating note below 900px — the h1 is stacked and the right rail vanishes */
 @media (max-width: 900px) {
-  .hero-margin-note {
-    display: none;
-  }
-  /* Show a compact inline version instead */
-  .hero-margin-note-inline {
-    display: block;
-  }
+  .hero-margin-note { display: none; }
+  .hero-margin-note-inline { display: block; }
 }
 </style>
 </head>
@@ -1257,9 +1419,24 @@ footer .f-links a:hover { color: var(--text); }
     <a href="#faq">FAQ</a>
     <a href="https://bolt.b.studio">Bolt</a>
     <a href="/license">License</a>
+    <!-- Audience toggle — desktop: inline in nav, right of links, left of CTA -->
+    <div class="audience-toggle nav-audience-toggle" role="group" aria-label="Viewing as">
+      <button class="aud-btn" data-aud="reseller" aria-pressed="true">RESELLER</button>
+      <span class="aud-btn-divider" aria-hidden="true"></span>
+      <button class="aud-btn" data-aud="in-house" aria-pressed="false">IN-HOUSE</button>
+    </div>
     <a href="#demo" class="nav-cta">REQUEST DEMO &rarr;</a>
   </div>
 </nav>
+
+<!-- ── Audience toggle — mobile: full-width band below nav ── -->
+<div class="mobile-toggle-band" aria-hidden="true">
+  <div class="audience-toggle" role="group" aria-label="Viewing as">
+    <button class="aud-btn" data-aud="reseller" aria-pressed="true">RESELLER</button>
+    <span class="aud-btn-divider" aria-hidden="true"></span>
+    <button class="aud-btn" data-aud="in-house" aria-pressed="false">IN-HOUSE</button>
+  </div>
+</div>
 
 <!-- ── Hero ── -->
 <section class="hero">
@@ -1282,7 +1459,9 @@ footer .f-links a:hover { color: var(--text); }
   <!-- Mobile/narrow-viewport inline version of the annotation -->
   <div class="hero-margin-note-inline">&#8592; this is the part where you eat the cost.</div>
   <div class="hero-lower">
-    <p class="hero-body">When a minor release drifts a DAC and the customization breaks at 6pm Friday, it's not Acumatica's phone that rings — it's yours. AcuOps is the team you weren't hired to be. Twelve probes, 146 post-publish tests, a CI/CD pipeline through the Customization API. Read-only API, session-gated. Credentials stay in your vault, not ours.</p>
+    <!-- Hero body — paired copy, one per audience -->
+    <p class="hero-body aud-res-block">When a minor release drifts a DAC and the customization breaks at 6pm Friday, it's not Acumatica's phone that rings — it's yours. AcuOps is the team you weren't hired to be. Twelve probes, 146 post-publish tests, a CI/CD pipeline through the Customization API. Read-only API, session-gated. Credentials stay in your vault, not ours.</p>
+    <p class="hero-body aud-ih-block">When a minor release drifts a DAC and the customization breaks at 6pm Friday, it's not Acumatica's phone that rings — it's the operations floor's. AcuOps is the DevOps layer your ERP budget didn't include. Twelve probes, 146 post-publish tests, a CI/CD pipeline through the Customization API. Read-only API, session-gated. Credentials stay in your vault, not ours.</p>
     <aside class="hero-panel">
       <div class="hero-panel-header">
         <span><span class="led"></span>Operations panel</span>
@@ -1290,7 +1469,10 @@ footer .f-links a:hover { color: var(--text); }
       </div>
       <div class="hero-panel-row">
         <span class="hp-label">Audience</span>
-        <span class="hp-value">Acumatica VARs</span>
+        <span class="hp-value">
+          <span data-audience-only="reseller">Acumatica VARs</span>
+          <span data-audience-only="in-house">In-house Acumatica teams</span>
+        </span>
       </div>
       <div class="hero-panel-row">
         <span class="hp-label">Platform</span>
@@ -1314,10 +1496,18 @@ footer .f-links a:hover { color: var(--text); }
 <section class="section fade-in">
   <div class="section-eyebrow">01 / 07 · The problem</div>
   <div class="problem-grid">
-    <h2 class="problem-title">You've been stitching this together <em>per-client, for a decade.</em></h2>
-    <div class="problem-body">
+    <!-- Problem title — paired -->
+    <h2 class="problem-title aud-res-block">You've been stitching this together <em>per-client, for a decade.</em></h2>
+    <h2 class="problem-title aud-ih-block">You've been stitching this together <em>for the team, for years.</em></h2>
+    <!-- Problem body — paired -->
+    <div class="problem-body aud-res-block">
       <p>You've tried internal scripts. You've SSH'd into the instance when the client complains. Maybe a NetSuite-style monitoring add-on that doesn't know what a <strong>PXException</strong> is. None of them survive an Acumatica minor release.</p>
       <p>Infor CloudSuite ships built-in environment monitoring. Sage Intacct has runbook integrations. Microsoft Dynamics 365 Business Central has AppSource partners that watch tenants. Acumatica has VARs stitching it together.</p>
+      <p>AcuOps is the thing that should have come in the box.</p>
+    </div>
+    <div class="problem-body aud-ih-block">
+      <p>You've tried internal scripts. You've SSH'd into the instance when operations calls. Maybe a monitoring add-on that doesn't know what a <strong>PXException</strong> is. None of them survive an Acumatica minor release.</p>
+      <p>Infor CloudSuite ships built-in environment monitoring. Sage Intacct has runbook integrations. Microsoft Dynamics 365 Business Central has AppSource partners that watch tenants. Acumatica leaves the ops layer to you.</p>
       <p>AcuOps is the thing that should have come in the box.</p>
     </div>
   </div>
@@ -1329,7 +1519,9 @@ footer .f-links a:hover { color: var(--text); }
 <section class="section fade-in" id="features">
   <div class="section-eyebrow">02 / 07 · Capabilities</div>
   <div class="section-title">What runs against every instance.</div>
-  <p class="section-intro">Twelve health probes. 146 post-publish tests. A CI/CD pipeline that pushes customizations through the Customization API. All three read-only against your clients' instances.</p>
+  <!-- Capabilities intro — paired (one phrase differs) -->
+  <p class="section-intro aud-res-block">Twelve health probes. 146 post-publish tests. A CI/CD pipeline that pushes customizations through the Customization API. All three read-only against your clients' instances.</p>
+  <p class="section-intro aud-ih-block">Twelve health probes. 146 post-publish tests. A CI/CD pipeline that pushes customizations through the Customization API. All three read-only against your instance.</p>
 
   <div class="features-grid">
 
@@ -1395,23 +1587,30 @@ footer .f-links a:hover { color: var(--text); }
 <!-- ── How It Works ── -->
 <section class="section fade-in">
   <div class="section-eyebrow">03 / 07 · How it works</div>
-  <div class="section-title">Point AcuOps at the instance.<br>Get Slack alerts <em>before your client calls.</em></div>
+  <!-- How it works title — paired -->
+  <div class="section-title aud-res-block">Point AcuOps at the instance.<br>Get Slack alerts <em>before your client calls.</em></div>
+  <div class="section-title aud-ih-block">Point AcuOps at the instance.<br>Get Slack alerts <em>before the floor calls.</em></div>
 
   <div class="steps">
+    <!-- Step 01 — paired -->
     <div class="step">
       <div class="step-number">STEP 01 · Connect</div>
       <h3>Point it at the instance.</h3>
-      <p>Point AcuOps at your client's Acumatica instance. Read-only API access, session-gated. Credentials live in your vault — we don't hold keys, we don't hold sessions between runs.</p>
+      <p class="aud-res-block">Point AcuOps at your client's Acumatica instance. Read-only API access, session-gated. Credentials live in your vault — we don't hold keys, we don't hold sessions between runs.</p>
+      <p class="aud-ih-block">Point AcuOps at your Acumatica instance. Read-only API access, session-gated. Credentials live in your vault — we don't hold keys, we don't hold sessions between runs.</p>
     </div>
+    <!-- Step 02 — unchanged -->
     <div class="step">
       <div class="step-number">STEP 02 · Run</div>
       <h3>Probes run. Pipeline deploys.</h3>
       <p>Twelve health probes run continuously. The CI/CD pipeline deploys customizations when you push to GitHub. 146 tests validate every publish against the live screen.</p>
     </div>
+    <!-- Step 03 — paired -->
     <div class="step">
       <div class="step-number">STEP 03 · Alert</div>
       <h3>Slack fires before the phone.</h3>
-      <p>Slack notifications fire before your client does. You see every alert across every client. Your client sees only their own instance. Drill into dashboards for the stack trace.</p>
+      <p class="aud-res-block">Slack notifications fire before your client does. You see every alert across every client. Your client sees only their own instance. Drill into dashboards for the stack trace.</p>
+      <p class="aud-ih-block">Slack notifications fire before operations does. You see every alert across every probe. Drill into dashboards for the stack trace.</p>
     </div>
   </div>
 </section>
@@ -1421,48 +1620,79 @@ footer .f-links a:hover { color: var(--text); }
 <!-- ── Slack Integration ── -->
 <section class="section fade-in">
   <div class="section-eyebrow">04 / 07 · Slack integration</div>
-  <div class="section-title">Your workspace. Your alerts.<br>Your clients' workspaces <em>stay separate.</em></div>
-  <p class="section-intro">AcuOps installs directly into your client's Slack workspace. They see their own alerts. You see everyone's. One event, two audiences, zero manual forwarding.</p>
+  <!-- Slack title — paired -->
+  <div class="section-title aud-res-block">Your workspace. Your alerts.<br>Your clients' workspaces <em>stay separate.</em></div>
+  <div class="section-title aud-ih-block">Your workspace. Your alerts.<br><em>Routed to the team that owns the fix.</em></div>
+  <!-- Slack intro — paired -->
+  <p class="section-intro aud-res-block">AcuOps installs directly into your client's Slack workspace. They see their own alerts. You see everyone's. One event, two audiences, zero manual forwarding.</p>
+  <p class="section-intro aud-ih-block">AcuOps installs into your Slack workspace. Two dedicated channels: one for alerts, one for intake. Alerts route automatically to the right team.</p>
 
   <div class="slack-panels">
 
+    <!-- Left panel — paired labels, h3, body, footnote -->
     <div class="slack-panel">
-      <div class="slack-panel-label">Your client sees</div>
-      <h3>Their own workspace.</h3>
-      <p>AcuOps drops into your client's existing Slack. No shared channels. No cross-workspace noise. Two dedicated channels, scoped to their instance:</p>
+      <div class="slack-panel-label">
+        <span data-audience-only="reseller">Your client sees</span>
+        <span data-audience-only="in-house">Operations sees</span>
+      </div>
+      <h3>
+        <span data-audience-only="reseller">Their own workspace.</span>
+        <span data-audience-only="in-house">Their channels.</span>
+      </h3>
+      <p class="aud-res-block">AcuOps drops into your client's existing Slack. No shared channels. No cross-workspace noise. Two dedicated channels, scoped to their instance:</p>
+      <p class="aud-ih-block">Two dedicated channels in your existing workspace:</p>
       <div class="slack-channel">
         <span class="slack-channel-icon">#</span>
         <span class="slack-channel-name">acuops-alerts</span>
-        <span class="slack-channel-desc">Deploys, health warnings, sync errors</span>
+        <span class="slack-channel-desc">
+          <span data-audience-only="reseller">Deploys, health warnings, sync errors</span>
+          <span data-audience-only="in-house">Deploys, health warnings, schema drift</span>
+        </span>
       </div>
       <div class="slack-channel">
         <span class="slack-channel-icon">#</span>
         <span class="slack-channel-name">acuops-intake</span>
         <span class="slack-channel-desc">Requests that route to HubSpot tickets</span>
       </div>
-      <p class="slack-footnote">Each client's data stays in their workspace. They never see your other clients or your internal channels.</p>
+      <p class="slack-footnote aud-res-block">Each client's data stays in their workspace. They never see your other clients or your internal channels.</p>
+      <p class="slack-footnote aud-ih-block">No new workspace to manage. Alerts go to the right channel automatically.</p>
     </div>
 
+    <!-- Right panel — paired labels, h3, body, footnote -->
     <div class="slack-panel">
-      <div class="slack-panel-label">You see</div>
-      <h3>All clients, one view.</h3>
-      <p>Every notification also posts to your operator workspace. All clients, all alerts, one place:</p>
+      <div class="slack-panel-label">
+        <span data-audience-only="reseller">You see</span>
+        <span data-audience-only="in-house">IT sees</span>
+      </div>
+      <h3>
+        <span data-audience-only="reseller">All clients, one view.</span>
+        <span data-audience-only="in-house">Everything, one view.</span>
+      </h3>
+      <p class="aud-res-block">Every notification also posts to your operator workspace. All clients, all alerts, one place:</p>
+      <p class="aud-ih-block">Every alert also posts to your ops channel. All probes, all deploys, one place:</p>
       <div class="slack-channel">
         <span class="slack-channel-icon">#</span>
         <span class="slack-channel-name">deployments</span>
-        <span class="slack-channel-desc">Deploy results across all clients</span>
+        <span class="slack-channel-desc">
+          <span data-audience-only="reseller">Deploy results across all clients</span>
+          <span data-audience-only="in-house">Deploy results + rollback signals</span>
+        </span>
       </div>
       <div class="slack-channel">
         <span class="slack-channel-icon">#</span>
         <span class="slack-channel-name">system-health</span>
-        <span class="slack-channel-desc">Health probe alerts across all clients</span>
+        <span class="slack-channel-desc">
+          <span data-audience-only="reseller">Health probe alerts across all clients</span>
+          <span data-audience-only="in-house">Health probe alerts</span>
+        </span>
       </div>
       <div class="slack-channel">
         <span class="slack-channel-icon">#</span>
         <span class="slack-channel-name">integration-issues</span>
         <span class="slack-channel-desc">Sync and integration failures</span>
       </div>
-      <p class="slack-footnote">One event, two audiences. Zero manual forwarding.</p>
+      <p class="slack-footnote aud-res-block">One event, two audiences. Zero manual forwarding.</p>
+      <p class="slack-footnote aud-ih-block">One alert, right channel, right team.</p>
     </div>
 
   </div>
@@ -1495,19 +1725,36 @@ footer .f-links a:hover { color: var(--text); }
     </div>
   </div>
 
+  <!-- Setup steps — paired -->
   <div class="slack-onboard">
     <div class="slack-panel-label">Setup</div>
-    <div class="slack-onboard-step">
-      <span class="slack-onboard-step-num">01</span>
-      <p>We send your client a one-click install link during onboarding.</p>
+    <div class="aud-res-block">
+      <div class="slack-onboard-step">
+        <span class="slack-onboard-step-num">01</span>
+        <p>We send your client a one-click install link during onboarding.</p>
+      </div>
+      <div class="slack-onboard-step">
+        <span class="slack-onboard-step-num">02</span>
+        <p>They approve AcuOps in their Slack workspace. Ten seconds, no meeting required.</p>
+      </div>
+      <div class="slack-onboard-step">
+        <span class="slack-onboard-step-num">03</span>
+        <p>Channels are created automatically. Alerts start flowing immediately.</p>
+      </div>
     </div>
-    <div class="slack-onboard-step">
-      <span class="slack-onboard-step-num">02</span>
-      <p>They approve AcuOps in their Slack workspace. Ten seconds, no meeting required.</p>
-    </div>
-    <div class="slack-onboard-step">
-      <span class="slack-onboard-step-num">03</span>
-      <p>Channels are created automatically. Alerts start flowing immediately.</p>
+    <div class="aud-ih-block">
+      <div class="slack-onboard-step">
+        <span class="slack-onboard-step-num">01</span>
+        <p>Connect AcuOps to your Slack workspace during onboarding.</p>
+      </div>
+      <div class="slack-onboard-step">
+        <span class="slack-onboard-step-num">02</span>
+        <p>Approve the bot. Ten seconds, no meeting required.</p>
+      </div>
+      <div class="slack-onboard-step">
+        <span class="slack-onboard-step-num">03</span>
+        <p>Channels are created automatically. Alerts start flowing immediately.</p>
+      </div>
     </div>
   </div>
 </section>
@@ -1518,7 +1765,9 @@ footer .f-links a:hover { color: var(--text); }
 <section class="section fade-in" id="pricing">
   <div class="section-eyebrow">05 / 07 · Pricing</div>
   <div class="section-title">$300 per month. Per Acumatica instance. <em>Flat.</em></div>
-  <p class="section-intro">Not per seat. Not per transaction. Not per alert. The meter is the instance — one number, one invoice. Every capability included. Volume discounts at 10+ and 25+ instances.</p>
+  <!-- Pricing intro — paired (volume line hidden on in-house) -->
+  <p class="section-intro aud-res-block">Not per seat. Not per transaction. Not per alert. The meter is the instance — one number, one invoice. Every capability included. Volume discounts at 10+ and 25+ instances.</p>
+  <p class="section-intro aud-ih-block">Not per seat. Not per transaction. Not per alert. The meter is the instance — one number, one invoice. Every capability included.</p>
 
   <div class="pricing-wrap">
     <div class="pricing-card">
@@ -1562,7 +1811,8 @@ footer .f-links a:hover { color: var(--text); }
           <li><span class="check">[✓]</span> Per-workspace Slack install, one-event dual-post routing</li>
         </ul>
 
-        <div class="pricing-volume">Volume · 15% off at 10+ instances · 25% off at 25+</div>
+        <!-- Volume tier — visible reseller only (decision 4) -->
+        <div class="pricing-volume" data-audience-only="reseller">Volume · 15% off at 10+ instances · 25% off at 25+</div>
       </div>
     </div>
   </div>
@@ -1574,28 +1824,44 @@ footer .f-links a:hover { color: var(--text); }
 <section class="section fade-in">
   <div class="section-eyebrow">06 / 07 · Why this, not that</div>
   <div class="section-title">Four decisions you should know about.</div>
-  <p class="section-intro">We've priced this product three different ways. This is the one that survived first contact with our own client portfolio.</p>
+  <!-- Reasoning intro — paired -->
+  <p class="section-intro aud-res-block">We've priced this product three different ways. This is the one that survived first contact with our own client portfolio.</p>
+  <p class="section-intro aud-ih-block">We've priced this product three different ways. This is the one that survived first contact with our own production environment.</p>
 
   <div class="reasoning-grid">
+    <!-- Decision 01 — paired -->
     <div class="reason-item">
       <div class="r-num">Decision 01</div>
       <h3>Per instance, not per seat.</h3>
-      <p>Your client's AP clerk and your VAR's senior architect are both running drift checks against the same DAC. Per-seat billing doesn't reflect the work. Instance-count does. One Acumatica tenant = $300/mo, regardless of who logs in or how many clerks open SO301000.</p>
+      <p class="aud-res-block">Your client's AP clerk and your VAR's senior architect are both running drift checks against the same DAC. Per-seat billing doesn't reflect the work. Instance-count does. One Acumatica tenant = $300/mo, regardless of who logs in or how many clerks open SO301000.</p>
+      <p class="aud-ih-block">Your AP clerk and your IT admin are both covered. Per-seat billing would make you think twice about who gets access to the monitoring tools. Instance-count doesn't — one Acumatica tenant = $300/mo, regardless of who logs in or how many people open SO301000.</p>
     </div>
+    <!-- Decision 02 — paired -->
     <div class="reason-item">
       <div class="r-num">Decision 02</div>
       <h3>Flat, not metered.</h3>
-      <p>We thought about $0.10 per test run. We thought about a tier-bump at 50 deploys per month. Then we ran the numbers on our own portfolio. The cost-to-serve variance between a quiet month and a wild one is close to nothing. A flat meter means you know the invoice before the month starts.</p>
+      <p class="aud-res-block">We thought about $0.10 per test run. We thought about a tier-bump at 50 deploys per month. Then we ran the numbers on our own portfolio. The cost-to-serve variance between a quiet month and a wild one is close to nothing. A flat meter means you know the invoice before the month starts.</p>
+      <p class="aud-ih-block">We thought about $0.10 per test run. We thought about a tier-bump at 50 deploys per month. Then we ran the numbers. The cost-to-serve variance between a quiet month and a wild one is close to nothing. A flat meter means you know the line item before the quarter starts.</p>
     </div>
+    <!-- Decision 03 — paired -->
     <div class="reason-item">
       <div class="r-num">Decision 03</div>
-      <h3>$300 is what the work costs.</h3>
-      <p>Twelve probes running every few minutes. A 146-test Playwright suite against every publish. A CI/CD pipeline that handles Import, publishBegin, co-publish, publishEnd polling, and rollback signals. An on-call rotation that catches the indexer when it times out. Priced at what it takes to actually run the thing — which is the only price that survives a year.</p>
+      <h3>
+        <span data-audience-only="reseller">$300 is what the work costs.</span>
+        <span data-audience-only="in-house">$300 vs. the alternative.</span>
+      </h3>
+      <p class="aud-res-block">Twelve probes running every few minutes. A 146-test Playwright suite against every publish. A CI/CD pipeline that handles Import, publishBegin, co-publish, publishEnd polling, and rollback signals. An on-call rotation that catches the indexer when it times out. Priced at what it takes to actually run the thing — which is the only price that survives a year.</p>
+      <p class="aud-ih-block">The alternative is a DevOps engineer who also knows Acumatica well enough to write Playwright tests against the Customization API. That person exists, they cost $140k/year, and they have other things to do. Twelve probes, 146 tests, a CI/CD pipeline, and an on-call rotation that catches the indexer when it times out — at $300/mo. The math isn't close.</p>
     </div>
+    <!-- Decision 04 — paired -->
     <div class="reason-item">
       <div class="r-num">Decision 04</div>
-      <h3>Resell it, or don't.</h3>
-      <p>Some VARs bill it straight through at cost. Some mark it up to $500 and make it a managed-service line item. We don't care. The meter is your Acumatica instance count — not seats, not clients, not end-customer invoices. What you do with the margin is yours.</p>
+      <h3>
+        <span data-audience-only="reseller">Resell it, or don't.</span>
+        <span data-audience-only="in-house">No IT headcount required.</span>
+      </h3>
+      <p class="aud-res-block">Some VARs bill it straight through at cost. Some mark it up to $500 and make it a managed-service line item. We don't care. The meter is your Acumatica instance count — not seats, not clients, not end-customer invoices. What you do with the margin is yours.</p>
+      <p class="aud-ih-block">This isn't a tool that needs someone to watch a dashboard. It watches itself and posts to Slack when something needs a human. Your IT team handles the fix — AcuOps handles the detection, the deploy pipeline, and the post-publish validation. The ops layer runs whether or not someone has a monitoring window open.</p>
     </div>
   </div>
 </section>
@@ -1608,7 +1874,8 @@ footer .f-links a:hover { color: var(--text); }
   <div class="section-title">Direct answers.</div>
   <p class="section-intro">If you're asking these, you're the right audience.</p>
 
-  <div class="faq-list">
+  <!-- Reseller FAQ — shown only in reseller view -->
+  <div class="faq-list aud-res-block">
 
     <div class="faq-item">
       <div class="faq-q">Do you compete with my implementation practice?</div>
@@ -1641,6 +1908,36 @@ footer .f-links a:hover { color: var(--text); }
     </div>
 
   </div>
+
+  <!-- In-house FAQ — shown only in in-house view -->
+  <div class="faq-list aud-ih-block">
+
+    <div class="faq-item">
+      <div class="faq-q">What if our Acumatica partner already handles this?</div>
+      <div class="faq-a">AcuOps supplements rather than replaces — it gives your team visibility into the same environment your partner manages, without waiting on a project to be open.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">Why not handle this ourselves?</div>
+      <div class="faq-a">You can. A 146-test Playwright suite against the Customization API takes a few weeks to build and someone to maintain. At $300/mo, AcuOps costs less than two hours of a mid-level developer per month. The suite runs whether or not your team has capacity.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">What happens on an Acumatica minor release?</div>
+      <div class="faq-a">We run the 146-test suite against the upgrade candidate before it hits your production. You get the diff in Slack before the release notes land. If something breaks, it breaks in sandbox — not in front of your AP manager on Tuesday morning.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">Do you need access to our Acumatica environment?</div>
+      <div class="faq-a">Read-only API, session-gated. Credentials stay in your vault, not ours. We don't hold API keys. We don't hold sessions between runs. Every probe is logged. If you want to revoke access, revoke the API user — there's nothing else to clean up.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">Do I need to be a studio b. client to buy AcuOps?</div>
+      <div class="faq-a">No. AcuOps is sold on its own. No bundled services, no studio b. retainer required. If you later want fractional CTO work or an Acumatica roadmap engagement, that's a separate conversation — and not one the AcuOps meter pays for.</div>
+    </div>
+
+  </div>
 </section>
 
 <div class="section-rule"><hr></div>
@@ -1648,7 +1945,9 @@ footer .f-links a:hover { color: var(--text); }
 <!-- ── CTA / Demo Form ── -->
 <section class="section fade-in" id="demo">
   <div class="section-eyebrow">Request demo</div>
-  <div class="section-title">See what your clients' environments <em>look like right now.</em></div>
+  <!-- CTA title — paired -->
+  <div class="section-title aud-res-block">See what your clients' environments <em>look like right now.</em></div>
+  <div class="section-title aud-ih-block">See what your environment <em>looks like right now.</em></div>
   <p class="section-intro">30-minute demo. We point AcuOps at a sandbox of your choosing and walk through what the probes, pipeline, and test suite catch. No slide deck.</p>
 
 <div class="cta-grid">
@@ -1696,7 +1995,6 @@ footer .f-links a:hover { color: var(--text); }
       .hs-form-console .hs-button {
         background: var(--signal) !important;
         color: var(--bg) !important;
-        border: none !important; border-radius: 0 !important;
         font-family: 'Geist Mono', monospace !important;
         font-size: 0.8rem !important; font-weight: 600 !important;
         letter-spacing: 0.08em !important;
@@ -1779,6 +2077,64 @@ footer .f-links a:hover { color: var(--text); }
     <a href="https://b.studio/privacy">Privacy</a>
   </div>
 </footer>
+
+<!-- ── Audience toggle JS ──
+     Runs after body is in DOM. Sets data-audience on body,
+     syncs aria-pressed on all aud-btn elements (desktop + mobile),
+     writes to localStorage, updates URL via replaceState. -->
+<script>
+(function() {
+  var STORAGE_KEY = 'acuops.audience';
+
+  // Read initial audience from the html init attribute (set in <head>)
+  var initAud = document.documentElement.getAttribute('data-audience-init') || 'reseller';
+
+  function setAudience(aud, writeStorage) {
+    // Set body data-attribute — CSS hides/shows paired spans based on this
+    document.body.setAttribute('data-audience', aud);
+
+    // Sync all toggle buttons (desktop + mobile)
+    document.querySelectorAll('.aud-btn').forEach(function(btn) {
+      var isActive = btn.getAttribute('data-aud') === aud;
+      btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+    });
+
+    // Persist to localStorage
+    if (writeStorage) {
+      try { localStorage.setItem(STORAGE_KEY, aud); } catch(e) {}
+    }
+
+    // Update URL (replaceState — no back-button entry)
+    var url = new URL(window.location.href);
+    if (aud === 'in-house') {
+      url.searchParams.set('audience', 'in-house');
+    } else {
+      url.searchParams.delete('audience');
+    }
+    history.replaceState(null, '', url.pathname + (url.search || '') + url.hash);
+  }
+
+  // Apply initial audience without writing to storage (head script already wrote it)
+  setAudience(initAud, false);
+
+  // Wire all toggle buttons — both desktop and mobile share the same handler
+  document.querySelectorAll('.aud-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var aud = btn.getAttribute('data-aud');
+      setAudience(aud, true);
+    });
+
+    // Keyboard: Space and Enter both flip
+    btn.addEventListener('keydown', function(e) {
+      if (e.key === ' ' || e.key === 'Enter') {
+        e.preventDefault();
+        var aud = btn.getAttribute('data-aud');
+        setAudience(aud, true);
+      }
+    });
+  });
+})();
+</script>
 
 <!-- ── Scroll Fade-In ── -->
 <script>
