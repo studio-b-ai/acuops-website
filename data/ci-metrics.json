@@ -1,8 +1,8 @@
 {
   "client_label": "[client-1].acumatica.com",
   "branch": "main",
-  "sha_short": "8ed3100",
-  "run_at_iso": "2026-05-13T07:04:21Z",
+  "sha_short": "1495e22",
+  "run_at_iso": "2026-05-13T19:18:59Z",
   "workflow_name": "AcuOps (Heritage Fabrics)",
   "conclusion": "success",
   "categories": [
@@ -14,21 +14,21 @@
     },
     {
       "label": "Entity health",
-      "passed": 6,
+      "passed": 7,
       "total": 7,
-      "status": "warn"
+      "status": "pass"
     },
     {
       "label": "Custom fields",
-      "passed": 2,
+      "passed": 9,
       "total": 9,
-      "status": "warn"
+      "status": "pass"
     },
     {
       "label": "End-to-end",
-      "passed": 4,
+      "passed": 5,
       "total": 5,
-      "status": "warn"
+      "status": "pass"
     },
     {
       "label": "GI health",
@@ -38,11 +38,11 @@
     }
   ],
   "total": {
-    "passed": 14,
-    "warned": 9,
+    "passed": 23,
+    "warned": 0,
     "failed": 0,
     "total": 23
   },
   "source": "studio b. CI \u00b7 verify-result.json",
-  "cached_at_iso": "2026-05-13T18:56:09Z"
+  "cached_at_iso": "2026-05-13T19:33:14Z"
 }
