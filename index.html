@@ -4,9 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AcuOps — Acumatica DevOps Platform</title>
-<meta name="description" content="AcuOps watches the Acumatica instances you run for clients. Twelve health probes, 146 post-publish tests, CI/CD through the Customization API. $300 per month, per instance, flat. Made by studio b.">
+<meta name="description" content="AcuOps watches the Acumatica instances you run for clients. Twelve health probes, 146 post-publish tests, CI/CD through the Customization API. $800/mo per instance, VAR volume discounts, founding-partner program. Made by studio b.">
 <meta property="og:title" content="AcuOps — Acumatica DevOps Platform">
-<meta property="og:description" content="AcuOps watches the Acumatica instances you run for clients. Twelve health probes, 146 post-publish tests, CI/CD through the Customization API. $300 per month, per instance, flat.">
+<meta property="og:description" content="AcuOps watches the Acumatica instances you run for clients. Twelve health probes, 146 post-publish tests, CI/CD through the Customization API. $800/mo per instance, VAR volume discounts, founding-partner program.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="AcuOps by studio b.">
 <meta property="og:url" content="https://acuops.com">
@@ -1061,11 +1061,118 @@ body[data-audience="in-house"] .aud-res-div {
   padding-top: 1.2rem;
   border-top: 1px solid var(--printout-rule);
   font-family: 'Geist Mono', monospace;
+  font-size: 0.78rem;
+  color: var(--text);
+  letter-spacing: 0.04em;
+}
+.pv-heading {
+  font-size: 0.66rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: 0.7rem;
+  font-weight: 500;
+}
+.pv-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 0.45rem 0;
+  border-bottom: 1px dashed var(--printout-rule);
+  font-size: 0.8rem;
+}
+.pv-row:last-child { border-bottom: none; }
+.pv-price {
+  font-family: 'Geist', sans-serif;
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+.pv-unit {
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.6em;
+  font-weight: 400;
+  color: var(--text-tertiary);
+  letter-spacing: 0.04em;
+  padding-left: 0.15em;
+}
+.pv-condition {
   font-size: 0.72rem;
   color: var(--text-tertiary);
-  letter-spacing: 0.06em;
   text-transform: uppercase;
-  text-align: center;
+  letter-spacing: 0.07em;
+}
+
+/* Flat-rate copy blurb inside pricing card */
+.pricing-copy {
+  margin-top: 1.4rem;
+  padding-top: 1.2rem;
+  border-top: 1px solid var(--printout-rule);
+  font-family: 'Geist', sans-serif;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.65;
+}
+
+/* Enterprise tier line inside pricing card */
+.pricing-enterprise {
+  margin-top: 1.6rem;
+  padding: 1rem 1.2rem;
+  border: 1px solid var(--printout-rule);
+  font-family: 'Geist', sans-serif;
+  font-size: 0.84rem;
+  color: var(--text);
+  line-height: 1.6;
+  border-radius: 0;
+}
+.pe-label {
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text);
+}
+
+/* Founding partner sub-block inside pricing card */
+.pricing-founding {
+  margin-top: 1.6rem;
+  padding-top: 1.4rem;
+  border-top: 1px solid var(--ink-15);
+}
+.pf-eyebrow {
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: 0.9rem;
+}
+.pf-body {
+  font-family: 'Geist', sans-serif;
+  font-size: 0.88rem;
+  color: var(--text);
+  line-height: 1.65;
+}
+.pf-body p { margin: 0 0 1rem; }
+.pf-body strong { font-weight: 600; color: var(--text); }
+.pf-cta {
+  display: inline-block;
+  font-family: 'Geist', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--text);
+  text-decoration: none;
+  border-bottom: 1px solid var(--signal);
+  padding-bottom: 1px;
+  transition: color 0.15s ease, border-bottom-color 0.15s ease;
+}
+.pf-cta:hover {
+  color: var(--signal);
+  border-bottom-color: var(--signal-hover);
 }
 
 /* ── Reasoning: 2x2 grid ── */
@@ -1472,7 +1579,7 @@ footer .f-links a:hover { color: var(--text); }
       </div>
       <div class="hero-panel-row">
         <span class="hp-label">Meter</span>
-        <span class="hp-value"><span class="sig">$300</span> / mo · per instance · flat</span>
+        <span class="hp-value"><span class="sig">$800</span> / mo · per instance · flat</span>
       </div>
     </aside>
   </div>
@@ -1752,9 +1859,9 @@ footer .f-links a:hover { color: var(--text); }
 <!-- ── Pricing (receipt styling) ── -->
 <section class="section fade-in" id="pricing">
   <div class="section-eyebrow">05 / 07 · Pricing</div>
-  <div class="section-title">$300 per month. Per Acumatica instance. <em>Flat.</em></div>
+  <div class="section-title">$800 per month. Per Acumatica instance. <em>Flat.</em></div>
   <!-- Pricing intro — paired (volume line hidden on in-house) -->
-  <p class="section-intro aud-res-block">Not per seat. Not per transaction. Not per alert. The meter is the instance — one number, one invoice. Every capability included. Volume discounts at 10+ and 25+ instances.</p>
+  <p class="section-intro aud-res-block">Not per seat. Not per transaction. Not per alert. The meter is the instance — one number, one invoice. Every capability included. Volume discounts at 5+ and 20+ instances.</p>
   <p class="section-intro aud-ih-block">Not per seat. Not per transaction. Not per alert. The meter is the instance — one number, one invoice. Every capability included.</p>
 
   <div class="pricing-wrap">
@@ -1785,7 +1892,7 @@ footer .f-links a:hover { color: var(--text); }
           <div>
             <div class="pricing-total-label">Total · monthly</div>
           </div>
-          <div class="pricing-total-price">$300<span class="cents">/mo</span></div>
+          <div class="pricing-total-price">$800<span class="cents">/mo</span></div>
         </div>
         <div class="pricing-unit">per Acumatica instance</div>
 
@@ -1794,13 +1901,38 @@ footer .f-links a:hover { color: var(--text); }
           <li><span class="check">[✓]</span> Schema drift detection with Slack alerts</li>
           <li><span class="check">[✓]</span> CI/CD deploy pipeline through the Customization API</li>
           <li><span class="check">[✓]</span> 146 Playwright post-publish validations</li>
+          <li><span class="check">[✓]</span> Codex AI review on every PR · recovery plans on CI failure</li>
           <li><span class="check">[✓]</span> Pre-upgrade testing against Acumatica release candidates</li>
           <li><span class="check">[✓]</span> Config-as-code in your GitHub organization</li>
           <li><span class="check">[✓]</span> Per-workspace Slack install, one-event dual-post routing</li>
+          <li><span class="check">[✓]</span> ~60 production failure modes encoded as guards from real incidents</li>
         </ul>
 
-        <!-- Volume tier — visible reseller only (decision 4) -->
-        <div class="pricing-volume" data-audience-only="reseller">Volume · 15% off at 10+ instances · 25% off at 25+</div>
+        <!-- Flat-rate description -->
+        <div class="pricing-copy">
+          Flat rate. No per-seat fees, no transaction metering, no setup costs. Orchestration, sandbox gates, snapshot/rollback, Codex AI review, Slack telemetry, deploy-window enforcement, and the ~60 production failure modes we've encoded as guards from real Acumatica incidents. Monthly billing, no contract required.
+        </div>
+
+        <!-- Volume tiers — visible reseller only -->
+        <div class="pricing-volume" data-audience-only="reseller">
+          <div class="pv-heading">Volume pricing for VARs</div>
+          <div class="pv-row"><span class="pv-price">$650<span class="pv-unit">/mo</span></span><span class="pv-condition">at 5+ instances</span></div>
+          <div class="pv-row"><span class="pv-price">$500<span class="pv-unit">/mo</span></span><span class="pv-condition">at 20+ instances</span></div>
+        </div>
+
+        <!-- Enterprise tier -->
+        <div class="pricing-enterprise">
+          <span class="pe-label">AcuOps Enterprise</span> — $2,500/mo + $400 per instance. Adds multi-tenant VAR console, white-label, dedicated sandbox, SOC2 audit support, custom rule authoring, and SLA.
+        </div>
+
+        <!-- Founding partner sub-block -->
+        <div class="pricing-founding">
+          <div class="pf-eyebrow">Founding Partner</div>
+          <div class="pf-body">
+            <p>We're selecting <strong>7–10 founding partners</strong> who lock in at <strong>$500/mo for the life of their subscription</strong> — in exchange for a published case study, reference availability, and beta-feature feedback. First-come isn't enough; we're choosing partners across VAR, ISV, and in-house deployment patterns to ensure the founding cohort represents the Acumatica ecosystem.</p>
+            <a href="/founding-partners" class="pf-cta">Apply for Founding Partner →</a>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -1821,8 +1953,8 @@ footer .f-links a:hover { color: var(--text); }
     <div class="reason-item">
       <div class="r-num">Decision 01</div>
       <h3>Per instance, not per seat.</h3>
-      <p class="aud-res-block">Your client's AP clerk and your VAR's senior architect are both running drift checks against the same DAC. Per-seat billing doesn't reflect the work. Instance-count does. One Acumatica tenant = $300/mo, regardless of who logs in or how many clerks open SO301000.</p>
-      <p class="aud-ih-block">Your AP clerk and your IT admin are both covered. Per-seat billing would make you think twice about who gets access to the monitoring tools. Instance-count doesn't — one Acumatica tenant = $300/mo, regardless of who logs in or how many people open SO301000.</p>
+      <p class="aud-res-block">Your client's AP clerk and your VAR's senior architect are both running drift checks against the same DAC. Per-seat billing doesn't reflect the work. Instance-count does. One Acumatica tenant = $800/mo, regardless of who logs in or how many clerks open SO301000.</p>
+      <p class="aud-ih-block">Your AP clerk and your IT admin are both covered. Per-seat billing would make you think twice about who gets access to the monitoring tools. Instance-count doesn't — one Acumatica tenant = $800/mo, regardless of who logs in or how many people open SO301000.</p>
     </div>
     <!-- Decision 02 — paired -->
     <div class="reason-item">
@@ -1835,11 +1967,11 @@ footer .f-links a:hover { color: var(--text); }
     <div class="reason-item">
       <div class="r-num">Decision 03</div>
       <h3>
-        <span data-audience-only="reseller">$300 is what the work costs.</span>
-        <span data-audience-only="in-house">$300 vs. the alternative.</span>
+        <span data-audience-only="reseller">$800 is what the work costs.</span>
+        <span data-audience-only="in-house">$800 vs. the alternative.</span>
       </h3>
-      <p class="aud-res-block">Twelve probes running every few minutes. A 146-test Playwright suite against every publish. A CI/CD pipeline that handles Import, publishBegin, co-publish, publishEnd polling, and rollback signals. An on-call rotation that catches the indexer when it times out. Priced at what it takes to actually run the thing — which is the only price that survives a year.</p>
-      <p class="aud-ih-block">The alternative is a DevOps engineer who also knows Acumatica well enough to write Playwright tests against the Customization API. That person exists, they cost $140k/year, and they have other things to do. Twelve probes, 146 tests, a CI/CD pipeline, and an on-call rotation that catches the indexer when it times out — at $300/mo. The math isn't close.</p>
+      <p class="aud-res-block">Twelve probes running every few minutes. A 146-test Playwright suite against every publish. A CI/CD pipeline that handles Import, publishBegin, co-publish, publishEnd polling, and rollback signals. Codex AI reviewing every PR. An on-call rotation that catches the indexer when it times out. Priced at what it takes to actually run the thing — which is the only price that survives a year.</p>
+      <p class="aud-ih-block">The alternative is a DevOps engineer who also knows Acumatica well enough to write Playwright tests against the Customization API. That person exists, they cost $140k/year, and they have other things to do. Twelve probes, 146 tests, a CI/CD pipeline, and an on-call rotation that catches the indexer when it times out — at $800/mo. The math isn't close.</p>
     </div>
     <!-- Decision 04 — paired -->
     <div class="reason-item">
@@ -1872,7 +2004,7 @@ footer .f-links a:hover { color: var(--text); }
 
     <div class="faq-item">
       <div class="faq-q">Why not bill my hourly rate and handle it myself?</div>
-      <div class="faq-a">You can. At $175 per hour, $300 is 1.7 hours of your time per month. Most VARs burn more than that on manual drift chasing the first time a customization breaks. You keep the margin; we keep the scope.</div>
+      <div class="faq-a">You can. At $175 per hour, $800 is 4.6 hours of your time per month. Most VARs burn more than that on manual drift chasing the first time a customization breaks — and that's before the Playwright suite, the rollback tooling, or Codex review. You keep the margin; we keep the scope.</div>
     </div>
 
     <div class="faq-item">
@@ -1907,7 +2039,7 @@ footer .f-links a:hover { color: var(--text); }
 
     <div class="faq-item">
       <div class="faq-q">Why not handle this ourselves?</div>
-      <div class="faq-a">You can. A 146-test Playwright suite against the Customization API takes a few weeks to build and someone to maintain. At $300/mo, AcuOps costs less than two hours of a mid-level developer per month. The suite runs whether or not your team has capacity.</div>
+      <div class="faq-a">You can. A 146-test Playwright suite against the Customization API takes a few weeks to build and someone to maintain. At $800/mo, AcuOps costs less than six hours of a mid-level developer per month — and that's before the CI/CD pipeline, rollback tooling, and Codex AI review that come bundled. The suite runs whether or not your team has capacity.</div>
     </div>
 
     <div class="faq-item">

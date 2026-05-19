@@ -1,0 +1,1411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AcuOps Founding Partners · acuops.com</title>
+<meta name="description" content="Seven to ten Acumatica teams locked in at $500/month for the life of their subscription. Selected, not first-come. Apply for the AcuOps Founding Partner program.">
+<meta property="og:title" content="AcuOps Founding Partners">
+<meta property="og:description" content="Seven to ten Acumatica teams locked in at $500/month for the life of their subscription. Selected, not first-come.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="acuops.com">
+<meta property="og:url" content="https://acuops.com/founding-partners">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://acuops.com/founding-partners">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<!-- HubSpot Tracking Code -->
+<script type="text/javascript" id="hs-script-loader" async defer src="//js.hs-scripts.com/49070660.js"></script>
+
+<style>
+/* ══════════════════════════════════════════════════
+   AcuOps Founding Partners — "Mission Control" register
+   Same token palette as index.html. Dark console base.
+   Ivory inversion on Hero + Selection Criteria (formal,
+   considered moments). All other sections: dark surfaces.
+   ══════════════════════════════════════════════════ */
+
+:root {
+  /* Page — dark slate primary */
+  --bg: #0D1117;
+  --surface: #161B22;
+  --surface-2: #1C242E;
+  --console: #090D12;
+  --rule: #30363D;
+  --rule-light: #21262D;
+
+  /* Inverted ivory — Hero + Selection Criteria */
+  --printout: #F4F0E6;
+  --printout-rule: #D6CFC0;
+
+  /* Ink — used only on ivory printouts */
+  --ink: #131821;
+  --ink-70: rgba(19, 24, 33, 0.7);
+  --ink-55: rgba(19, 24, 33, 0.55);
+  --ink-40: rgba(19, 24, 33, 0.4);
+  --ink-15: rgba(19, 24, 33, 0.15);
+  --ink-06: rgba(19, 24, 33, 0.06);
+
+  /* Signal system */
+  --signal: #10B981;
+  --signal-hover: #34D399;
+  --signal-dim: rgba(16, 185, 129, 0.15);
+
+  --pulse: #3FB950;
+  --alert: #F85149;
+
+  /* Text on dark */
+  --text: #E6EDF3;
+  --text-secondary: #B1BAC4;
+  --text-tertiary: #7D8590;
+  --text-dim: #484F58;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Geist', sans-serif;
+  font-weight: 400;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  background-image:
+    linear-gradient(to right, rgba(230, 237, 243, 0.028) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(230, 237, 243, 0.028) 1px, transparent 1px),
+    linear-gradient(to right, rgba(230, 237, 243, 0.014) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(230, 237, 243, 0.014) 1px, transparent 1px);
+  background-size: 64px 64px, 64px 64px, 16px 16px, 16px 16px;
+}
+
+/* ── Animations ── */
+@keyframes rise { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes drawLine { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
+
+/* ── Skip link ── */
+.skip-to-main {
+  position: absolute;
+  top: -100px;
+  left: 1.5rem;
+  z-index: 10000;
+  background: var(--signal);
+  color: var(--bg);
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.6rem 1.2rem;
+  text-decoration: none;
+  border-radius: 0;
+  transition: top 0.2s;
+}
+.skip-to-main:focus {
+  top: 1rem;
+  outline: 2px solid var(--signal);
+  outline-offset: 2px;
+}
+
+/* ── Dispatch strip ── */
+.dispatch {
+  background: var(--console);
+  border-bottom: 1px solid var(--rule-light);
+  color: var(--text);
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.68rem;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  role: status;
+  aria-live: off;
+}
+.dispatch-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0.55rem 2.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1.6rem;
+  flex-wrap: wrap;
+}
+.dispatch-inner > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  color: rgba(238, 234, 226, 0.7);
+}
+.dispatch-inner > span strong { color: var(--text); font-weight: 500; }
+.dispatch-led {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--pulse);
+  box-shadow: 0 0 6px rgba(4, 120, 87, 0.7);
+  animation: blink 2.4s ease-in-out infinite;
+}
+.dispatch-spacer { opacity: 0.3; }
+
+/* ── Nav ── */
+nav {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1.6rem 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+}
+nav::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 2.5rem; right: 2.5rem;
+  height: 2px;
+  background: var(--signal);
+  transform-origin: left;
+  animation: drawLine 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
+}
+.brand { display: flex; align-items: center; gap: 0.75rem; }
+.brand-main {
+  display: flex; align-items: center; gap: 0.75rem;
+  text-decoration: none; color: var(--text);
+}
+.brand-mark { width: 30px; height: 30px; flex-shrink: 0; }
+.brand-name {
+  font-family: 'Geist', sans-serif;
+  font-size: 1.4rem; font-weight: 500;
+  letter-spacing: -0.015em; color: var(--text); line-height: 1;
+}
+.brand-parent {
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.58rem; font-weight: 400;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--text-tertiary);
+  padding-left: 0.9rem; margin-left: 0.2rem;
+  border-left: 1px solid var(--rule); line-height: 1;
+}
+.brand-parent a {
+  color: var(--text-tertiary); text-decoration: none;
+  border-bottom: 1px dotted transparent; transition: border-color 0.25s, color 0.25s;
+}
+.brand-parent a:hover { color: var(--signal); border-bottom-color: var(--signal); }
+
+.nav-links { display: flex; gap: 1.9rem; align-items: center; }
+.nav-links a {
+  font-family: 'Geist', sans-serif; font-size: 0.82rem; font-weight: 500;
+  color: var(--text-secondary); text-decoration: none;
+  transition: color 0.25s; letter-spacing: 0.01em;
+}
+.nav-links a:hover { color: var(--text); }
+.nav-links a:focus-visible { outline: 2px solid var(--signal); outline-offset: 2px; }
+.nav-links a.current { color: var(--signal); }
+.nav-cta {
+  color: var(--bg) !important; background: var(--signal) !important;
+  padding: 0.5rem 1.3rem !important; border-radius: 0 !important;
+  font-family: 'Geist Mono', monospace !important; font-weight: 600 !important;
+  font-size: 0.74rem !important; letter-spacing: 0.08em !important;
+  text-transform: uppercase !important; transition: background 0.25s, color 0.25s !important;
+}
+.nav-cta:hover { background: var(--printout) !important; color: var(--signal) !important; }
+.nav-cta:focus-visible { outline: 2px solid var(--signal) !important; outline-offset: 2px !important; }
+
+.nav-toggle { display: none; background: none; border: none; cursor: pointer; padding: 0.5rem; }
+.nav-toggle span { display: block; width: 22px; height: 2px; background: var(--text); margin: 4px 0; transition: all 0.3s; }
+.nav-toggle:focus-visible { outline: 2px solid var(--signal); outline-offset: 2px; }
+
+/* ── Section utility ── */
+.section {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 5rem 2.5rem;
+}
+.section-rule { max-width: 1200px; margin: 0 auto; padding: 0 2.5rem; }
+.section-rule hr { border: none; height: 1px; background: var(--rule); }
+
+.section-eyebrow {
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.62rem; font-weight: 400;
+  letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--signal); margin-bottom: 1rem;
+}
+
+.section-title {
+  font-family: 'Geist', sans-serif; font-weight: 400;
+  font-size: clamp(2rem, 3.4vw, 2.7rem);
+  line-height: 1.14; letter-spacing: -0.02em;
+  color: var(--text); margin-bottom: 0.9rem;
+}
+
+.section-body {
+  font-size: 0.98rem;
+  color: var(--text-secondary);
+  max-width: 680px;
+  line-height: 1.82;
+}
+
+/* ── Fade-in ── */
+.fade-in { opacity: 0; transform: translateY(20px); transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1); }
+.fade-in.visible { opacity: 1; transform: translateY(0); }
+
+/* ═══════════════════════════════════════════
+   HERO — Ivory inversion (formal moment)
+   ═══════════════════════════════════════════ */
+.fp-hero-wrap {
+  background: var(--printout);
+  border-bottom: 1px solid var(--printout-rule);
+}
+
+.fp-hero {
+  /* Local token override: dark ink on ivory */
+  --text: #131821;
+  --text-secondary: rgba(19, 24, 33, 0.7);
+  --text-tertiary: rgba(19, 24, 33, 0.55);
+  --rule: var(--printout-rule);
+
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 5.5rem 2.5rem 4.5rem;
+  color: var(--text);
+}
+
+.fp-hero-eyebrow {
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.62rem; font-weight: 400;
+  letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--signal);
+  margin-bottom: 1.6rem;
+  display: flex; align-items: center; gap: 0.7rem;
+  animation: rise 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
+}
+.fp-hero-eyebrow::after {
+  content: ''; flex: 0 0 50px; height: 1px;
+  background: var(--signal); opacity: 0.6;
+}
+
+.fp-hero-inner {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 4rem;
+  align-items: start;
+}
+
+.fp-hero-left { animation: rise 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both; }
+
+.fp-hero h1 {
+  font-family: 'Geist', sans-serif;
+  font-weight: 400;
+  font-size: clamp(2.4rem, 4.8vw, 3.8rem);
+  line-height: 1.1; letter-spacing: -0.025em;
+  color: var(--ink); margin-bottom: 1.4rem;
+}
+
+.fp-hero-body {
+  font-size: 1rem; line-height: 1.82;
+  color: var(--ink-70); max-width: 520px;
+  margin-bottom: 2rem;
+}
+
+.fp-hero-cta {
+  display: inline-block;
+  background: var(--signal);
+  color: #fff;
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.78rem; font-weight: 600;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  padding: 0.85rem 2rem;
+  text-decoration: none;
+  border-radius: 0;
+  transition: background 0.25s, color 0.25s;
+}
+.fp-hero-cta:hover { background: #065F46; color: #fff; }
+.fp-hero-cta:focus-visible { outline: 2px solid var(--signal); outline-offset: 2px; }
+
+/* Stat strip — right column of hero */
+.fp-hero-stats {
+  animation: rise 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both;
+  border-left: 3px solid var(--signal);
+  padding-left: 2rem;
+  align-self: center;
+}
+
+.fp-stat {
+  padding: 1.1rem 0;
+  border-bottom: 1px dashed var(--printout-rule);
+}
+.fp-stat:last-child { border-bottom: none; }
+
+.fp-stat-value {
+  font-family: 'Geist Mono', monospace;
+  font-size: clamp(1.6rem, 2.8vw, 2.2rem);
+  font-weight: 500;
+  color: var(--ink);
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  margin-bottom: 0.25rem;
+}
+.fp-stat-value .sig { color: var(--signal); }
+
+.fp-stat-label {
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.6rem; font-weight: 400;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--ink-55);
+}
+
+/* ═══════════════════════════════════════════
+   DARK SECTIONS — Why / What you get / What you commit
+   ═══════════════════════════════════════════ */
+
+/* Why we're doing this */
+.fp-why { background: var(--bg); }
+.fp-why .section-body { color: var(--text-secondary); }
+
+/* What you get / What you commit — surface cards */
+.fp-exchange {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.2rem;
+  margin-top: 2.5rem;
+}
+
+.fp-card {
+  background: var(--surface);
+  border: 1px solid var(--rule-light);
+  border-top: 3px solid var(--signal);
+  border-radius: 0;
+  padding: 2rem 1.8rem;
+}
+
+.fp-card-label {
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.6rem; font-weight: 400;
+  letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--signal); margin-bottom: 1.2rem;
+}
+
+.fp-card h3 {
+  font-family: 'Geist', sans-serif; font-weight: 400;
+  font-size: 1.2rem; letter-spacing: -0.015em;
+  color: var(--text); margin-bottom: 1.3rem;
+  line-height: 1.25;
+}
+
+.fp-list {
+  list-style: none;
+  padding: 0;
+}
+.fp-list li {
+  display: grid;
+  grid-template-columns: 1.1rem 1fr;
+  gap: 0.6rem;
+  padding: 0.7rem 0;
+  border-top: 1px solid var(--rule-light);
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.65;
+}
+.fp-list li:first-child { border-top: none; padding-top: 0; }
+.fp-list li::before {
+  content: '·';
+  color: var(--signal);
+  font-family: 'Geist Mono', monospace;
+  font-weight: 600;
+  font-size: 1rem;
+  line-height: 1.65;
+}
+.fp-list li strong {
+  color: var(--text);
+  font-weight: 500;
+}
+
+/* ═══════════════════════════════════════════
+   SELECTION CRITERIA — Ivory inversion
+   ═══════════════════════════════════════════ */
+.fp-criteria-wrap {
+  background: var(--printout);
+  border-top: 1px solid var(--printout-rule);
+  border-bottom: 1px solid var(--printout-rule);
+}
+
+.fp-criteria {
+  /* Local token override */
+  --text: #131821;
+  --text-secondary: rgba(19, 24, 33, 0.7);
+  --text-tertiary: rgba(19, 24, 33, 0.55);
+  --rule: var(--printout-rule);
+
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 5rem 2.5rem;
+  color: var(--ink);
+}
+
+.fp-criteria .section-eyebrow { color: var(--signal); }
+
+.fp-criteria .section-title {
+  color: var(--ink);
+  margin-bottom: 0.5rem;
+}
+
+.fp-criteria-intro {
+  font-size: 0.95rem;
+  color: var(--ink-70);
+  max-width: 640px;
+  line-height: 1.8;
+  margin-bottom: 2.5rem;
+}
+
+/* Allocation table */
+.fp-table-wrap { overflow-x: auto; margin-bottom: 3rem; }
+.fp-table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid var(--printout-rule);
+  font-family: 'Geist Mono', monospace;
+}
+.fp-table thead tr {
+  background: var(--ink);
+}
+.fp-table thead th {
+  font-size: 0.6rem; font-weight: 500;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--printout);
+  padding: 0.75rem 1.2rem;
+  text-align: left;
+  border-right: 1px solid rgba(244, 240, 230, 0.1);
+}
+.fp-table thead th:last-child { border-right: none; }
+.fp-table tbody tr {
+  border-bottom: 1px solid var(--printout-rule);
+  transition: background 0.15s;
+}
+.fp-table tbody tr:last-child { border-bottom: none; }
+.fp-table tbody tr:hover { background: rgba(19, 24, 33, 0.04); }
+.fp-table tbody td {
+  font-size: 0.84rem; color: var(--ink);
+  padding: 0.9rem 1.2rem;
+  border-right: 1px solid var(--printout-rule);
+  line-height: 1.5;
+}
+.fp-table tbody td:first-child { font-weight: 400; color: var(--ink); }
+.fp-table tbody td:last-child {
+  border-right: none;
+  font-family: 'Geist Mono', monospace;
+  font-weight: 600;
+  color: var(--signal);
+  white-space: nowrap;
+}
+
+/* Mobile stacked cards for criteria table — hidden on desktop */
+.fp-table-mobile { display: none; }
+
+.fp-criteria-diversity {
+  font-size: 0.88rem;
+  color: var(--ink-70);
+  line-height: 1.78;
+  margin-bottom: 3rem;
+  max-width: 680px;
+  padding: 1rem 1.4rem;
+  border-left: 3px solid var(--signal);
+  background: rgba(19, 24, 33, 0.04);
+}
+
+/* Two-column criteria sub-grids */
+.fp-criteria-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+.fp-criteria-block h4 {
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.62rem; font-weight: 500;
+  letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--ink-55);
+  margin-bottom: 1rem;
+}
+
+.fp-criteria-list {
+  list-style: none; padding: 0;
+}
+.fp-criteria-list li {
+  font-size: 0.88rem; color: var(--ink-70);
+  padding: 0.55rem 0;
+  border-bottom: 1px dashed var(--printout-rule);
+  line-height: 1.6;
+  display: grid;
+  grid-template-columns: 1rem 1fr;
+  gap: 0.5rem;
+}
+.fp-criteria-list li:last-child { border-bottom: none; }
+.fp-criteria-list li::before {
+  content: '·';
+  color: var(--signal);
+  font-family: 'Geist Mono', monospace;
+  font-weight: 600;
+}
+.fp-criteria-block.decline .fp-criteria-list li::before {
+  content: '—';
+  color: rgba(19, 24, 33, 0.4);
+}
+
+/* ═══════════════════════════════════════════
+   PROCESS — Dark surface
+   ═══════════════════════════════════════════ */
+.fp-process .fp-process-steps {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.4rem;
+  margin-top: 2.8rem;
+}
+
+.fp-process-step {
+  padding: 1.6rem 0 0;
+  border-top: 1px solid var(--rule);
+}
+
+.fp-process-step-num {
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.6rem; font-weight: 400;
+  color: var(--text-tertiary);
+  letter-spacing: 0.14em; text-transform: uppercase;
+  margin-bottom: 0.8rem;
+}
+
+.fp-process-step h3 {
+  font-family: 'Geist', sans-serif; font-weight: 500;
+  font-size: 1.05rem; letter-spacing: -0.01em;
+  color: var(--text); margin-bottom: 0.6rem;
+}
+
+.fp-process-step p {
+  font-size: 0.87rem; color: var(--text-secondary);
+  line-height: 1.72;
+}
+
+/* ═══════════════════════════════════════════
+   APPLICATION FORM — Dark surface
+   ═══════════════════════════════════════════ */
+.fp-form-wrap {
+  background: var(--surface);
+  border: 1px solid var(--rule-light);
+  border-top: 3px solid var(--signal);
+  border-radius: 0;
+  padding: 2.5rem 2.5rem 3rem;
+  max-width: 800px;
+  margin: 2.5rem auto 0;
+}
+
+.fp-form-header {
+  margin-bottom: 2rem;
+  padding-bottom: 1.2rem;
+  border-bottom: 1px solid var(--rule-light);
+}
+
+.fp-form-header-label {
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.6rem; font-weight: 400;
+  letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--signal); margin-bottom: 0.6rem;
+}
+
+.fp-form-header h3 {
+  font-family: 'Geist', sans-serif; font-weight: 400;
+  font-size: 1.3rem; letter-spacing: -0.015em;
+  color: var(--text);
+}
+
+/* HubSpot embed placeholder — rendered by embed/v2.js */
+#founding-partner-form { min-height: 120px; }
+
+/* Fallback static form — shown when HubSpot embed hasn't loaded after 3s */
+.fp-static-form { display: none; }
+
+.fp-field-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.1rem;
+  margin-bottom: 1.1rem;
+}
+.fp-field-full { grid-column: 1 / -1; }
+
+.fp-field label {
+  display: block;
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.6rem; font-weight: 500;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: 0.45rem;
+}
+
+.fp-field input,
+.fp-field select,
+.fp-field textarea {
+  width: 100%;
+  background: var(--bg);
+  border: 1px solid var(--rule);
+  border-radius: 0;
+  color: var(--text);
+  font-family: 'Geist', sans-serif;
+  font-size: 0.9rem;
+  padding: 0.7rem 0.9rem;
+  appearance: none;
+  transition: border-color 0.2s;
+  min-height: 44px;
+}
+.fp-field input:focus,
+.fp-field select:focus,
+.fp-field textarea:focus {
+  outline: 2px solid var(--signal);
+  outline-offset: 2px;
+  border-color: var(--signal);
+}
+.fp-field textarea {
+  resize: vertical;
+  min-height: 100px;
+  line-height: 1.6;
+}
+.fp-field select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%237D8590' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.9rem center;
+  padding-right: 2.5rem;
+  cursor: pointer;
+}
+
+/* Error state */
+.fp-field input[aria-invalid="true"],
+.fp-field select[aria-invalid="true"],
+.fp-field textarea[aria-invalid="true"] {
+  border-color: var(--alert);
+  outline-color: var(--alert);
+}
+.fp-field-error {
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.62rem; color: var(--alert);
+  margin-top: 0.3rem; letter-spacing: 0.06em;
+}
+
+/* Form error summary */
+#form-error-summary {
+  display: none;
+  background: rgba(248, 81, 73, 0.08);
+  border: 1px solid rgba(248, 81, 73, 0.3);
+  padding: 0.9rem 1.2rem;
+  margin-bottom: 1.4rem;
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.72rem;
+  color: var(--alert);
+  letter-spacing: 0.04em;
+}
+
+.fp-submit-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: var(--signal);
+  color: #fff;
+  border: none;
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.78rem; font-weight: 600;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  padding: 0.85rem 2.2rem;
+  cursor: pointer;
+  border-radius: 0;
+  transition: background 0.25s;
+  min-height: 44px;
+  margin-top: 1.4rem;
+}
+.fp-submit-btn:hover { background: #065F46; }
+.fp-submit-btn:focus-visible { outline: 2px solid var(--signal); outline-offset: 2px; }
+
+.fp-form-note {
+  margin-top: 1.2rem;
+  font-size: 0.78rem; color: var(--text-tertiary);
+  line-height: 1.65;
+}
+
+/* ── HubSpot overrides — match Mission Control register ── */
+.hs-form-console .hs-form-field label {
+  font-family: 'Geist Mono', monospace !important;
+  font-size: 0.6rem !important; font-weight: 500 !important;
+  letter-spacing: 0.14em !important; text-transform: uppercase !important;
+  color: var(--text-tertiary) !important;
+}
+.hs-form-console .hs-input {
+  background: var(--bg) !important;
+  border: 1px solid var(--rule) !important;
+  border-radius: 0 !important;
+  color: var(--text) !important;
+  font-family: 'Geist', sans-serif !important;
+  font-size: 0.9rem !important;
+}
+.hs-form-console .hs-input:focus {
+  border-color: var(--signal) !important;
+  outline: 2px solid var(--signal) !important;
+  outline-offset: 2px !important;
+}
+.hs-form-console .hs-button.primary {
+  background: var(--signal) !important;
+  border: none !important; border-radius: 0 !important;
+  font-family: 'Geist Mono', monospace !important;
+  font-size: 0.78rem !important; font-weight: 600 !important;
+  letter-spacing: 0.1em !important; text-transform: uppercase !important;
+  cursor: pointer !important;
+}
+.hs-form-console .hs-button.primary:hover { background: #065F46 !important; }
+.hs-form-console .hs-error-msgs { color: var(--alert) !important; }
+
+/* ═══════════════════════════════════════════
+   FAQ — Dark surface
+   ═══════════════════════════════════════════ */
+.fp-faq-items { margin-top: 2rem; }
+
+.fp-faq-item {
+  border-top: 1px solid var(--rule);
+  padding: 1.5rem 0;
+}
+.fp-faq-item:last-child { border-bottom: 1px solid var(--rule); }
+
+.fp-faq-q {
+  font-family: 'Geist', sans-serif; font-weight: 500;
+  font-size: 1rem; color: var(--text);
+  margin-bottom: 0.6rem;
+}
+
+.fp-faq-a {
+  font-size: 0.9rem; color: var(--text-secondary);
+  line-height: 1.75; max-width: 680px;
+}
+
+/* ── Footer ── */
+footer {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2.2rem 2.5rem;
+  border-top: 1px solid var(--rule);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+footer .f-copy {
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.64rem; color: var(--text-tertiary);
+  letter-spacing: 0.06em; text-transform: uppercase;
+}
+footer .f-copy strong { color: var(--text); font-weight: 500; }
+footer .f-links { display: flex; gap: 1.8rem; }
+footer .f-links a {
+  font-family: 'Geist', sans-serif; font-size: 0.78rem; font-weight: 500;
+  color: var(--text-tertiary); text-decoration: none; transition: color 0.25s;
+}
+footer .f-links a:hover { color: var(--text); }
+footer .f-links a:focus-visible { outline: 2px solid var(--signal); outline-offset: 2px; }
+
+/* ═══════════════════════════════════════════
+   STICKY MOBILE CTA — visible <768px only
+   ═══════════════════════════════════════════ */
+.fp-sticky-cta {
+  display: none;
+}
+
+/* ═══════════════════════════════════════════
+   RESPONSIVE
+   ═══════════════════════════════════════════ */
+@media (max-width: 1024px) {
+  .fp-process .fp-process-steps { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 900px) {
+  .fp-hero-inner { grid-template-columns: 1fr; gap: 2.5rem; }
+  .fp-hero-stats { border-left: none; padding-left: 0; border-top: 3px solid var(--signal); padding-top: 1.5rem; }
+  .fp-exchange { grid-template-columns: 1fr; }
+  .fp-criteria-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+  .fp-field-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 768px) {
+  /* Nav */
+  nav { padding: 1.2rem 1.5rem; }
+  nav::after { left: 1.5rem; right: 1.5rem; }
+  .nav-links { display: none; }
+  .nav-links.open {
+    display: flex; flex-direction: column;
+    position: absolute; top: 100%; left: 0; right: 0;
+    background: var(--surface); border-bottom: 1px solid var(--rule);
+    padding: 1rem 1.5rem; gap: 0.8rem; z-index: 100;
+  }
+  .nav-toggle { display: block; }
+
+  /* Hero */
+  .fp-hero { padding: 3.5rem 1.5rem 3rem; }
+  .fp-hero-inner { grid-template-columns: 1fr; gap: 2rem; }
+  .fp-hero h1 { font-size: clamp(2rem, 7vw, 3rem); }
+  .fp-hero-stats {
+    border-left: none; padding-left: 0;
+    border-top: 3px solid var(--signal); padding-top: 1.5rem;
+  }
+  /* Stat strip stacks vertically (already single column on mobile) */
+  .fp-stat { padding: 0.9rem 0; }
+  /* Hero CTA replaced by sticky bar — hide inline CTA on mobile */
+  .fp-hero-cta { display: none; }
+
+  /* Sections */
+  .section { padding: 3.5rem 1.5rem; }
+  .fp-hero-wrap .fp-hero { padding-bottom: 4rem; }
+  .fp-criteria { padding: 3.5rem 1.5rem; }
+  .fp-form-wrap { padding: 1.8rem 1.2rem 2.5rem; margin-left: 0; margin-right: 0; }
+
+  /* Table → stacked cards on mobile */
+  .fp-table-wrap { display: none; }
+  .fp-table-mobile { display: grid; gap: 0.8rem; margin-bottom: 2.5rem; }
+  .fp-table-card {
+    background: rgba(19, 24, 33, 0.06);
+    border: 1px solid var(--printout-rule);
+    border-radius: 0;
+    padding: 1rem 1.2rem;
+  }
+  .fp-table-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 0.8rem;
+    margin-bottom: 0.4rem;
+  }
+  .fp-table-card-pattern {
+    font-family: 'Geist', sans-serif;
+    font-size: 0.88rem; color: var(--ink);
+    line-height: 1.45;
+  }
+  .fp-table-card-slots {
+    background: var(--signal);
+    color: #fff;
+    font-family: 'Geist Mono', monospace;
+    font-size: 0.6rem; font-weight: 600;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 0.2rem 0.6rem;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  /* Form fields full-width on mobile */
+  .fp-field-grid { grid-template-columns: 1fr; }
+
+  /* Process steps → 2 col on mobile */
+  .fp-process .fp-process-steps { grid-template-columns: repeat(2, 1fr); gap: 1.2rem; }
+
+  /* Exchange cards single column */
+  .fp-exchange { grid-template-columns: 1fr; }
+
+  /* Footer */
+  footer { padding: 2rem 1.5rem; flex-direction: column; text-align: center; }
+  footer .f-links { flex-wrap: wrap; justify-content: center; gap: 1.2rem; }
+
+  /* Sticky CTA bar */
+  .fp-sticky-cta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    height: 60px;
+    background: var(--signal);
+    z-index: 999;
+    text-decoration: none;
+    color: #fff;
+    font-family: 'Geist Mono', monospace;
+    font-size: 0.82rem; font-weight: 600;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    border-top: 2px solid #065F46;
+    padding: 0 2rem;
+    /* Touch target ≥44px — 60px satisfies this */
+    min-height: 60px;
+  }
+  .fp-sticky-cta:focus-visible { outline: 2px solid #fff; outline-offset: -4px; }
+
+  /* Sticky submit button for form on mobile */
+  .fp-submit-btn {
+    position: sticky;
+    bottom: 68px; /* above sticky CTA */
+    width: 100%;
+    justify-content: center;
+    height: 56px; min-height: 56px;
+    margin-top: 1.4rem;
+  }
+
+  /* Push page content above sticky CTA */
+  body { padding-bottom: 60px; }
+
+  /* Touch targets */
+  .fp-list li, .fp-criteria-list li { min-height: 44px; align-items: center; }
+  nav a { min-height: 44px; display: inline-flex; align-items: center; }
+}
+
+@media (max-width: 480px) {
+  .fp-hero h1 { font-size: clamp(1.8rem, 8vw, 2.4rem); }
+  .fp-process .fp-process-steps { grid-template-columns: 1fr; }
+  .fp-table-card-header { flex-direction: column; gap: 0.5rem; }
+  .dispatch-inner { padding: 0.55rem 1.5rem; gap: 1rem; font-size: 0.62rem; }
+  .dispatch-inner > span:nth-child(n+3) { display: none; }
+}
+
+/* ── Reduced motion ── */
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+  html { scroll-behavior: auto; }
+  .dispatch-led { animation: none; }
+  .fade-in { opacity: 1; transform: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- Skip to main content — first focusable element -->
+<a href="#main" class="skip-to-main">Skip to main content</a>
+
+<!-- Dispatch strip — operations floor tone -->
+<div class="dispatch" role="status" aria-live="off">
+  <div class="dispatch-inner" aria-hidden="true">
+    <span><span class="dispatch-led"></span> <strong>AcuOps</strong></span>
+    <span class="dispatch-spacer">·</span>
+    <span><strong>Status:</strong> Founding Partner intake open</span>
+    <span class="dispatch-spacer">·</span>
+    <span><strong>Slots:</strong> 7–10 selected</span>
+    <span class="dispatch-spacer">·</span>
+    <span><strong>Intake closes:</strong> 10 partners or 90 days from launch</span>
+  </div>
+</div>
+
+<!-- ── Nav ── -->
+<nav aria-label="Site navigation">
+  <div class="brand">
+    <a href="/" class="brand-main" aria-label="AcuOps home">
+      <!-- AcuOps mark: pipeline <·> — canonical per brand guide 2026-04. -->
+      <svg class="brand-mark" viewBox="0 0 24 24" fill="none" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
+        <path d="M5 7 L2 12 L5 17" stroke="#10B981" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M19 7 L22 12 L19 17" stroke="#10B981" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="12" cy="12" r="2.5" fill="#10B981" stroke="#065F46" stroke-width="1.2"/>
+        <path d="M9 12 H7 M17 12 H15" stroke="#10B981" stroke-width="1.2" stroke-linecap="round"/>
+      </svg>
+      <span class="brand-name">AcuOps</span>
+    </a>
+    <span class="brand-parent">a <a href="https://b.studio">studio b.</a> product</span>
+  </div>
+  <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle navigation menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+  <div class="nav-links">
+    <a href="/#features">Features</a>
+    <a href="/#pricing">Pricing</a>
+    <a href="/#faq">FAQ</a>
+    <a href="https://bolt.b.studio">Bolt</a>
+    <a href="/license">License</a>
+    <a href="/founding-partners" class="current" aria-current="page">Founding Partners</a>
+    <a href="/#demo" class="nav-cta">Request demo &rarr;</a>
+  </div>
+</nav>
+
+<!-- ── Main content ── -->
+<main id="main">
+
+  <!-- ── 01/08 Hero — Ivory inversion ── -->
+  <div class="fp-hero-wrap">
+    <section class="fp-hero" aria-labelledby="fp-heading">
+      <p class="fp-hero-eyebrow">01 / 08 &nbsp;·&nbsp; AcuOps Founding Partners</p>
+      <div class="fp-hero-inner">
+        <div class="fp-hero-left">
+          <h1 id="fp-heading">Founding Partners</h1>
+          <p class="fp-hero-body">Seven to ten Acumatica teams locked in at $500/month for the life of their subscription. Selected, not first-come.</p>
+          <a href="#apply" class="fp-hero-cta">Apply now &rarr;</a>
+        </div>
+        <div class="fp-hero-stats" aria-label="Program key facts">
+          <div class="fp-stat">
+            <div class="fp-stat-value"><span class="sig">$500</span>/mo</div>
+            <div class="fp-stat-label">per Acumatica instance · life of subscription</div>
+          </div>
+          <div class="fp-stat">
+            <div class="fp-stat-value">7–10</div>
+            <div class="fp-stat-label">partners selected · not first-come</div>
+          </div>
+          <div class="fp-stat">
+            <div class="fp-stat-value">90 days</div>
+            <div class="fp-stat-label">intake window from launch</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Sticky CTA — mobile only, hidden on desktop via CSS -->
+  <a href="#apply" class="fp-sticky-cta" aria-label="Apply for Founding Partner program">Apply now &rarr;</a>
+
+  <div class="section-rule"><hr></div>
+
+  <!-- ── 02/08 Why we're doing this ── -->
+  <section class="section fp-why fade-in" id="why" aria-labelledby="fp-why-heading">
+    <p class="section-eyebrow">02 / 08 &nbsp;·&nbsp; Why we're doing this</p>
+    <h2 class="section-title" id="fp-why-heading">Real-world feedback at scale.</h2>
+    <p class="section-body">AcuOps is software Studio B runs on its own Acumatica portfolio every day. We know what it does at our scale. We need to know what it does at yours — VAR-managed, ISV, in-house mid-market, enterprise. The Founding Partner program is how we get that range of real-world feedback while you get a price that reflects the partnership.</p>
+  </section>
+
+  <div class="section-rule"><hr></div>
+
+  <!-- ── 03/08 What you get + 04/08 What you commit ── -->
+  <section class="section fade-in" id="exchange" aria-labelledby="fp-exchange-heading">
+    <p class="section-eyebrow">03–04 / 08 &nbsp;·&nbsp; The exchange</p>
+    <h2 class="section-title" id="fp-exchange-heading">What's in it for both sides.</h2>
+
+    <div class="fp-exchange">
+      <!-- What you get -->
+      <div class="fp-card" aria-labelledby="fp-get-heading">
+        <p class="fp-card-label">03 / 08 &nbsp;·&nbsp; What you get</p>
+        <h3 id="fp-get-heading">Your side of the deal.</h3>
+        <ul class="fp-list" aria-label="Partner benefits">
+          <li><strong>$500/mo per Acumatica instance,</strong> locked for the life of your subscription</li>
+          <li><strong>Direct line to Studio B</strong> for product feedback (Kevin's calendar, not a support queue)</li>
+          <li><strong>Beta access</strong> to every new AcuOps feature before general availability</li>
+          <li><strong>Named recognition</strong> on acuops.com as a launch partner</li>
+        </ul>
+      </div>
+
+      <!-- What you commit -->
+      <div class="fp-card" aria-labelledby="fp-commit-heading">
+        <p class="fp-card-label">04 / 08 &nbsp;·&nbsp; What you commit to</p>
+        <h3 id="fp-commit-heading">Our side of the deal.</h3>
+        <ul class="fp-list" aria-label="Partner commitments">
+          <li>A published case study within 6 months of go-live (we draft; you approve)</li>
+          <li>Reference call availability — up to 2x per year for serious prospects</li>
+          <li>30-day feedback turnaround on beta features we send your way</li>
+          <li>Standard AcuOps MSA, signed in under 30 days</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-rule"><hr></div>
+
+  <!-- ── 05/08 Selection criteria — Ivory inversion ── -->
+  <div class="fp-criteria-wrap">
+    <section class="fp-criteria fade-in" id="criteria" aria-labelledby="fp-criteria-heading">
+      <p class="section-eyebrow">05 / 08 &nbsp;·&nbsp; Selection criteria</p>
+      <h2 class="section-title" id="fp-criteria-heading">We're allocating the 7–10 spots across:</h2>
+      <p class="fp-criteria-intro">Deliberately diverse — different deployment patterns, Acumatica editions, and company sizes. So the feedback we get is representative, not an echo chamber.</p>
+
+      <!-- Allocation table — desktop -->
+      <div class="fp-table-wrap" role="region" aria-label="Partner slot allocation">
+        <table class="fp-table">
+          <thead>
+            <tr>
+              <th scope="col">Pattern</th>
+              <th scope="col">Slots</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>VARs managing 5+ client Acumatica instances</td>
+              <td>2–3</td>
+            </tr>
+            <tr>
+              <td>In-house mid-market teams ($50–500M company)</td>
+              <td>2–3</td>
+            </tr>
+            <tr>
+              <td>ISVs shipping Acumatica add-ons</td>
+              <td>1–2</td>
+            </tr>
+            <tr>
+              <td>Enterprise in-house teams ($500M+ company)</td>
+              <td>1–2</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Allocation cards — mobile only -->
+      <div class="fp-table-mobile" role="list" aria-label="Partner slot allocation">
+        <div class="fp-table-card" role="listitem">
+          <div class="fp-table-card-header">
+            <span class="fp-table-card-pattern">VARs managing 5+ client Acumatica instances</span>
+            <span class="fp-table-card-slots">2–3 slots</span>
+          </div>
+        </div>
+        <div class="fp-table-card" role="listitem">
+          <div class="fp-table-card-header">
+            <span class="fp-table-card-pattern">In-house mid-market teams ($50–500M company)</span>
+            <span class="fp-table-card-slots">2–3 slots</span>
+          </div>
+        </div>
+        <div class="fp-table-card" role="listitem">
+          <div class="fp-table-card-header">
+            <span class="fp-table-card-pattern">ISVs shipping Acumatica add-ons</span>
+            <span class="fp-table-card-slots">1–2 slots</span>
+          </div>
+        </div>
+        <div class="fp-table-card" role="listitem">
+          <div class="fp-table-card-header">
+            <span class="fp-table-card-pattern">Enterprise in-house teams ($500M+ company)</span>
+            <span class="fp-table-card-slots">1–2 slots</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Diversity note -->
+      <blockquote class="fp-criteria-diversity">
+        Plus: at least one customer on each major Acumatica edition we want to support (Distribution, Manufacturing, Construction, Retail, General Business); at least one Acumatica Cloud (SaaS-hosted) and at least one customer-hosted.
+      </blockquote>
+
+      <!-- Operational fit + Decline grid -->
+      <div class="fp-criteria-grid">
+        <div class="fp-criteria-block" aria-labelledby="fp-fit-heading">
+          <h4 id="fp-fit-heading">Operational fit (required of all 7–10)</h4>
+          <ul class="fp-criteria-list" aria-label="Required operational criteria">
+            <li>Your instance has at least one active customization</li>
+            <li>You deploy customizations at least quarterly</li>
+            <li>Your primary technical contact can respond to product feedback requests within a reasonable window</li>
+            <li>Your legal team can sign a standard MSA in under 30 days</li>
+            <li>Your company is named-logo-friendly (no stealth-mode startups, no agencies that can't be named)</li>
+          </ul>
+        </div>
+
+        <div class="fp-criteria-block decline" aria-labelledby="fp-decline-heading">
+          <h4 id="fp-decline-heading">We'll decline spots even if otherwise qualified for:</h4>
+          <ul class="fp-criteria-list" aria-label="Disqualifying criteria">
+            <li>Requests for custom contract terms diverging from the founding-partner agreement</li>
+            <li>3-month pilots without committed go-live</li>
+            <li>Expectations of bundled professional services (this is a price discount, not a labor swap)</li>
+            <li>Direct competitors (other Acumatica DevOps vendors, current Acumatica Cloud DevOps team employees)</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="section-rule"><hr></div>
+
+  <!-- ── 06/08 The process ── -->
+  <section class="section fp-process fade-in" id="process" aria-labelledby="fp-process-heading">
+    <p class="section-eyebrow">06 / 08 &nbsp;·&nbsp; The process</p>
+    <h2 class="section-title" id="fp-process-heading">Four steps from application to onboarding.</h2>
+
+    <div class="fp-process-steps" role="list">
+      <div class="fp-process-step" role="listitem">
+        <p class="fp-process-step-num">Step 01</p>
+        <h3>Apply via the form below</h3>
+        <p>Takes about 5 minutes. We read every application.</p>
+      </div>
+      <div class="fp-process-step" role="listitem">
+        <p class="fp-process-step-num">Step 02</p>
+        <h3>30-minute qualification call</h3>
+        <p>With Kevin directly. No sales team. We're assessing fit on both sides.</p>
+      </div>
+      <div class="fp-process-step" role="listitem">
+        <p class="fp-process-step-num">Step 03</p>
+        <h3>Signed MSA + onboarding</h3>
+        <p>If we're a fit on both sides, a standard MSA and onboarding starts. Target: under 30 days from application to live.</p>
+      </div>
+      <div class="fp-process-step" role="listitem">
+        <p class="fp-process-step-num">Step 04</p>
+        <h3>Program closes</h3>
+        <p>When we hit 10 partners or 90 days from launch, whichever comes first. Applications received after close go to a waitlist.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-rule"><hr></div>
+
+  <!-- ── 07/08 Application form ── -->
+  <section class="section fade-in" id="apply" aria-labelledby="fp-form-heading">
+    <p class="section-eyebrow">07 / 08 &nbsp;·&nbsp; Apply</p>
+    <h2 class="section-title" id="fp-form-heading">Submit your application.</h2>
+    <p class="section-body" style="margin-bottom: 0;">We respond to every application within 5 business days. If you're a fit, you'll get a calendar link for the 30-minute qualification call.</p>
+
+    <div class="fp-form-wrap" aria-label="Founding Partner application form">
+      <div class="fp-form-header">
+        <p class="fp-form-header-label">AcuOps &nbsp;·&nbsp; Founding Partner Application</p>
+        <h3 class="fp-form-header-title" id="fp-form-heading-inner">Application form</h3>
+      </div>
+
+      <!-- Cross-field error summary -->
+      <div id="form-error-summary" role="alert" aria-live="assertive" aria-atomic="true" style="display:none;"></div>
+
+      <!-- HubSpot embed — T8 will replace PLACEHOLDER-FORM-ID-T8-WILL-REPLACE with the real form ID -->
+      <!-- HubSpot form embed — placeholder formId until T8 lands -->
+      <script charset="utf-8" type="text/javascript" src="//js.hsforms.net/forms/embed/v2.js"></script>
+      <script>
+        (function() {
+          if (typeof hbspt !== 'undefined') {
+            hbspt.forms.create({
+              region: "na1",
+              portalId: "49070660",
+              formId: "PLACEHOLDER-FORM-ID-T8-WILL-REPLACE",
+              target: "#founding-partner-form",
+              cssClass: "hs-form-console"
+            });
+          }
+        })();
+
+        // Fallback: if HubSpot embed hasn't rendered after 3 seconds, show static mailto form
+        setTimeout(function() {
+          var hsTarget = document.getElementById('founding-partner-form');
+          var fallback = document.getElementById('fp-fallback-form');
+          if (hsTarget && fallback) {
+            var rendered = hsTarget.querySelector('form, .hs-form');
+            if (!rendered) {
+              hsTarget.style.display = 'none';
+              fallback.style.display = 'block';
+            }
+          }
+        }, 3000);
+      </script>
+      <div id="founding-partner-form" aria-label="HubSpot application form loading"></div>
+
+      <!-- Static fallback form — shown if HubSpot embed fails to render -->
+      <form id="fp-fallback-form" class="fp-static-form"
+            action="mailto:founding@acuops.com"
+            method="post"
+            enctype="text/plain"
+            aria-label="Founding Partner application (email fallback)"
+            novalidate>
+
+        <div id="form-error-summary" role="alert" aria-live="assertive"></div>
+
+        <div class="fp-field-grid">
+          <div class="fp-field">
+            <label for="fp-name">Name <span aria-hidden="true">*</span></label>
+            <input type="text" id="fp-name" name="name" required autocomplete="name" aria-required="true" minlength="2" placeholder="">
+            <div class="fp-field-error" id="fp-name-error" aria-live="polite"></div>
+          </div>
+          <div class="fp-field">
+            <label for="fp-email">Work email <span aria-hidden="true">*</span></label>
+            <input type="email" id="fp-email" name="email" required autocomplete="email" aria-required="true" placeholder="">
+            <div class="fp-field-error" id="fp-email-error" aria-live="polite"></div>
+          </div>
+          <div class="fp-field">
+            <label for="fp-company">Company <span aria-hidden="true">*</span></label>
+            <input type="text" id="fp-company" name="company" required autocomplete="organization" aria-required="true" placeholder="">
+            <div class="fp-field-error" id="fp-company-error" aria-live="polite"></div>
+          </div>
+          <div class="fp-field">
+            <label for="fp-role">Role <span aria-hidden="true">*</span></label>
+            <input type="text" id="fp-role" name="role" required autocomplete="organization-title" aria-required="true" placeholder="">
+            <div class="fp-field-error" id="fp-role-error" aria-live="polite"></div>
+          </div>
+          <div class="fp-field">
+            <label for="fp-edition">Acumatica edition + version <span aria-hidden="true">*</span></label>
+            <input type="text" id="fp-edition" name="edition" required placeholder="e.g. Distribution · 2024R2" aria-required="true">
+            <div class="fp-field-error" id="fp-edition-error" aria-live="polite"></div>
+          </div>
+          <div class="fp-field">
+            <label for="fp-instances">Number of instances managed <span aria-hidden="true">*</span></label>
+            <input type="number" id="fp-instances" name="instances" required min="1" aria-required="true" placeholder="">
+            <div class="fp-field-error" id="fp-instances-error" aria-live="polite"></div>
+          </div>
+          <div class="fp-field">
+            <label for="fp-cadence">Deploy cadence <span aria-hidden="true">*</span></label>
+            <select id="fp-cadence" name="cadence" required aria-required="true">
+              <option value="" disabled selected>Select cadence</option>
+              <option value="weekly">Weekly</option>
+              <option value="monthly">Monthly</option>
+              <option value="quarterly">Quarterly</option>
+              <option value="less">Less than quarterly</option>
+            </select>
+            <div class="fp-field-error" id="fp-cadence-error" aria-live="polite"></div>
+          </div>
+          <div class="fp-field">
+            <label for="fp-technical-contact">Primary technical contact</label>
+            <input type="text" id="fp-technical-contact" name="technical_contact" autocomplete="name" placeholder="Name · email if different from above">
+          </div>
+          <div class="fp-field fp-field-full">
+            <label for="fp-interest">Why you're interested <span aria-hidden="true">*</span></label>
+            <textarea id="fp-interest" name="interest" required aria-required="true" rows="4" aria-describedby="fp-interest-hint"></textarea>
+            <p id="fp-interest-hint" class="fp-field-error" style="color: var(--text-tertiary);">What's driving the timing? What does AcuOps solve for you?</p>
+          </div>
+        </div>
+
+        <button type="submit" class="fp-submit-btn">
+          Submit application &rarr;
+        </button>
+
+        <p class="fp-form-note">
+          This form opens your email client with a pre-addressed message. If that doesn't work, email <a href="mailto:founding@acuops.com" style="color: var(--signal);">founding@acuops.com</a> directly.
+        </p>
+      </form>
+    </div>
+  </section>
+
+  <div class="section-rule"><hr></div>
+
+  <!-- ── 08/08 FAQ ── -->
+  <section class="section fade-in" id="faq" aria-labelledby="fp-faq-heading">
+    <p class="section-eyebrow">08 / 08 &nbsp;·&nbsp; FAQ</p>
+    <h2 class="section-title" id="fp-faq-heading">Common questions.</h2>
+    <p class="section-body" style="margin-bottom: 0;">Most detail is on the <a href="/" style="color: var(--signal); text-decoration: none; border-bottom: 1px solid var(--signal-dim);">main AcuOps page</a>. A few founding-partner specifics:</p>
+
+    <div class="fp-faq-items">
+      <div class="fp-faq-item">
+        <p class="fp-faq-q">Is $500/month really locked for life?</p>
+        <p class="fp-faq-a">Yes. The Founding Partner rate is written into the MSA. We can't increase it unilaterally. If we add tiers or features above the founding-partner scope, those are separate — your $500/mo doesn't get dragged along.</p>
+      </div>
+      <div class="fp-faq-item">
+        <p class="fp-faq-q">What if we manage more than one Acumatica instance?</p>
+        <p class="fp-faq-a">$500/mo per instance. AcuOps prices per instance, not per seat or per company. If you manage 3 instances, that's $1,500/mo — still a significant discount from the standard $800/mo per instance rack rate.</p>
+      </div>
+      <div class="fp-faq-item">
+        <p class="fp-faq-q">Do we have to publish the case study publicly?</p>
+        <p class="fp-faq-a">We'd like to, and it's in the standard commitment. But we draft it and you approve every word before anything goes live. If there's a specific sensitivity, we can work around it — that's a conversation, not a disqualifier.</p>
+      </div>
+      <div class="fp-faq-item">
+        <p class="fp-faq-q">What if the program fills before we apply?</p>
+        <p class="fp-faq-a">If we're at 10 partners before you apply, you go to a waitlist at the founding-partner rate. If a slot opens or we decide to expand, you're first in line. We won't leave you at standard pricing if we invited you to apply.</p>
+      </div>
+      <div class="fp-faq-item">
+        <p class="fp-faq-q">We're an ISV — do we count as one instance or many?</p>
+        <p class="fp-faq-a">ISVs are priced on the instance(s) you use for your own development and testing pipeline — not your customers' production instances. That's typically one, sometimes two. We'll work out the specifics on the qualification call.</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ── Footer ── -->
+<footer>
+  <div class="f-copy"><strong>AcuOps</strong> — software we run on our own portfolio, billed per instance, not per seat.</div>
+  <div class="f-links">
+    <a href="https://b.studio">studio b.</a>
+    <a href="https://bolt.b.studio">Bolt</a>
+    <a href="/">AcuOps</a>
+    <a href="https://b.studio/privacy">Privacy</a>
+  </div>
+</footer>
+
+<script>
+// ── Fade-in on scroll ──
+(function() {
+  if (!window.IntersectionObserver) return;
+  var els = document.querySelectorAll('.fade-in');
+  var io = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
+    });
+  }, { threshold: 0.12 });
+  els.forEach(function(el) { io.observe(el); });
+})();
+
+// ── Nav toggle aria-expanded sync ──
+(function() {
+  var toggle = document.querySelector('.nav-toggle');
+  var links = document.querySelector('.nav-links');
+  if (!toggle || !links) return;
+  toggle.addEventListener('click', function() {
+    var open = links.classList.contains('open');
+    toggle.setAttribute('aria-expanded', String(!open));
+  });
+})();
+</script>
+
+</body>
+</html>
