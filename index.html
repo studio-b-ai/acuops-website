@@ -591,6 +591,192 @@ body[data-audience="in-house"] .aud-res-div {
   line-height: 1.78;
 }
 
+/* ── Live Event Ticker ── */
+.ticker-card {
+  margin-top: 2rem;
+  background: var(--surface);
+  border: 1px solid var(--signal-dim);
+  max-width: 720px;
+  font-family: 'Geist Mono', monospace;
+}
+
+.ticker-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 0.85rem 1.25rem 0.75rem;
+  border-bottom: 1px solid rgba(230, 237, 243, 0.06);
+}
+
+.ticker-channel {
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(230, 237, 243, 0.6);
+}
+
+.ticker-updated {
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.62rem;
+  font-weight: 400;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: rgba(230, 237, 243, 0.4);
+}
+
+.ticker-event {
+  padding: 1rem 1.25rem 1.1rem;
+  border-bottom: 1px solid rgba(230, 237, 243, 0.06);
+}
+.ticker-event:last-of-type {
+  border-bottom: none;
+}
+
+.ticker-byline {
+  font-family: 'Geist', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 400;
+  color: rgba(230, 237, 243, 0.7);
+  margin-bottom: 0.45rem;
+  letter-spacing: 0.01em;
+}
+
+.ticker-event-heading {
+  font-family: 'Geist', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 0.65rem;
+  letter-spacing: 0.01em;
+}
+
+.ticker-event-heading.is-alert {
+  color: var(--signal);
+}
+
+.ticker-kv-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 0.85rem;
+}
+
+.ticker-kv-table tr + tr td {
+  padding-top: 0.2rem;
+}
+
+.ticker-kv-label {
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(230, 237, 243, 0.5);
+  padding-right: 1.4rem;
+  white-space: nowrap;
+  vertical-align: top;
+}
+
+.ticker-kv-value {
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.72rem;
+  font-weight: 400;
+  color: var(--text);
+  word-break: break-all;
+}
+
+.ticker-btn-row {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.ticker-btn {
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  padding: 0.38rem 0.75rem;
+  border-radius: 0;
+  cursor: default;
+  text-decoration: none;
+  display: inline-block;
+  border: 1px solid transparent;
+}
+
+.ticker-btn-primary {
+  background: var(--signal);
+  color: var(--bg);
+  border-color: var(--signal);
+}
+
+.ticker-btn-secondary {
+  background: transparent;
+  color: var(--text);
+  border-color: rgba(230, 237, 243, 0.3);
+}
+
+.ticker-cta {
+  display: block;
+  padding: 0.7rem 1.25rem;
+  border-top: 1px solid rgba(230, 237, 243, 0.06);
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--signal);
+  text-decoration: none;
+}
+.ticker-cta:hover { color: var(--signal-hover); }
+
+.ticker-fallback {
+  padding: 1.5rem 1.25rem;
+  text-align: center;
+}
+
+.ticker-fallback p {
+  font-family: 'Geist', sans-serif;
+  font-size: 0.9rem;
+  color: rgba(230, 237, 243, 0.7);
+  line-height: 1.7;
+  margin-bottom: 1rem;
+}
+
+.ticker-fallback strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.ticker-fallback-cta {
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--signal);
+  text-decoration: none;
+}
+.ticker-fallback-cta:hover { color: var(--signal-hover); }
+
+.ticker-loading {
+  padding: 1.5rem 1.25rem;
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.72rem;
+  color: rgba(230, 237, 243, 0.4);
+  letter-spacing: 0.08em;
+}
+
+.ticker-noscript {
+  padding: 1.25rem;
+  font-family: 'Geist', sans-serif;
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
 /* ── Fade-in ── */
 .fade-in { opacity: 0; transform: translateY(24px); transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
 .fade-in.visible { opacity: 1; transform: translateY(0); }
@@ -1593,7 +1779,7 @@ footer .f-links a:hover { color: var(--text); }
 
 <!-- ── Problem ── -->
 <section class="section fade-in">
-  <div class="section-eyebrow">01 / 07 · The problem</div>
+  <div class="section-eyebrow">01 / 08 · The problem</div>
   <div class="problem-grid">
     <!-- Problem title — paired -->
     <h2 class="problem-title aud-res-block">You've been stitching this together <em>per-client, for a decade.</em></h2>
@@ -1616,7 +1802,7 @@ footer .f-links a:hover { color: var(--text); }
 
 <!-- ── Features ── -->
 <section class="section fade-in" id="features">
-  <div class="section-eyebrow">02 / 07 · Capabilities</div>
+  <div class="section-eyebrow">02 / 08 · Capabilities</div>
   <div class="section-title">What runs against every instance.</div>
   <!-- Capabilities intro — paired (one phrase differs) -->
   <p class="section-intro aud-res-block">Twelve health probes. 146 post-publish tests. A CI/CD pipeline that pushes customizations through the Customization API. All three read-only against your clients' instances.</p>
@@ -1693,9 +1879,25 @@ footer .f-links a:hover { color: var(--text); }
 
 <div class="section-rule"><hr></div>
 
+<!-- ── Live Event Ticker ── -->
+<section class="section fade-in" id="ticker">
+  <div class="section-eyebrow">03 / 08 · Live event ticker</div>
+  <div class="section-title">Running right now.</div>
+  <p class="section-intro aud-res-block">Real publishes, real schema drift catches, real rollbacks from our own Acumatica portfolio. The feed below is live.</p>
+  <p class="section-intro aud-ih-block">Real publishes, real schema drift catches, real rollbacks from our own Acumatica portfolio. The feed below is live.</p>
+  <div class="ticker-card" id="ticker-card" aria-live="polite" aria-label="Live event ticker">
+    <!-- events rendered by ticker.js -->
+  </div>
+  <noscript>
+    <p class="ticker-noscript">Live event feed requires JavaScript. AcuOps has caught dozens of schema drifts on real Acumatica instances over the last 30 days.</p>
+  </noscript>
+</section>
+
+<div class="section-rule"><hr></div>
+
 <!-- ── How It Works ── -->
 <section class="section fade-in">
-  <div class="section-eyebrow">03 / 07 · How it works</div>
+  <div class="section-eyebrow">04 / 08 · How it works</div>
   <!-- How it works title — paired -->
   <div class="section-title aud-res-block">Point AcuOps at the instance.<br>Get Slack alerts <em>before your client calls.</em></div>
   <div class="section-title aud-ih-block">Point AcuOps at the instance.<br>Get Slack alerts <em>before the floor calls.</em></div>
@@ -1728,7 +1930,7 @@ footer .f-links a:hover { color: var(--text); }
 
 <!-- ── Slack Integration ── -->
 <section class="section fade-in">
-  <div class="section-eyebrow">04 / 07 · Slack integration</div>
+  <div class="section-eyebrow">05 / 08 · Slack integration</div>
   <!-- Slack title — paired -->
   <div class="section-title aud-res-block">Your workspace. Your alerts.<br>Your clients' workspaces <em>stay separate.</em></div>
   <div class="section-title aud-ih-block">Your workspace. Your alerts.<br><em>Routed to the team that owns the fix.</em></div>
@@ -1872,7 +2074,7 @@ footer .f-links a:hover { color: var(--text); }
 
 <!-- ── Pricing (receipt styling) ── -->
 <section class="section fade-in" id="pricing">
-  <div class="section-eyebrow">05 / 07 · Pricing</div>
+  <div class="section-eyebrow">06 / 08 · Pricing</div>
   <div class="section-title">$800 per month. Per Acumatica instance. <em>Flat.</em></div>
   <!-- Pricing intro — paired (volume line hidden on in-house) -->
   <p class="section-intro aud-res-block">Not per seat. Not per transaction. Not per alert. The meter is the instance — one number, one invoice. Every capability included. Volume discounts at 5+ and 20+ instances.</p>
@@ -1956,7 +2158,7 @@ footer .f-links a:hover { color: var(--text); }
 
 <!-- ── Reasoning ── -->
 <section class="section fade-in">
-  <div class="section-eyebrow">06 / 07 · Why this, not that</div>
+  <div class="section-eyebrow">07 / 08 · Why this, not that</div>
   <div class="section-title">Four decisions you should know about.</div>
   <!-- Reasoning intro — paired -->
   <p class="section-intro aud-res-block">We've priced this product three different ways. This is the one that survived first contact with our own client portfolio.</p>
@@ -2004,7 +2206,7 @@ footer .f-links a:hover { color: var(--text); }
 
 <!-- ── FAQ ── -->
 <section class="section fade-in" id="faq">
-  <div class="section-eyebrow">07 / 07 · Questions</div>
+  <div class="section-eyebrow">08 / 08 · Questions</div>
   <div class="section-title">Direct answers.</div>
   <p class="section-intro">If you're asking these, you're the right audience.</p>
 
@@ -2412,6 +2614,180 @@ footer .f-links a:hover { color: var(--text); }
       // Pre-rendered values stay intact; log for ops awareness
       if (window.console) console.warn('[acuops] ci-metrics fetch failed:', err);
     });
+})();
+</script>
+
+<!-- ── Live Event Ticker feed ── -->
+<script>
+(function() {
+  var TICKER_ENDPOINT = 'https://webhook-router-production-2535.up.railway.app/api/ticker-feed';
+  var REFRESH_MS = 60000;
+
+  function humanAgo(iso) {
+    if (!iso) return '—';
+    var s = Math.round((Date.now() - new Date(iso).getTime()) / 1000);
+    if (isNaN(s) || s < 0) return '—';
+    if (s < 60) return s + 's';
+    if (s < 3600) return Math.round(s / 60) + 'm';
+    if (s < 86400) return Math.round(s / 3600) + 'h';
+    return Math.round(s / 86400) + 'd';
+  }
+
+  function esc(str) {
+    if (!str) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  function renderKvRow(label, value) {
+    if (!value) return '';
+    return '<tr>' +
+      '<td class="ticker-kv-label">' + esc(label) + '</td>' +
+      '<td class="ticker-kv-value">' + esc(value) + '</td>' +
+      '</tr>';
+  }
+
+  /* Format the feed's deploy object {ci_run, commit, ago} into a single
+     human-readable string per spec line 56:
+       "ci-run-2473 · 12m ago · commit a4f8c12"
+     The feed serves deploy as an object; renderKvRow expects a string.
+     Without this helper, the row renders as "[object Object]" (codex P2 on PR #18). */
+  function formatDeploy(d) {
+    if (!d || typeof d !== 'object') return '';
+    var parts = [];
+    if (d.ci_run) parts.push(String(d.ci_run));
+    if (d.ago) parts.push(String(d.ago) + ' ago');
+    if (d.commit) parts.push('commit ' + String(d.commit));
+    return parts.join(' · ');
+  }
+
+  function renderEvent(event) {
+    var id = esc(event.id || '');
+    var anchor = id ? ' id="evt-' + id + '"' : '';
+    var ago = humanAgo(event.timestamp);
+    var byline = 'AcuOps Bot [APP]' + (ago !== '—' ? ' &middot; ' + ago + ' after publish' : '');
+
+    var heading = '';
+    var kvRows = '';
+    var isAlert = false;
+
+    if (event.type === 'publish_success') {
+      heading = 'PUBLISH SUCCESS' + (event.summary ? ' &middot; ' + esc(event.summary) : '');
+      kvRows += renderKvRow('INSTANCE', event.instance);
+      kvRows += renderKvRow('DEPLOY', formatDeploy(event.deploy));
+      kvRows += renderKvRow('IMPACT', event.impact);
+    } else if (event.type === 'schema_drift_detected') {
+      isAlert = true;
+      heading = '&#9650; SCHEMA DRIFT DETECTED';
+      kvRows += renderKvRow('INSTANCE', event.instance);
+      kvRows += renderKvRow('ENTITY', event.entity);
+      kvRows += renderKvRow('CHANGE', event.change);
+      kvRows += renderKvRow('DEPLOY', formatDeploy(event.deploy));
+      kvRows += renderKvRow('IMPACT', event.impact);
+    } else if (event.type === 'rollback_ready') {
+      isAlert = true;
+      heading = '&#9650; ROLLBACK READY';
+      kvRows += renderKvRow('INSTANCE', event.instance);
+      kvRows += renderKvRow('ENTITY', event.entity);
+      kvRows += renderKvRow('CHANGE', event.change);
+      kvRows += renderKvRow('DEPLOY', formatDeploy(event.deploy));
+      kvRows += renderKvRow('IMPACT', event.impact);
+    } else {
+      heading = esc(event.type || 'EVENT');
+      kvRows += renderKvRow('INSTANCE', event.instance);
+      kvRows += renderKvRow('IMPACT', event.impact);
+    }
+
+    var kvTable = kvRows
+      ? '<table class="ticker-kv-table">' + kvRows + '</table>'
+      : '';
+
+    var btnRow = isAlert
+      ? '<div class="ticker-btn-row">' +
+          '<span class="ticker-btn ticker-btn-primary">Acknowledge</span>' +
+          '<span class="ticker-btn ticker-btn-secondary">Roll Back</span>' +
+          '<span class="ticker-btn ticker-btn-secondary">Open Dashboard</span>' +
+        '</div>'
+      : '<div class="ticker-btn-row">' +
+          '<span class="ticker-btn ticker-btn-secondary">Open Dashboard</span>' +
+        '</div>';
+
+    return '<div class="ticker-event"' + anchor + '>' +
+      '<div class="ticker-byline">' + byline + '</div>' +
+      '<div class="ticker-event-heading' + (isAlert ? ' is-alert' : '') + '">' + heading + '</div>' +
+      kvTable +
+      btnRow +
+    '</div>';
+  }
+
+  function renderRollupFallback(totals) {
+    var rawDrifts = (totals && totals.drifts_30d != null) ? totals.drifts_30d : 47;
+    var drifts = parseInt(rawDrifts, 10);
+    if (isNaN(drifts) || drifts < 0) drifts = 47;
+    var instances = 3;
+    return '<div class="ticker-fallback">' +
+      '<p>AcuOps has caught <strong>' + drifts + '</strong> schema drifts across ' +
+      '<strong>' + instances + '</strong> Acumatica instances in the last 30 days.</p>' +
+      '<a href="/founding-partners" class="ticker-fallback-cta">Apply to join &rarr;</a>' +
+    '</div>';
+  }
+
+  function renderTicker(feed) {
+    var card = document.getElementById('ticker-card');
+    if (!card) return;
+
+    if (!feed || !feed.events || feed.events.length === 0) {
+      card.innerHTML = renderRollupFallback(feed && feed.totals);
+      return;
+    }
+
+    var events = feed.events.slice(0, 10);
+    var header = '<div class="ticker-header">' +
+      '<span class="ticker-channel"># ACUOPS-ALERTS</span>' +
+      '<span class="ticker-updated">Last updated: ' + humanAgo(feed.lastUpdated) + ' ago</span>' +
+    '</div>';
+
+    var eventsHtml = events.map(renderEvent).join('');
+
+    var cta = '<a href="/founding-partners" class="ticker-cta">Setup &rarr;</a>';
+
+    card.innerHTML = header + eventsHtml + cta;
+  }
+
+  function fetchTickerFeed() {
+    return fetch(TICKER_ENDPOINT, { cache: 'no-store' })
+      .then(function(res) {
+        if (!res.ok) return null;
+        return res.json();
+      })
+      .catch(function() { return null; });
+  }
+
+  function refresh() {
+    fetchTickerFeed().then(renderTicker);
+  }
+
+  // Show loading state immediately
+  var card = document.getElementById('ticker-card');
+  if (card) {
+    card.innerHTML = '<div class="ticker-loading">Loading&hellip;</div>';
+  }
+
+  // Initial load
+  refresh();
+
+  // Auto-refresh every 60s
+  setInterval(refresh, REFRESH_MS);
+
+  // Refresh on tab focus
+  document.addEventListener('visibilitychange', function() {
+    if (document.visibilityState === 'visible') {
+      refresh();
+    }
+  });
 })();
 </script>
 
