@@ -1,0 +1,32 @@
+/* ============================================================================
+ * Studio b. — family header
+ * Binary-accent stripe system (locked 2026-05-06 via /design-consultation).
+ *
+ * Loaded by the firm site (b.studio). Touch with care.
+ *
+ * Construction (top → bottom):
+ *   1px ink@60 outline + 10px forest/paper diagonal stripe (-45°, 9/9 bands)
+ *   + 1px ink@60 outline.
+ *
+ * b.studio is a STRUCTURAL surface — it wears the bare stripe with no accent
+ * line. Cadence sibling sites (markdown, lmmi) add a 3px ::after accent in
+ * their own header.css. Identity work on b.studio happens in the yolk hero,
+ * not the header.
+ *
+ * Targets `.stripe.thin` specifically (the masthead-top instance). Internal
+ * `.stripe` and `.stripe.forest` dividers elsewhere on the page are
+ * untouched and keep their inline rules.
+ *
+ * Co-located outside the page so future content edits don't touch visual.
+ * ============================================================================ */
+
+.stripe.thin {
+  height: 10px;
+  background: repeating-linear-gradient(
+    -45deg,
+    var(--forest, #1A3328) 0, var(--forest, #1A3328) 9px,
+    var(--paper,  #F4F1EB) 9px, var(--paper,  #F4F1EB) 18px
+  );
+  border-top:    1px solid rgba(13, 13, 13, 0.60);
+  border-bottom: 1px solid rgba(13, 13, 13, 0.60);
+}
