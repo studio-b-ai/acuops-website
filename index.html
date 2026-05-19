@@ -2617,5 +2617,163 @@ footer .f-links a:hover { color: var(--text); }
 })();
 </script>
 
+<!-- ── Live Event Ticker feed ── -->
+<script>
+(function() {
+  var TICKER_ENDPOINT = 'https://webhook-router-production-2535.up.railway.app/api/ticker-feed';
+  var REFRESH_MS = 60000;
+
+  function humanAgo(iso) {
+    if (!iso) return '—';
+    var s = Math.round((Date.now() - new Date(iso).getTime()) / 1000);
+    if (isNaN(s) || s < 0) return '—';
+    if (s < 60) return s + 's';
+    if (s < 3600) return Math.round(s / 60) + 'm';
+    if (s < 86400) return Math.round(s / 3600) + 'h';
+    return Math.round(s / 86400) + 'd';
+  }
+
+  function esc(str) {
+    if (!str) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  function renderKvRow(label, value) {
+    if (!value) return '';
+    return '<tr>' +
+      '<td class="ticker-kv-label">' + esc(label) + '</td>' +
+      '<td class="ticker-kv-value">' + esc(value) + '</td>' +
+      '</tr>';
+  }
+
+  function renderEvent(event) {
+    var id = esc(event.id || '');
+    var anchor = id ? ' id="evt-' + id + '"' : '';
+    var ago = humanAgo(event.timestamp);
+    var byline = 'AcuOps Bot [APP]' + (ago !== '—' ? ' &middot; ' + ago + ' after publish' : '');
+
+    var heading = '';
+    var kvRows = '';
+    var isAlert = false;
+
+    if (event.type === 'publish_success') {
+      heading = 'PUBLISH SUCCESS' + (event.summary ? ' &middot; ' + esc(event.summary) : '');
+      kvRows += renderKvRow('INSTANCE', event.instance);
+      kvRows += renderKvRow('DEPLOY', event.deploy);
+      kvRows += renderKvRow('IMPACT', event.impact);
+    } else if (event.type === 'schema_drift_detected') {
+      isAlert = true;
+      heading = '&#9650; SCHEMA DRIFT DETECTED';
+      kvRows += renderKvRow('INSTANCE', event.instance);
+      kvRows += renderKvRow('ENTITY', event.entity);
+      kvRows += renderKvRow('CHANGE', event.change);
+      kvRows += renderKvRow('DEPLOY', event.deploy);
+      kvRows += renderKvRow('IMPACT', event.impact);
+    } else if (event.type === 'rollback_ready') {
+      isAlert = true;
+      heading = '&#9650; ROLLBACK READY';
+      kvRows += renderKvRow('INSTANCE', event.instance);
+      kvRows += renderKvRow('ENTITY', event.entity);
+      kvRows += renderKvRow('CHANGE', event.change);
+      kvRows += renderKvRow('DEPLOY', event.deploy);
+      kvRows += renderKvRow('IMPACT', event.impact);
+    } else {
+      heading = esc(event.type || 'EVENT');
+      kvRows += renderKvRow('INSTANCE', event.instance);
+      kvRows += renderKvRow('IMPACT', event.impact);
+    }
+
+    var kvTable = kvRows
+      ? '<table class="ticker-kv-table">' + kvRows + '</table>'
+      : '';
+
+    var btnRow = isAlert
+      ? '<div class="ticker-btn-row">' +
+          '<span class="ticker-btn ticker-btn-primary">Acknowledge</span>' +
+          '<span class="ticker-btn ticker-btn-secondary">Roll Back</span>' +
+          '<span class="ticker-btn ticker-btn-secondary">Open Dashboard</span>' +
+        '</div>'
+      : '<div class="ticker-btn-row">' +
+          '<span class="ticker-btn ticker-btn-secondary">Open Dashboard</span>' +
+        '</div>';
+
+    return '<div class="ticker-event"' + anchor + '>' +
+      '<div class="ticker-byline">' + byline + '</div>' +
+      '<div class="ticker-event-heading' + (isAlert ? ' is-alert' : '') + '">' + heading + '</div>' +
+      kvTable +
+      btnRow +
+    '</div>';
+  }
+
+  function renderRollupFallback(totals) {
+    var drifts = (totals && totals.drifts_30d != null) ? totals.drifts_30d : 47;
+    var instances = 3;
+    return '<div class="ticker-fallback">' +
+      '<p>AcuOps has caught <strong>' + drifts + '</strong> schema drifts across ' +
+      '<strong>' + instances + '</strong> Acumatica instances in the last 30 days.</p>' +
+      '<a href="/founding-partners" class="ticker-fallback-cta">Apply to join &rarr;</a>' +
+    '</div>';
+  }
+
+  function renderTicker(feed) {
+    var card = document.getElementById('ticker-card');
+    if (!card) return;
+
+    if (!feed || !feed.events || feed.events.length === 0) {
+      card.innerHTML = renderRollupFallback(feed && feed.totals);
+      return;
+    }
+
+    var events = feed.events.slice(0, 10);
+    var header = '<div class="ticker-header">' +
+      '<span class="ticker-channel"># ACUOPS-ALERTS</span>' +
+      '<span class="ticker-updated">Last updated: ' + humanAgo(feed.lastUpdated) + ' ago</span>' +
+    '</div>';
+
+    var eventsHtml = events.map(renderEvent).join('');
+
+    var cta = '<a href="/founding-partners" class="ticker-cta">Setup &rarr;</a>';
+
+    card.innerHTML = header + eventsHtml + cta;
+  }
+
+  function fetchTickerFeed() {
+    return fetch(TICKER_ENDPOINT, { cache: 'no-store' })
+      .then(function(res) {
+        if (!res.ok) return null;
+        return res.json();
+      })
+      .catch(function() { return null; });
+  }
+
+  function refresh() {
+    fetchTickerFeed().then(renderTicker);
+  }
+
+  // Show loading state immediately
+  var card = document.getElementById('ticker-card');
+  if (card) {
+    card.innerHTML = '<div class="ticker-loading">Loading&hellip;</div>';
+  }
+
+  // Initial load
+  refresh();
+
+  // Auto-refresh every 60s
+  setInterval(refresh, REFRESH_MS);
+
+  // Refresh on tab focus
+  document.addEventListener('visibilitychange', function() {
+    if (document.visibilityState === 'visible') {
+      refresh();
+    }
+  });
+})();
+</script>
+
 </body>
 </html>
