@@ -2710,7 +2710,9 @@ footer .f-links a:hover { color: var(--text); }
   }
 
   function renderRollupFallback(totals) {
-    var drifts = (totals && totals.drifts_30d != null) ? totals.drifts_30d : 47;
+    var rawDrifts = (totals && totals.drifts_30d != null) ? totals.drifts_30d : 47;
+    var drifts = parseInt(rawDrifts, 10);
+    if (isNaN(drifts) || drifts < 0) drifts = 47;
     var instances = 3;
     return '<div class="ticker-fallback">' +
       '<p>AcuOps has caught <strong>' + drifts + '</strong> schema drifts across ' +
