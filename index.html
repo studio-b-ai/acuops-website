@@ -591,6 +591,192 @@ body[data-audience="in-house"] .aud-res-div {
   line-height: 1.78;
 }
 
+/* ── Live Event Ticker ── */
+.ticker-card {
+  margin-top: 2rem;
+  background: var(--surface);
+  border: 1px solid var(--signal-dim);
+  max-width: 720px;
+  font-family: 'Geist Mono', monospace;
+}
+
+.ticker-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 0.85rem 1.25rem 0.75rem;
+  border-bottom: 1px solid rgba(230, 237, 243, 0.06);
+}
+
+.ticker-channel {
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(230, 237, 243, 0.6);
+}
+
+.ticker-updated {
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.62rem;
+  font-weight: 400;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: rgba(230, 237, 243, 0.4);
+}
+
+.ticker-event {
+  padding: 1rem 1.25rem 1.1rem;
+  border-bottom: 1px solid rgba(230, 237, 243, 0.06);
+}
+.ticker-event:last-of-type {
+  border-bottom: none;
+}
+
+.ticker-byline {
+  font-family: 'Geist', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 400;
+  color: rgba(230, 237, 243, 0.7);
+  margin-bottom: 0.45rem;
+  letter-spacing: 0.01em;
+}
+
+.ticker-event-heading {
+  font-family: 'Geist', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 0.65rem;
+  letter-spacing: 0.01em;
+}
+
+.ticker-event-heading.is-alert {
+  color: var(--signal);
+}
+
+.ticker-kv-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 0.85rem;
+}
+
+.ticker-kv-table tr + tr td {
+  padding-top: 0.2rem;
+}
+
+.ticker-kv-label {
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(230, 237, 243, 0.5);
+  padding-right: 1.4rem;
+  white-space: nowrap;
+  vertical-align: top;
+}
+
+.ticker-kv-value {
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.72rem;
+  font-weight: 400;
+  color: var(--text);
+  word-break: break-all;
+}
+
+.ticker-btn-row {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.ticker-btn {
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  padding: 0.38rem 0.75rem;
+  border-radius: 0;
+  cursor: default;
+  text-decoration: none;
+  display: inline-block;
+  border: 1px solid transparent;
+}
+
+.ticker-btn-primary {
+  background: var(--signal);
+  color: var(--bg);
+  border-color: var(--signal);
+}
+
+.ticker-btn-secondary {
+  background: transparent;
+  color: var(--text);
+  border-color: rgba(230, 237, 243, 0.3);
+}
+
+.ticker-cta {
+  display: block;
+  padding: 0.7rem 1.25rem;
+  border-top: 1px solid rgba(230, 237, 243, 0.06);
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--signal);
+  text-decoration: none;
+}
+.ticker-cta:hover { color: var(--signal-hover); }
+
+.ticker-fallback {
+  padding: 1.5rem 1.25rem;
+  text-align: center;
+}
+
+.ticker-fallback p {
+  font-family: 'Geist', sans-serif;
+  font-size: 0.9rem;
+  color: rgba(230, 237, 243, 0.7);
+  line-height: 1.7;
+  margin-bottom: 1rem;
+}
+
+.ticker-fallback strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.ticker-fallback-cta {
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--signal);
+  text-decoration: none;
+}
+.ticker-fallback-cta:hover { color: var(--signal-hover); }
+
+.ticker-loading {
+  padding: 1.5rem 1.25rem;
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.72rem;
+  color: rgba(230, 237, 243, 0.4);
+  letter-spacing: 0.08em;
+}
+
+.ticker-noscript {
+  padding: 1.25rem;
+  font-family: 'Geist', sans-serif;
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
 /* ── Fade-in ── */
 .fade-in { opacity: 0; transform: translateY(24px); transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
 .fade-in.visible { opacity: 1; transform: translateY(0); }
