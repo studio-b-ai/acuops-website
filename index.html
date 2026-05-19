@@ -16,6 +16,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@300;400;500;600&family=Caveat:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/header.css">
 
 <!-- HubSpot Tracking Code -->
 <script type="text/javascript" id="hs-script-loader" async defer src="//js.hs-scripts.com/49070660.js"></script>
@@ -1475,6 +1476,8 @@ footer .f-links a:hover { color: var(--text); }
 </head>
 <body>
 
+<div class="stripe thin"></div>
+
 <!-- ── Dispatch strip (operations floor tone-setter) ── -->
 <div class="dispatch">
   <div class="dispatch-inner">
@@ -1520,6 +1523,7 @@ footer .f-links a:hover { color: var(--text); }
       <span class="aud-btn-divider" aria-hidden="true"></span>
       <button class="aud-btn" data-aud="in-house" aria-pressed="false">IN-HOUSE</button>
     </div>
+    <a href="/founding-partners">Founding Partner</a>
     <a href="#demo" class="nav-cta">REQUEST DEMO &rarr;</a>
   </div>
 </nav>
@@ -1672,6 +1676,16 @@ footer .f-links a:hover { color: var(--text); }
       </div>
       <h3>Config-as-Code</h3>
       <p>Every customization project, every pipeline, every health probe versioned in GitHub. Branch protection, PR gates, audit trail. "Who changed that field?" becomes <code>git blame</code>.</p>
+    </div>
+
+    <div class="feature-card">
+      <div class="fc-header">
+        <span class="fc-label">07 · AI Review</span>
+        <span class="fc-status">Bundled</span>
+      </div>
+      <h3>AI-powered review + recovery</h3>
+      <p class="aud-res-block">Codex reviews every PR for non-obvious failure modes (DAC extension drift, endpoint mapping gaps, role-grant omissions), suggests recovery plans when CI fails, and answers natural-language deploy queries ("which packages last touched <code>UsrContainer*</code>?"). Bundled in every AcuOps plan.</p>
+      <p class="aud-ih-block">Codex reviews every PR for non-obvious failure modes (DAC extension drift, endpoint mapping gaps, role-grant omissions), suggests recovery plans when CI fails, and answers natural-language deploy queries ("which packages last touched <code>UsrContainer*</code>?"). Bundled in every AcuOps plan.</p>
     </div>
 
   </div>
@@ -2027,6 +2041,26 @@ footer .f-links a:hover { color: var(--text); }
       <div class="faq-a">No. AcuOps is sold on its own. No bundled services, no studio b. retainer required. If you later want fractional CTO work or an Acumatica roadmap engagement, that's a separate conversation — and not one the AcuOps meter pays for.</div>
     </div>
 
+    <div class="faq-item">
+      <div class="faq-q">I saw $300/month somewhere. Did the price change?</div>
+      <div class="faq-a">Yes. AcuOps launched at $300 while we validated the product on Studio B's own Acumatica portfolio. New customers join at $800/month. If you were quoted $300 in a prior conversation, you're eligible for the Founding Partner program at $500/month locked for life — <a href="/founding-partners">apply here</a> or reply to your prior thread and we'll route you in.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">What does "life of contract" mean in the Founding Partner program?</div>
+      <div class="faq-a">$500/month holds as long as your subscription is continuous and uninterrupted, through Acumatica version upgrades, AcuOps feature additions, and product evolution. Pricing resets only on cancellation+restart, acquisition of your company by a buyer that wants to renegotiate, or sale of AcuOps to a new owner.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">Why are you selecting Founding Partners instead of taking first-come-first-served?</div>
+      <div class="faq-a">The founding cohort becomes our public reference pool. We need deployment-pattern diversity (VAR, ISV, in-house mid-market, enterprise) so that every future prospect can talk to a Founding Partner who runs an Acumatica deployment that looks like theirs.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">What's in AcuOps that isn't in your free linter?</div>
+      <div class="faq-a">The free linter (<code>acumatica-lint</code> on PyPI — coming this quarter) is the deterministic check engine that you run locally or in your own CI. AcuOps adds: continuous gating on every PR, sandbox dry-run before prod, snapshot/rollback with integrity verification, Codex AI review, Slack telemetry, deploy-window enforcement, auto-qualify-and-label, recovery plan suggestions when things fail, and ~60 failure-mode guards encoded from real production incidents. The linter tells you what's wrong; AcuOps prevents broken from shipping.</div>
+    </div>
+
   </div>
 
   <!-- In-house FAQ — shown only in in-house view -->
@@ -2055,6 +2089,26 @@ footer .f-links a:hover { color: var(--text); }
     <div class="faq-item">
       <div class="faq-q">Do I need to be a studio b. client to buy AcuOps?</div>
       <div class="faq-a">No. AcuOps is sold on its own. No bundled services, no studio b. retainer required. If you later want fractional CTO work or an Acumatica roadmap engagement, that's a separate conversation — and not one the AcuOps meter pays for.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">I saw $300/month somewhere. Did the price change?</div>
+      <div class="faq-a">Yes. AcuOps launched at $300 while we validated the product on Studio B's own Acumatica portfolio. New customers join at $800/month. If you were quoted $300 in a prior conversation, you're eligible for the Founding Partner program at $500/month locked for life — <a href="/founding-partners">apply here</a> or reply to your prior thread and we'll route you in.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">What does "life of contract" mean in the Founding Partner program?</div>
+      <div class="faq-a">$500/month holds as long as your subscription is continuous and uninterrupted, through Acumatica version upgrades, AcuOps feature additions, and product evolution. Pricing resets only on cancellation+restart, acquisition of your company by a buyer that wants to renegotiate, or sale of AcuOps to a new owner.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">Why are you selecting Founding Partners instead of taking first-come-first-served?</div>
+      <div class="faq-a">The founding cohort becomes our public reference pool. We need deployment-pattern diversity (VAR, ISV, in-house mid-market, enterprise) so that every future prospect can talk to a Founding Partner who runs an Acumatica deployment that looks like theirs.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">What's in AcuOps that isn't in your free linter?</div>
+      <div class="faq-a">The free linter (<code>acumatica-lint</code> on PyPI — coming this quarter) is the deterministic check engine that you run locally or in your own CI. AcuOps adds: continuous gating on every PR, sandbox dry-run before prod, snapshot/rollback with integrity verification, Codex AI review, Slack telemetry, deploy-window enforcement, auto-qualify-and-label, recovery plan suggestions when things fail, and ~60 failure-mode guards encoded from real production incidents. The linter tells you what's wrong; AcuOps prevents broken from shipping.</div>
     </div>
 
   </div>
@@ -2193,6 +2247,7 @@ footer .f-links a:hover { color: var(--text); }
   <div class="f-links">
     <a href="https://b.studio">studio b.</a>
     <a href="https://bolt.b.studio">Bolt</a>
+    <a href="/founding-partners">Founding Partner</a>
     <a href="https://b.studio/partners.html">Partners</a>
     <a href="https://b.studio/privacy">Privacy</a>
   </div>
