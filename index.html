@@ -2650,6 +2650,20 @@ footer .f-links a:hover { color: var(--text); }
       '</tr>';
   }
 
+  /* Format the feed's deploy object {ci_run, commit, ago} into a single
+     human-readable string per spec line 56:
+       "ci-run-2473 · 12m ago · commit a4f8c12"
+     The feed serves deploy as an object; renderKvRow expects a string.
+     Without this helper, the row renders as "[object Object]" (codex P2 on PR #18). */
+  function formatDeploy(d) {
+    if (!d || typeof d !== 'object') return '';
+    var parts = [];
+    if (d.ci_run) parts.push(String(d.ci_run));
+    if (d.ago) parts.push(String(d.ago) + ' ago');
+    if (d.commit) parts.push('commit ' + String(d.commit));
+    return parts.join(' · ');
+  }
+
   function renderEvent(event) {
     var id = esc(event.id || '');
     var anchor = id ? ' id="evt-' + id + '"' : '';
@@ -2663,7 +2677,7 @@ footer .f-links a:hover { color: var(--text); }
     if (event.type === 'publish_success') {
       heading = 'PUBLISH SUCCESS' + (event.summary ? ' &middot; ' + esc(event.summary) : '');
       kvRows += renderKvRow('INSTANCE', event.instance);
-      kvRows += renderKvRow('DEPLOY', event.deploy);
+      kvRows += renderKvRow('DEPLOY', formatDeploy(event.deploy));
       kvRows += renderKvRow('IMPACT', event.impact);
     } else if (event.type === 'schema_drift_detected') {
       isAlert = true;
@@ -2671,7 +2685,7 @@ footer .f-links a:hover { color: var(--text); }
       kvRows += renderKvRow('INSTANCE', event.instance);
       kvRows += renderKvRow('ENTITY', event.entity);
       kvRows += renderKvRow('CHANGE', event.change);
-      kvRows += renderKvRow('DEPLOY', event.deploy);
+      kvRows += renderKvRow('DEPLOY', formatDeploy(event.deploy));
       kvRows += renderKvRow('IMPACT', event.impact);
     } else if (event.type === 'rollback_ready') {
       isAlert = true;
@@ -2679,7 +2693,7 @@ footer .f-links a:hover { color: var(--text); }
       kvRows += renderKvRow('INSTANCE', event.instance);
       kvRows += renderKvRow('ENTITY', event.entity);
       kvRows += renderKvRow('CHANGE', event.change);
-      kvRows += renderKvRow('DEPLOY', event.deploy);
+      kvRows += renderKvRow('DEPLOY', formatDeploy(event.deploy));
       kvRows += renderKvRow('IMPACT', event.impact);
     } else {
       heading = esc(event.type || 'EVENT');
