@@ -1658,6 +1658,83 @@ footer .f-links a:hover { color: var(--text); }
   .hero-margin-note { display: none; }
   .hero-margin-note-inline { display: block; }
 }
+
+/* ── 04 / 09 · Open source data strip ─────────────────────────────────────
+ * Horizontal monospace ribbon mirroring the live dispatch strip pattern.
+ * NOT a 3-column card grid (Mission Control AI-slop anti-pattern).
+ * Cells are link targets; on hover the cell text shifts to --signal.
+ * Per acuops-site-update-spec.md Pass 4 + Pass 5 + Pass 6 locks. */
+.oss-data-strip {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 1.25rem;
+  background: var(--surface);
+  border: 1px solid var(--signal-dim);
+  padding: 1.5rem 2rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 500;
+  font-size: 0.95rem;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+  border-radius: 0;
+}
+.oss-cell {
+  color: var(--text);
+  text-decoration: none;
+  transition: color 150ms ease-out;
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+}
+.oss-cell:hover,
+.oss-cell:focus-visible {
+  color: var(--signal);
+  outline: none;
+}
+.oss-cell:focus-visible {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.oss-cell-label {
+  color: inherit;
+}
+.oss-cell-dot {
+  color: var(--text);
+  opacity: 0.5;
+}
+.oss-cell-value {
+  color: inherit;
+}
+.oss-strip-divider {
+  color: var(--text);
+  opacity: 0.3;
+  user-select: none;
+}
+
+@media (max-width: 768px) {
+  .oss-data-strip {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+    padding: 1.25rem 1.5rem;
+  }
+  .oss-strip-divider {
+    display: none;
+  }
+  .oss-cell {
+    min-height: 48px;
+    padding: 0.25rem 0;
+    white-space: normal;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .oss-cell {
+    transition: none;
+  }
+}
 </style>
 </head>
 <body>
@@ -1779,7 +1856,7 @@ footer .f-links a:hover { color: var(--text); }
 
 <!-- ── Problem ── -->
 <section class="section fade-in">
-  <div class="section-eyebrow">01 / 08 · The problem</div>
+  <div class="section-eyebrow">01 / 09 · The problem</div>
   <div class="problem-grid">
     <!-- Problem title — paired -->
     <h2 class="problem-title aud-res-block">You've been stitching this together <em>per-client, for a decade.</em></h2>
@@ -1802,7 +1879,7 @@ footer .f-links a:hover { color: var(--text); }
 
 <!-- ── Features ── -->
 <section class="section fade-in" id="features">
-  <div class="section-eyebrow">02 / 08 · Capabilities</div>
+  <div class="section-eyebrow">02 / 09 · Capabilities</div>
   <div class="section-title">What runs against every instance.</div>
   <!-- Capabilities intro — paired (one phrase differs) -->
   <p class="section-intro aud-res-block">Twelve health probes. 146 post-publish tests. A CI/CD pipeline that pushes customizations through the Customization API. All three read-only against your clients' instances.</p>
@@ -1881,7 +1958,7 @@ footer .f-links a:hover { color: var(--text); }
 
 <!-- ── Live Event Ticker ── -->
 <section class="section fade-in" id="ticker">
-  <div class="section-eyebrow">03 / 08 · Live event ticker</div>
+  <div class="section-eyebrow">03 / 09 · Live event ticker</div>
   <div class="section-title">Running right now.</div>
   <p class="section-intro aud-res-block">Real publishes, real schema drift catches, real rollbacks from our own Acumatica portfolio. The feed below is live.</p>
   <p class="section-intro aud-ih-block">Real publishes, real schema drift catches, real rollbacks from our own Acumatica portfolio. The feed below is live.</p>
@@ -1895,9 +1972,32 @@ footer .f-links a:hover { color: var(--text); }
 
 <div class="section-rule"><hr></div>
 
+<!-- ── Open Source ── -->
+<section class="section fade-in" id="open-source">
+  <div class="section-eyebrow">04 / 09 · Open source</div>
+  <div class="section-title">What we ship back to the ecosystem.</div>
+  <p class="section-intro">The static-check engine inside AcuOps is open source. So are the static-analysis rules we're contributing upstream to Acumatica's own analyzer.</p>
+
+  <div class="oss-data-strip" role="region" aria-label="Open source contributions">
+    <a class="oss-cell" href="https://pypi.org/project/acumatica-lint/" target="_blank" rel="noopener" aria-label="acumatica-lint on PyPI">
+      <span class="oss-cell-label">acumatica-lint</span><span class="oss-cell-dot"> · </span><span class="oss-cell-value">just shipped · v0.1.0 on pypi</span>
+    </a>
+    <span class="oss-strip-divider" aria-hidden="true">│</span>
+    <a class="oss-cell" href="https://github.com/Acumatica/Acuminator/pull/671" target="_blank" rel="noopener" aria-label="Acuminator PR at Acumatica/Acuminator">
+      <span class="oss-cell-label">acuminator/pxsb</span><span class="oss-cell-dot"> · </span><span class="oss-cell-value">1 pr open at acumatica · 2 queued</span>
+    </a>
+    <span class="oss-strip-divider" aria-hidden="true">│</span>
+    <a class="oss-cell" href="https://github.com/studio-b-ai/acumatica-lint#what-it-catches" target="_blank" rel="noopener" aria-label="What the linter catches">
+      <span class="oss-cell-label">field</span><span class="oss-cell-dot"> · </span><span class="oss-cell-value">25 validators · 60+ failure modes encoded</span>
+    </a>
+  </div>
+</section>
+
+<div class="section-rule"><hr></div>
+
 <!-- ── How It Works ── -->
 <section class="section fade-in">
-  <div class="section-eyebrow">04 / 08 · How it works</div>
+  <div class="section-eyebrow">05 / 09 · How it works</div>
   <!-- How it works title — paired -->
   <div class="section-title aud-res-block">Point AcuOps at the instance.<br>Get Slack alerts <em>before your client calls.</em></div>
   <div class="section-title aud-ih-block">Point AcuOps at the instance.<br>Get Slack alerts <em>before the floor calls.</em></div>
@@ -1930,7 +2030,7 @@ footer .f-links a:hover { color: var(--text); }
 
 <!-- ── Slack Integration ── -->
 <section class="section fade-in">
-  <div class="section-eyebrow">05 / 08 · Slack integration</div>
+  <div class="section-eyebrow">06 / 09 · Slack integration</div>
   <!-- Slack title — paired -->
   <div class="section-title aud-res-block">Your workspace. Your alerts.<br>Your clients' workspaces <em>stay separate.</em></div>
   <div class="section-title aud-ih-block">Your workspace. Your alerts.<br><em>Routed to the team that owns the fix.</em></div>
@@ -2074,7 +2174,7 @@ footer .f-links a:hover { color: var(--text); }
 
 <!-- ── Pricing (receipt styling) ── -->
 <section class="section fade-in" id="pricing">
-  <div class="section-eyebrow">06 / 08 · Pricing</div>
+  <div class="section-eyebrow">07 / 09 · Pricing</div>
   <div class="section-title">$800 per month. Per Acumatica instance. <em>Flat.</em></div>
   <!-- Pricing intro — paired (volume line hidden on in-house) -->
   <p class="section-intro aud-res-block">Not per seat. Not per transaction. Not per alert. The meter is the instance — one number, one invoice. Every capability included. Volume discounts at 5+ and 20+ instances.</p>
@@ -2158,7 +2258,7 @@ footer .f-links a:hover { color: var(--text); }
 
 <!-- ── Reasoning ── -->
 <section class="section fade-in">
-  <div class="section-eyebrow">07 / 08 · Why this, not that</div>
+  <div class="section-eyebrow">08 / 09 · Why this, not that</div>
   <div class="section-title">Four decisions you should know about.</div>
   <!-- Reasoning intro — paired -->
   <p class="section-intro aud-res-block">We've priced this product three different ways. This is the one that survived first contact with our own client portfolio.</p>
@@ -2206,7 +2306,7 @@ footer .f-links a:hover { color: var(--text); }
 
 <!-- ── FAQ ── -->
 <section class="section fade-in" id="faq">
-  <div class="section-eyebrow">08 / 08 · Questions</div>
+  <div class="section-eyebrow">09 / 09 · Questions</div>
   <div class="section-title">Direct answers.</div>
   <p class="section-intro">If you're asking these, you're the right audience.</p>
 
