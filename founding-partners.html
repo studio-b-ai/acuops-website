@@ -1238,6 +1238,7 @@ footer .f-links a:focus-visible { outline: 2px solid var(--signal); outline-offs
       <!-- HubSpot form embed — Founding Partner application form (id=79d6a54b-fc3b-4bfd-adeb-549c9a396254, portal=49070660) -->
       <script charset="utf-8" type="text/javascript" src="//js.hsforms.net/forms/embed/v2.js"></script>
       <script>
+        var _hsFormReady = false;
         (function() {
           if (typeof hbspt !== 'undefined') {
             hbspt.forms.create({
@@ -1249,6 +1250,7 @@ footer .f-links a:focus-visible { outline: 2px solid var(--signal); outline-offs
               cssClass: "hs-form-console",
               onFormReady: function($form) {
                 // HubSpot embed loaded successfully — ensure visible + hide static fallback
+                _hsFormReady = true;
                 var hsTarget = document.getElementById('founding-partner-form');
                 var fallback = document.getElementById('fp-fallback-form');
                 if (hsTarget) hsTarget.style.display = 'block';
@@ -1259,18 +1261,14 @@ footer .f-links a:focus-visible { outline: 2px solid var(--signal); outline-offs
         })();
 
         // Backup: if onFormReady hasn't fired after 5 seconds, surface the static fallback
-        // (covers HubSpot script blocked by ad-blocker, network error, or other init failure)
+        // (covers HubSpot script blocked by ad-blocker, network error, iframe stub that never loads, etc.)
         setTimeout(function() {
+          if (_hsFormReady) return; // onFormReady already confirmed success
           var hsTarget = document.getElementById('founding-partner-form');
           var fallback = document.getElementById('fp-fallback-form');
           if (hsTarget && fallback) {
-            // Match form (modern inline), .hs-form (HubSpot inline class), OR iframe (modern iframe embed)
-            var rendered = hsTarget.querySelector('form, .hs-form, iframe');
-            var visible = hsTarget.offsetHeight > 0;
-            if (!rendered || !visible) {
-              hsTarget.style.display = 'none';
-              fallback.style.display = 'block';
-            }
+            hsTarget.style.display = 'none';
+            fallback.style.display = 'block';
           }
         }, 5000);
       </script>
