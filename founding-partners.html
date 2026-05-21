@@ -1245,23 +1245,34 @@ footer .f-links a:focus-visible { outline: 2px solid var(--signal); outline-offs
               portalId: "49070660",
               formId: "79d6a54b-fc3b-4bfd-adeb-549c9a396254",
               target: "#founding-partner-form",
-              cssClass: "hs-form-console"
+              css: "",
+              cssClass: "hs-form-console",
+              onFormReady: function($form) {
+                // HubSpot embed loaded successfully — ensure visible + hide static fallback
+                var hsTarget = document.getElementById('founding-partner-form');
+                var fallback = document.getElementById('fp-fallback-form');
+                if (hsTarget) hsTarget.style.display = 'block';
+                if (fallback) fallback.style.display = 'none';
+              }
             });
           }
         })();
 
-        // Fallback: if HubSpot embed hasn't rendered after 3 seconds, show static mailto form
+        // Backup: if onFormReady hasn't fired after 5 seconds, surface the static fallback
+        // (covers HubSpot script blocked by ad-blocker, network error, or other init failure)
         setTimeout(function() {
           var hsTarget = document.getElementById('founding-partner-form');
           var fallback = document.getElementById('fp-fallback-form');
           if (hsTarget && fallback) {
-            var rendered = hsTarget.querySelector('form, .hs-form');
-            if (!rendered) {
+            // Match form (modern inline), .hs-form (HubSpot inline class), OR iframe (modern iframe embed)
+            var rendered = hsTarget.querySelector('form, .hs-form, iframe');
+            var visible = hsTarget.offsetHeight > 0;
+            if (!rendered || !visible) {
               hsTarget.style.display = 'none';
               fallback.style.display = 'block';
             }
           }
-        }, 3000);
+        }, 5000);
       </script>
       <div id="founding-partner-form" aria-label="HubSpot application form loading"></div>
 

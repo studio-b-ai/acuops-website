@@ -2083,24 +2083,13 @@ footer .f-links a:hover { color: var(--text); }
       <p class="aud-ih-block">Every alert also posts to your ops channel. All probes, all deploys, one place:</p>
       <div class="slack-channel">
         <span class="slack-channel-icon">#</span>
-        <span class="slack-channel-name">deployments</span>
-        <span class="slack-channel-desc">
-          <span data-audience-only="reseller">Deploy results across all clients</span>
-          <span data-audience-only="in-house">Deploy results + rollback signals</span>
-        </span>
+        <span class="slack-channel-name">agent-notifications</span>
+        <span class="slack-channel-desc">All deploy events, sync results, and health probe status (no-action notifications)</span>
       </div>
       <div class="slack-channel">
         <span class="slack-channel-icon">#</span>
-        <span class="slack-channel-name">system-health</span>
-        <span class="slack-channel-desc">
-          <span data-audience-only="reseller">Health probe alerts across all clients</span>
-          <span data-audience-only="in-house">Health probe alerts</span>
-        </span>
-      </div>
-      <div class="slack-channel">
-        <span class="slack-channel-icon">#</span>
-        <span class="slack-channel-name">integration-issues</span>
-        <span class="slack-channel-desc">Sync and integration failures</span>
+        <span class="slack-channel-name">agent-escalations</span>
+        <span class="slack-channel-desc">Schema drift, integration failures, and anything requiring operator review</span>
       </div>
       <p class="slack-footnote aud-res-block">One event, two audiences. Zero manual forwarding.</p>
       <p class="slack-footnote aud-ih-block">One alert, right channel, right team.</p>
@@ -2360,7 +2349,7 @@ footer .f-links a:hover { color: var(--text); }
 
     <div class="faq-item">
       <div class="faq-q">What's in AcuOps that isn't in your free linter?</div>
-      <div class="faq-a">The free linter (<code>acumatica-lint</code> on PyPI — coming this quarter) is the deterministic check engine that you run locally or in your own CI. AcuOps adds: continuous gating on every PR, sandbox dry-run before prod, snapshot/rollback with integrity verification, Codex AI review, Slack telemetry, deploy-window enforcement, auto-qualify-and-label, recovery plan suggestions when things fail, and ~60 failure-mode guards encoded from real production incidents. The linter tells you what's wrong; AcuOps prevents broken from shipping.</div>
+      <div class="faq-a">The free linter (<code>acumatica-lint</code> on PyPI — <code>pip install acumatica-lint</code>) is the deterministic check engine that you run locally or in your own CI. AcuOps adds: continuous gating on every PR, sandbox dry-run before prod, snapshot/rollback with integrity verification, Codex AI review, Slack telemetry, deploy-window enforcement, auto-qualify-and-label, recovery plan suggestions when things fail, and ~60 failure-mode guards encoded from real production incidents. The linter tells you what's wrong; AcuOps prevents broken from shipping.</div>
     </div>
 
   </div>
@@ -2410,7 +2399,7 @@ footer .f-links a:hover { color: var(--text); }
 
     <div class="faq-item">
       <div class="faq-q">What's in AcuOps that isn't in your free linter?</div>
-      <div class="faq-a">The free linter (<code>acumatica-lint</code> on PyPI — coming this quarter) is the deterministic check engine that you run locally or in your own CI. AcuOps adds: continuous gating on every PR, sandbox dry-run before prod, snapshot/rollback with integrity verification, Codex AI review, Slack telemetry, deploy-window enforcement, auto-qualify-and-label, recovery plan suggestions when things fail, and ~60 failure-mode guards encoded from real production incidents. The linter tells you what's wrong; AcuOps prevents broken from shipping.</div>
+      <div class="faq-a">The free linter (<code>acumatica-lint</code> on PyPI — <code>pip install acumatica-lint</code>) is the deterministic check engine that you run locally or in your own CI. AcuOps adds: continuous gating on every PR, sandbox dry-run before prod, snapshot/rollback with integrity verification, Codex AI review, Slack telemetry, deploy-window enforcement, auto-qualify-and-label, recovery plan suggestions when things fail, and ~60 failure-mode guards encoded from real production incidents. The linter tells you what's wrong; AcuOps prevents broken from shipping.</div>
     </div>
 
   </div>
