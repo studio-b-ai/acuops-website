@@ -1078,7 +1078,8 @@ body[data-audience="in-house"] .aud-res-div {
   padding: 0.9rem 1.6rem 1.2rem;
   border-top: 1px solid rgba(238, 234, 226, 0.08);
 }
-.alert-sample-actions button {
+.alert-sample-actions .as-action {
+  display: inline-block;
   background: transparent;
   color: var(--text);
   border: 1px solid rgba(238, 234, 226, 0.2);
@@ -1092,7 +1093,7 @@ body[data-audience="in-house"] .aud-res-div {
   cursor: default;
   transition: all 0.2s;
 }
-.alert-sample-actions button:first-child {
+.alert-sample-actions .as-action:first-child {
   background: var(--signal);
   border-color: var(--signal);
   color: var(--text);
@@ -1679,7 +1680,7 @@ footer .f-links a:hover { color: var(--text); }
   background: var(--surface);
   border: 1px solid var(--signal-dim);
   padding: 1.5rem 2rem;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: 'Geist Mono', monospace;
   font-weight: 500;
   font-size: 0.95rem;
   color: var(--text);
@@ -2085,8 +2086,11 @@ footer .f-links a:hover { color: var(--text); }
 
   </div>
 
-  <!-- Sample alert: spec-sheet moment showing what an AcuOps alert actually looks like -->
-  <div class="alert-sample" role="img" aria-label="Sample Slack alert preview">
+  <!-- Sample alert: spec-sheet moment showing what an AcuOps alert actually looks like.
+       role="figure" (not "img") so screen readers can still surface the sample buttons
+       as part of the figure's narrative; buttons rendered as <span> since they're
+       presentational, not interactive. -->
+  <div class="alert-sample" role="figure" aria-label="Sample Slack alert preview">
     <div class="alert-sample-head">
       <span class="as-channel">acuops-alerts</span>
       <span>2026-04-17 · 14:23:05 CDT</span>
@@ -2101,15 +2105,15 @@ footer .f-links a:hover { color: var(--text); }
       <dl>
         <dt>instance</dt><dd>[client-1].acumatica.com</dd>
         <dt>entity</dt><dd>SalesOrder</dd>
-        <dt>change</dt><dd>UsrHubSpotDealId type flipped <em>Decimal → String</em></dd>
-        <dt>deploy</dt><dd>ci-run-4821 · 8m ago · commit 2fe765b</dd>
-        <dt>impact</dt><dd>3 downstream syncs paused · rollback ready</dd>
+        <dt>change</dt><dd>UsrHubSpotDealId type flipped <em>Decimal &rarr; String</em></dd>
+        <dt>deploy</dt><dd>ci-run-4821 &middot; 8m ago &middot; commit 2fe765b</dd>
+        <dt>impact</dt><dd>3 downstream syncs paused &middot; rollback ready</dd>
       </dl>
     </div>
-    <div class="alert-sample-actions">
-      <button type="button">Acknowledge</button>
-      <button type="button">Roll back</button>
-      <button type="button">Open dashboard</button>
+    <div class="alert-sample-actions" aria-hidden="true">
+      <span class="as-action">Acknowledge</span>
+      <span class="as-action">Roll back</span>
+      <span class="as-action">Open dashboard</span>
     </div>
   </div>
 
