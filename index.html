@@ -25,7 +25,7 @@
 /* ══════════════════════════════════════════════════
    AcuOps — "Mission Control"
    Deep slate + terminal green + phosphor green.
-   Dark dashboard register. VAR-facing. Infrastructural.
+   Dark dashboard register. Operator-facing. Infrastructural.
 
    Rhymes with Studio B (Broadsheet Verde) and Bolt (Cut Sheet).
    Shares family grammar: mono eyebrows, hairline rules, editorial
@@ -65,11 +65,17 @@
   --pulse: #3FB950;                /* phosphor green LED */
   --alert: #F85149;                /* critical red, rare */
 
-  /* Text on dark */
+  /* Text on dark — contrast ratios against --bg #0D1117:
+       --text          ~14.6:1  AAA body
+       --text-secondary ~10.2:1  AAA body
+       --text-tertiary  ~5.4:1   AA body / AAA large
+       --text-dim       ~2.5:1   FAILS AA — placeholder-only role.
+     Never use --text-dim on body or label copy. Placeholder text
+     is exempt from WCAG SC 1.4.3 (informational, not content). */
   --text: #E6EDF3;                 /* primary cool white */
   --text-secondary: #B1BAC4;       /* muted body */
   --text-tertiary: #7D8590;        /* dim metadata */
-  --text-dim: #484F58;             /* faintest */
+  --text-dim: #484F58;             /* placeholder-only (see contrast note above) */
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -291,6 +297,21 @@ nav::after {
   height: 1px;
   background: var(--signal);
   opacity: 0.6;
+}
+
+/* Hero tagline — promoted from footer per design audit P-5.
+   Compressed positioning statement: "we run this ourselves" + per-instance pricing. */
+.hero-tagline {
+  font-family: 'Geist', sans-serif;
+  font-style: italic;
+  font-weight: 300;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: var(--text-secondary);
+  letter-spacing: -0.005em;
+  margin: -0.4rem 0 1.3rem;
+  max-width: 720px;
+  animation: rise 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.22s both;
 }
 
 .hero h1 {
@@ -1639,7 +1660,7 @@ footer .f-links a:hover { color: var(--text); }
   user-select: none;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 900px) {
   .oss-data-strip {
     flex-direction: column;
     align-items: flex-start;
@@ -1714,6 +1735,7 @@ footer .f-links a:hover { color: var(--text); }
 <!-- ── Hero ── -->
 <section class="hero">
   <div class="hero-eyebrow">AcuOps · Acumatica DevOps Platform</div>
+  <p class="hero-tagline">Software we run on our own Acumatica portfolio. Per instance, not per seat.</p>
   <h1>Acumatica's a great ERP.<br><em>The operations layer is an <span class="sig"><span class="hero-punchline-wrap"><span class="exercise-word">exercise
       <!-- Hand-drawn circle around "exercise" — one-pass SVG path with slight wobble -->
       <svg class="exercise-circle" aria-hidden="true"
