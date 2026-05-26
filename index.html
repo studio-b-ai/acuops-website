@@ -1627,17 +1627,23 @@ footer .f-links a:hover { color: var(--text); }
   animation: drawCircle 0.6s cubic-bezier(0.16, 1, 0.3, 1) 1.15s both;
 }
 
+.reader-target {
+  position: relative;
+  display: inline;
+  white-space: nowrap;
+}
+
 .hero-margin-note {
   font-family: 'Caveat', cursive;
   font-weight: 600;
-  font-size: 1.35rem;
+  font-size: 1.75rem;
   color: #34D399;
   transform: rotate(-4deg);
   transform-origin: left center;
   white-space: nowrap;
   position: absolute;
   top: 50%;
-  left: calc(100% + 2.5rem);
+  left: calc(100% + 0.35rem);
   translate: 0 -50%;
   animation: fadeInAnnotation 0.5s ease-out 1.75s both;
   pointer-events: none;
@@ -1647,7 +1653,7 @@ footer .f-links a:hover { color: var(--text); }
 .hero-margin-note-inline {
   font-family: 'Caveat', cursive;
   font-weight: 600;
-  font-size: 1.15rem;
+  font-size: 1.5rem;
   color: #34D399;
   margin-top: 0.5rem;
   display: none;
@@ -1817,7 +1823,7 @@ footer .f-links a:hover { color: var(--text); }
           fill="none"
         />
       </svg>
-    </span> left to the reader</span>.<span class="hero-margin-note">&#8592; this is the part where you eat the cost.</span></span></em></h1>
+    </span> left to the <span class="reader-target">reader<span class="hero-margin-note">&#8592; this is the part where you eat the cost.</span></span></span>.</span></em></h1>
   <!-- Mobile/narrow-viewport inline version of the annotation -->
   <div class="hero-margin-note-inline">&#8592; this is the part where you eat the cost.</div>
   <div class="hero-lower">
