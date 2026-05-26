@@ -479,10 +479,59 @@ body[data-audience="in-house"] .aud-res-div {
   animation: rise 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.35s both;
 }
 
+.hero-body-col {
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem;
+}
+
 .hero-body {
   font-size: 1rem;
   line-height: 1.85;
   color: var(--text-secondary);
+  margin: 0;
+}
+
+/* Hero CTA row — primary (Request demo) + secondary (Founding Partner).
+   Surfaces Founding Partner out of nav-link obscurity per audit H-3. */
+.hero-cta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+}
+.hero-cta {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.85rem 1.4rem;
+  border-radius: 0;
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: background 0.25s, color 0.25s, border-color 0.25s;
+  white-space: nowrap;
+}
+.hero-cta-primary {
+  color: var(--bg);
+  background: var(--signal);
+  border: 1px solid var(--signal);
+}
+.hero-cta-primary:hover {
+  background: var(--signal-hover);
+  border-color: var(--signal-hover);
+  color: var(--bg);
+}
+.hero-cta-secondary {
+  color: var(--signal);
+  background: transparent;
+  border: 1px solid var(--signal);
+}
+.hero-cta-secondary:hover {
+  background: var(--signal);
+  color: var(--bg);
 }
 
 /* Inverted ivory printout — one of the two light objects on the page.
@@ -1827,9 +1876,16 @@ footer .f-links a:hover { color: var(--text); }
   <!-- Mobile/narrow-viewport inline version of the annotation -->
   <div class="hero-margin-note-inline">&#8592; this is the part where you eat the cost.</div>
   <div class="hero-lower">
-    <!-- Hero body — paired copy, one per audience -->
-    <p class="hero-body aud-res-block">When a minor release drifts a DAC and the customization breaks at 6pm Friday, it's not Acumatica's phone that rings &mdash; it's yours. AcuOps is the operations layer Acumatica didn't ship. Twelve probes, 146 post-publish tests, a CI/CD pipeline through the Customization API. Read-only, session-gated. Credentials stay in your vault, not ours.</p>
-    <p class="hero-body aud-ih-block">When a minor release drifts a DAC and the customization breaks at 6pm Friday, it's not Acumatica's phone that rings — it's the operations floor's. AcuOps is the DevOps layer your ERP budget didn't include. Twelve probes, 146 post-publish tests, a CI/CD pipeline through the Customization API. Read-only API, session-gated. Credentials stay in your vault, not ours.</p>
+    <div class="hero-body-col">
+      <!-- Hero body — paired copy, one per audience -->
+      <p class="hero-body aud-res-block">When a minor release drifts a DAC and the customization breaks at 6pm Friday, it's not Acumatica's phone that rings &mdash; it's yours. AcuOps is the operations layer Acumatica didn't ship. Twelve probes, 146 post-publish tests, a CI/CD pipeline through the Customization API. Read-only, session-gated. Credentials stay in your vault, not ours.</p>
+      <p class="hero-body aud-ih-block">When a minor release drifts a DAC and the customization breaks at 6pm Friday, it's not Acumatica's phone that rings &mdash; it's the operations floor's. AcuOps is the DevOps layer your ERP budget didn't include. Twelve probes, 146 post-publish tests, a CI/CD pipeline through the Customization API. Read-only API, session-gated. Credentials stay in your vault, not ours.</p>
+      <!-- Hero CTAs: primary (request demo) + secondary (founding partner) -->
+      <div class="hero-cta-row">
+        <a href="#demo" class="hero-cta hero-cta-primary">Request demo &rarr;</a>
+        <a href="/founding-partners" class="hero-cta hero-cta-secondary">Apply for Founding Partner &rarr;</a>
+      </div>
+    </div>
     <aside class="hero-panel">
       <div class="hero-panel-header">
         <span><span class="led"></span>Operations panel</span>
