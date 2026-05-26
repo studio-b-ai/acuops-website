@@ -1244,55 +1244,6 @@ body[data-audience="in-house"] .aud-res-div {
   width: 16px;
   text-align: center;
 }
-.pricing-volume {
-  margin-top: 1.6rem;
-  padding-top: 1.2rem;
-  border-top: 1px solid var(--printout-rule);
-  font-family: 'Geist Mono', monospace;
-  font-size: 0.78rem;
-  color: var(--text);
-  letter-spacing: 0.04em;
-}
-.pv-heading {
-  font-size: 0.66rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--text-tertiary);
-  margin-bottom: 0.7rem;
-  font-weight: 500;
-}
-.pv-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  padding: 0.45rem 0;
-  border-bottom: 1px dashed var(--printout-rule);
-  font-size: 0.8rem;
-}
-.pv-row:last-child { border-bottom: none; }
-.pv-price {
-  font-family: 'Geist', sans-serif;
-  font-size: 1.35rem;
-  font-weight: 600;
-  color: var(--text);
-  letter-spacing: -0.02em;
-  font-variant-numeric: tabular-nums;
-}
-.pv-unit {
-  font-family: 'Geist Mono', monospace;
-  font-size: 0.6em;
-  font-weight: 400;
-  color: var(--text-tertiary);
-  letter-spacing: 0.04em;
-  padding-left: 0.15em;
-}
-.pv-condition {
-  font-size: 0.72rem;
-  color: var(--text-tertiary);
-  text-transform: uppercase;
-  letter-spacing: 0.07em;
-}
-
 /* Flat-rate copy blurb inside pricing card */
 .pricing-copy {
   margin-top: 1.4rem;
@@ -1304,63 +1255,146 @@ body[data-audience="in-house"] .aud-res-div {
   line-height: 1.65;
 }
 
-/* Enterprise tier line inside pricing card */
-.pricing-enterprise {
-  margin-top: 1.6rem;
-  padding: 1rem 1.2rem;
-  border: 1px solid var(--printout-rule);
-  font-family: 'Geist', sans-serif;
-  font-size: 0.84rem;
-  color: var(--text);
-  line-height: 1.6;
-  border-radius: 0;
+/* ── Pricing tiers row (Wholesale + Enterprise) — dark cards below the ivory pricing card.
+   Audit H-2: split overstuffed pricing card into clearer decision paths. */
+.pricing-tiers-row {
+  max-width: 720px;
+  margin: 1.5rem auto 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
 }
-.pe-label {
+.pricing-tier-card {
+  background: var(--surface);
+  border: 1px solid var(--rule-light);
+  padding: 1.5rem 1.6rem 1.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+.pricing-tier-card .ptc-eyebrow {
   font-family: 'Geist Mono', monospace;
-  font-size: 0.72rem;
-  font-weight: 600;
+  font-size: 0.7rem;
+  font-weight: 500;
   letter-spacing: 0.1em;
   text-transform: uppercase;
+  color: var(--signal);
+}
+.pricing-tier-card .ptc-body {
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  margin: 0;
+}
+.pricing-tier-card .ptc-detail {
+  font-size: 0.78rem;
+  line-height: 1.55;
+  color: var(--text-tertiary);
+  margin: 0.4rem 0 0;
+}
+.pricing-tier-card .ptc-tier-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 0.5rem 0;
+  border-top: 1px dashed var(--rule-light);
+  font-family: 'Geist Mono', monospace;
+}
+.pricing-tier-card .ptc-tier-row:first-of-type { border-top: 1px solid var(--rule); margin-top: 0.4rem; }
+.pricing-tier-card .ptc-price {
+  font-family: 'Geist', sans-serif;
+  font-size: 1.3rem;
+  font-weight: 600;
   color: var(--text);
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+.pricing-tier-card .ptc-unit {
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.6em;
+  font-weight: 400;
+  color: var(--text-tertiary);
+  letter-spacing: 0.04em;
+  padding-left: 0.15em;
+}
+.pricing-tier-card .ptc-condition {
+  font-size: 0.72rem;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
 }
 
-/* Founding partner sub-block inside pricing card */
-.pricing-founding {
-  margin-top: 1.6rem;
-  padding-top: 1.4rem;
-  border-top: 1px solid var(--ink-15);
+/* ── Founding Partner band — full-width distinct callout below the tier row.
+   Green top border accent signals "this is the most strategic offer." */
+.pricing-founding-band {
+  max-width: 720px;
+  margin: 2rem auto 0;
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-top: 3px solid var(--signal);
+  padding: 1.8rem 2rem 1.6rem;
 }
-.pf-eyebrow {
+.pricing-founding-band .pfb-eyebrow {
   font-family: 'Geist Mono', monospace;
-  font-size: 0.62rem;
-  font-weight: 600;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--text-tertiary);
-  margin-bottom: 0.9rem;
-}
-.pf-body {
-  font-family: 'Geist', sans-serif;
-  font-size: 0.88rem;
-  color: var(--text);
-  line-height: 1.65;
-}
-.pf-body p { margin: 0 0 1rem; }
-.pf-body strong { font-weight: 600; color: var(--text); }
-.pf-cta {
-  display: inline-block;
-  font-family: 'Geist', sans-serif;
-  font-size: 0.88rem;
+  font-size: 0.7rem;
   font-weight: 500;
-  color: var(--text);
-  text-decoration: none;
-  border-bottom: 1px solid var(--signal);
-  padding-bottom: 1px;
-  transition: color 0.15s ease, border-bottom-color 0.15s ease;
-}
-.pf-cta:hover {
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
   color: var(--signal);
-  border-bottom-color: var(--signal-hover);
+  margin-bottom: 0.8rem;
+}
+.pricing-founding-band .pfb-headline {
+  font-family: 'Geist', sans-serif;
+  font-size: 1.35rem;
+  font-weight: 400;
+  line-height: 1.35;
+  color: var(--text);
+  margin: 0 0 0.9rem;
+  letter-spacing: -0.01em;
+}
+.pricing-founding-band .pfb-price {
+  font-weight: 600;
+  color: var(--signal);
+  font-variant-numeric: tabular-nums;
+}
+.pricing-founding-band .pfb-unit {
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.6em;
+  font-weight: 400;
+  color: var(--text-tertiary);
+  letter-spacing: 0.04em;
+  padding-left: 0.15em;
+}
+.pricing-founding-band .pfb-body {
+  font-size: 0.9rem;
+  line-height: 1.65;
+  color: var(--text-secondary);
+  margin: 0 0 1.2rem;
+}
+.pricing-founding-band .pfb-body strong { color: var(--text); font-weight: 500; }
+.pricing-founding-band .pfb-cta {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.7rem 1.2rem;
+  border-radius: 0;
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--signal);
+  background: transparent;
+  border: 1px solid var(--signal);
+  transition: background 0.25s, color 0.25s;
+}
+.pricing-founding-band .pfb-cta:hover {
+  background: var(--signal);
+  color: var(--bg);
+}
+
+@media (max-width: 720px) {
+  .pricing-tiers-row { grid-template-columns: 1fr; }
 }
 
 /* ── Reasoning: 2x2 grid ── */
@@ -2209,30 +2243,33 @@ footer .f-links a:hover { color: var(--text); }
         <div class="pricing-copy">
           Flat rate. No per-seat fees, no transaction metering, no setup costs. Orchestration, sandbox gates, snapshot/rollback, Codex AI review, Slack telemetry, deploy-window enforcement, and the ~60 production failure modes we've encoded as guards from real Acumatica incidents. Monthly billing, no contract required.
         </div>
-
-        <!-- Volume tiers — for anyone running multiple instances -->
-        <div class="pricing-volume" data-audience-only="reseller">
-          <div class="pv-heading">Wholesale at scale</div>
-          <div class="pv-row"><span class="pv-price">$650<span class="pv-unit">/mo</span></span><span class="pv-condition">at 5+ instances</span></div>
-          <div class="pv-row"><span class="pv-price">$500<span class="pv-unit">/mo</span></span><span class="pv-condition">at 20+ instances</span></div>
-        </div>
-
-        <!-- Enterprise tier -->
-        <div class="pricing-enterprise">
-          <span class="pe-label">AcuOps Enterprise</span> — $2,500/mo + $400 per instance. Adds multi-tenant VAR console, white-label, dedicated sandbox, SOC2 audit support, custom rule authoring, and SLA.
-        </div>
-
-        <!-- Founding partner sub-block -->
-        <div class="pricing-founding">
-          <div class="pf-eyebrow">Founding Partner</div>
-          <div class="pf-body">
-            <p>We're selecting <strong>7–10 founding partners</strong> who lock in at <strong>$500/mo for the life of their subscription</strong> — in exchange for a published case study, reference availability, and beta-feature feedback. First-come isn't enough; we're choosing partners across VAR, ISV, and in-house deployment patterns to ensure the founding cohort represents the Acumatica ecosystem.</p>
-            <a href="/founding-partners" class="pf-cta">Apply for Founding Partner →</a>
-          </div>
-        </div>
       </div>
     </div>
   </div>
+
+  <!-- Wholesale + Enterprise tiers — 2-column row below the main pricing card -->
+  <div class="pricing-tiers-row">
+    <div class="pricing-tier-card">
+      <div class="ptc-eyebrow">Wholesale at scale</div>
+      <p class="ptc-body">For VARs running client portfolios, enterprise IT running multi-tenant Acumatica, and ISVs bundling AcuOps into customer deploys.</p>
+      <div class="ptc-tier-row"><span class="ptc-price">$650<span class="ptc-unit">/mo</span></span><span class="ptc-condition">at 5+ instances</span></div>
+      <div class="ptc-tier-row"><span class="ptc-price">$500<span class="ptc-unit">/mo</span></span><span class="ptc-condition">at 20+ instances</span></div>
+    </div>
+    <div class="pricing-tier-card">
+      <div class="ptc-eyebrow">AcuOps Enterprise</div>
+      <p class="ptc-body">For organizations running Acumatica across multiple business units, with compliance and white-label requirements.</p>
+      <div class="ptc-tier-row"><span class="ptc-price">$2,500<span class="ptc-unit">/mo</span></span><span class="ptc-condition">+ $400 per instance</span></div>
+      <p class="ptc-detail">Adds multi-tenant console, white-label, dedicated sandbox, SOC2 audit support, custom rule authoring, and SLA.</p>
+    </div>
+  </div>
+
+  <!-- Founding Partner band — distinct visual treatment below the tier row -->
+  <aside class="pricing-founding-band" aria-labelledby="founding-band-headline">
+    <div class="pfb-eyebrow">Founding Partner</div>
+    <h3 class="pfb-headline" id="founding-band-headline"><span class="pfb-price">$500<span class="pfb-unit">/mo</span></span> for the life of the subscription.</h3>
+    <p class="pfb-body">We're selecting <strong>7&ndash;10 founding partners</strong> in exchange for a published case study, reference availability, and beta-feature feedback. First-come isn't enough &mdash; we're choosing partners across VAR, ISV, in-house mid-market, and enterprise deployment patterns to ensure the founding cohort represents the Acumatica ecosystem.</p>
+    <a href="/founding-partners" class="pfb-cta">Apply for Founding Partner &rarr;</a>
+  </aside>
 </section>
 
 <div class="section-rule"><hr></div>
