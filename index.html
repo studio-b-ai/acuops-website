@@ -2315,10 +2315,13 @@ footer .f-links a:hover { color: var(--text); }
   var emailEl  = document.getElementById('gilint-email');
   var submitEl = document.getElementById('gilint-submit');
   var results  = document.getElementById('gilint-results');
+  var loading  = false; /* true while a request is in flight */
 
-  /* Disable submit while textarea is empty */
+  /* Disable submit while textarea is empty OR a request is in flight */
   textarea.addEventListener('input', function () {
-    submitEl.disabled = textarea.value.trim() === '';
+    if (!loading) {
+      submitEl.disabled = textarea.value.trim() === '';
+    }
   });
 
   function escHtml(str) {
@@ -2393,6 +2396,7 @@ footer .f-links a:hover { color: var(--text); }
     if (!xml) return;
 
     /* In-flight state */
+    loading = true;
     submitEl.classList.add('gilint-loading');
     submitEl.disabled = true;
     submitEl.textContent = 'Linting…';
@@ -2415,6 +2419,7 @@ footer .f-links a:hover { color: var(--text); }
         results.innerHTML = '<div class="gilint-notice">Request failed — check your connection and try again.</div>';
       })
       .finally(function () {
+        loading = false;
         submitEl.classList.remove('gilint-loading');
         submitEl.disabled = textarea.value.trim() === '';
         submitEl.textContent = 'Lint my GI →';
