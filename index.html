@@ -1570,6 +1570,13 @@ footer .f-links a:hover { color: var(--text); }
   .dispatch-inner { padding: 0.55rem 1.5rem; gap: 1rem; font-size: 0.62rem; }
   .dispatch-inner > span:nth-child(n+4) { display: none; }
   .pricing-features { grid-template-columns: 1fr; }
+  /* Responsive fixes for inline-grid merged sections */
+  .merged-slack-grid { grid-template-columns: 1fr !important; }
+  .merged-alert-setup-grid { grid-template-columns: 1fr !important; }
+  .merged-decisions-grid { grid-template-columns: repeat(2, 1fr) !important; }
+}
+@media (max-width: 640px) {
+  .merged-decisions-grid { grid-template-columns: 1fr !important; }
 }
 
 @media (max-width: 640px) {
@@ -2290,7 +2297,7 @@ footer .f-links a:hover { color: var(--text); }
 
     <!-- Slack channel layout — compact 2-col with alert sample inline -->
     <p class="section-intro" style="margin:1.5rem 0 1rem; font-size:0.88rem;">AcuOps lands in the Slack workspace tied to the Acumatica instance &mdash; your own, a customer's, or a client's. Every alert posts to the right channel for that instance, and every alert also rolls up to your operator workspace. One event, the right audiences, zero manual forwarding.</p>
-    <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.2rem; align-items:start;">
+    <div class="merged-slack-grid" style="display:grid; grid-template-columns:1fr 1fr; gap:1.2rem; align-items:start;">
       <div>
         <div class="slack-panel" style="height:100%;">
           <div class="slack-panel-label">Per-instance</div>
@@ -2330,7 +2337,7 @@ footer .f-links a:hover { color: var(--text); }
     </div>
 
     <!-- Sample alert + setup steps side by side -->
-    <div style="margin-top:1.5rem; display:grid; grid-template-columns:1.1fr 0.9fr; gap:1.5rem; align-items:start;">
+    <div class="merged-alert-setup-grid" style="margin-top:1.5rem; display:grid; grid-template-columns:1.1fr 0.9fr; gap:1.5rem; align-items:start;">
       <div class="alert-sample" role="figure" aria-label="Sample Slack alert preview">
         <div class="alert-sample-head">
           <span class="as-channel">acuops-alerts</span>
@@ -2689,7 +2696,7 @@ footer .f-links a:hover { color: var(--text); }
     <div class="section-title" style="font-size:clamp(1.3rem,2vw,1.75rem); margin-bottom:0.4rem;">Four decisions you should know about.</div>
     <p class="section-intro" style="margin-bottom:1.5rem; font-size:0.88rem;">We've priced this product three different ways. This is the one that survived first contact with our own Acumatica portfolio.</p>
 
-    <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:1rem 1.5rem; margin-top:0;">
+    <div class="merged-decisions-grid" style="display:grid; grid-template-columns:repeat(4,1fr); gap:1rem 1.5rem; margin-top:0;">
       <div class="reason-item" style="padding-top:0.9rem;">
         <div class="r-num">Decision 01</div>
         <h3 style="font-size:0.96rem; margin-bottom:0.4rem;">Per instance, not per seat.</h3>
