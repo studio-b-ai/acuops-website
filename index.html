@@ -463,7 +463,7 @@ nav::after {
 .section {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 5rem 2.5rem;
+  padding: 3rem 2.5rem;
 }
 .section-rule {
   max-width: 1200px;
@@ -690,6 +690,72 @@ nav::after {
 .fade-in { opacity: 0; transform: translateY(24px); transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
 .fade-in.visible { opacity: 1; transform: translateY(0); }
 
+/* ── Ticker: capped 3-event window with bottom fade ── */
+.ticker-events-window {
+  position: relative;
+  max-height: 320px;
+  overflow: hidden;
+}
+.ticker-events-window::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 80px;
+  background: linear-gradient(to bottom, transparent, var(--surface));
+  pointer-events: none;
+}
+
+/* ── FAQ accordion ── */
+.faq-list { margin-top: 2rem; border-top: 1px solid var(--rule); }
+details.faq-item {
+  border-bottom: 1px solid var(--rule-light);
+}
+details.faq-item summary {
+  list-style: none;
+  cursor: pointer;
+  padding: 1.3rem 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1.5rem;
+}
+details.faq-item summary::-webkit-details-marker { display: none; }
+details.faq-item summary::after {
+  content: '+';
+  font-family: 'Geist Mono', monospace;
+  font-size: 1.1rem;
+  font-weight: 300;
+  color: var(--signal);
+  flex-shrink: 0;
+  transition: transform 0.2s;
+  line-height: 1;
+}
+details.faq-item[open] summary::after {
+  content: '−';
+}
+details.faq-item summary:hover .faq-q { color: var(--text); }
+.faq-answer-body {
+  padding: 0 0 1.3rem;
+  max-width: 680px;
+}
+
+/* ── 2-column pricing features list ── */
+.pricing-features {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  column-gap: 1.5rem;
+}
+.pricing-features li {
+  padding: 0.55rem 0;
+  font-size: 0.85rem;
+}
+
+@media (max-width: 900px) {
+  .features-grid { grid-template-columns: repeat(2, 1fr); }
+  .pricing-features { grid-template-columns: 1fr; }
+}
+
 /* ── Problem (two-column editorial) ── */
 .problem-grid {
   display: grid;
@@ -722,15 +788,15 @@ nav::after {
 /* ── Features: rack-style cards with status dots ── */
 .features-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1.2rem;
-  margin-top: 3rem;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin-top: 2.5rem;
 }
 .feature-card {
   background: var(--surface);
   border: 1px solid var(--rule-light);
   border-radius: 0;
-  padding: 1.9rem 1.7rem 1.7rem;
+  padding: 1.4rem 1.3rem 1.3rem;
   position: relative;
   overflow: hidden;
   transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s, border-color 0.35s;
@@ -788,14 +854,14 @@ nav::after {
 .feature-card h3 {
   font-family: 'Geist', sans-serif;
   font-weight: 500;
-  font-size: 1.18rem;
+  font-size: 1rem;
   letter-spacing: -0.01em;
   line-height: 1.25;
   color: var(--text);
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.55rem;
 }
 .feature-card p {
-  font-size: 0.88rem;
+  font-size: 0.83rem;
   color: var(--text-secondary);
   line-height: 1.7;
 }
@@ -816,7 +882,7 @@ nav::after {
   gap: 2rem;
   margin-top: 3rem;
 }
-.step { padding: 1.8rem 0 0; border-top: 1px solid var(--rule); }
+.step { padding: 1.2rem 0 0; border-top: 1px solid var(--rule); }
 .step-number {
   font-family: 'Geist Mono', monospace;
   font-size: 0.65rem;
@@ -847,7 +913,7 @@ nav::after {
   background: var(--surface);
   border: 1px solid var(--rule-light);
   border-radius: 0;
-  padding: 2rem 1.7rem;
+  padding: 1.3rem 1.4rem;
 }
 .slack-panel-label {
   font-family: 'Geist Mono', monospace;
@@ -936,7 +1002,7 @@ nav::after {
   font-weight: 500;
   margin-right: 0.25rem;
 }
-.alert-sample-body { padding: 1.4rem 1.6rem; font-size: 0.82rem; line-height: 1.6; }
+.alert-sample-body { padding: 1rem 1.4rem; font-size: 0.82rem; line-height: 1.6; }
 .alert-sample-body .as-bot {
   display: flex;
   align-items: center;
@@ -1069,7 +1135,7 @@ nav::after {
   font-weight: 500;
 }
 .pricing-head .ph-meta { color: rgba(244, 240, 230, 0.55); font-weight: 400; }
-.pricing-body { padding: 2.5rem 2rem 2rem; }
+.pricing-body { padding: 1.75rem 2rem 1.5rem; }
 .pricing-row {
   display: flex;
   justify-content: space-between;
@@ -1092,9 +1158,9 @@ nav::after {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  padding: 1.8rem 0 0.4rem;
+  padding: 1.2rem 0 0.3rem;
   border-top: 1px solid var(--rule);
-  margin-top: 1rem;
+  margin-top: 0.8rem;
 }
 .pricing-total-label {
   font-family: 'Geist Mono', monospace;
@@ -1129,7 +1195,7 @@ nav::after {
 }
 .pricing-features {
   list-style: none;
-  padding: 1.6rem 0 0;
+  padding: 1rem 0 0;
   margin: 0;
   border-top: 1px solid var(--printout-rule);
 }
@@ -1168,7 +1234,7 @@ nav::after {
    Audit H-2: split overstuffed pricing card into clearer decision paths. */
 .pricing-tiers-row {
   max-width: 720px;
-  margin: 1.5rem auto 0;
+  margin: 1rem auto 0;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1rem;
@@ -1237,11 +1303,11 @@ nav::after {
    Green top border accent signals "this is the most strategic offer." */
 .pricing-founding-band {
   max-width: 720px;
-  margin: 2rem auto 0;
+  margin: 1rem auto 0;
   background: var(--surface);
   border: 1px solid var(--rule);
   border-top: 3px solid var(--signal);
-  padding: 1.8rem 2rem 1.6rem;
+  padding: 1.3rem 1.6rem 1.2rem;
 }
 .pricing-founding-band .pfb-eyebrow {
   font-family: 'Geist Mono', monospace;
@@ -1334,16 +1400,8 @@ nav::after {
 }
 .reason-item p { font-size: 0.92rem; color: var(--text-secondary); line-height: 1.82; }
 
-/* ── FAQ: editorial list ── */
-.faq-list { margin-top: 3rem; border-top: 1px solid var(--rule); }
-.faq-item {
-  padding: 1.8rem 0;
-  border-bottom: 1px solid var(--rule-light);
-  display: grid;
-  grid-template-columns: 1fr 1.6fr;
-  gap: 2.5rem;
-  align-items: baseline;
-}
+/* ── FAQ: accordion (details/summary) ── */
+/* .faq-list border-top set in new accordion block above */
 .faq-q {
   font-family: 'Geist', sans-serif;
   font-weight: 500;
@@ -1503,15 +1561,15 @@ footer .f-links a:hover { color: var(--text); }
 @media (max-width: 900px) {
   .hero-lower { grid-template-columns: 1fr; gap: 2.2rem; }
   .problem-grid { grid-template-columns: 1fr; gap: 2rem; }
-  .features-grid { grid-template-columns: 1fr; }
+  .features-grid { grid-template-columns: repeat(2, 1fr); }
   .steps { grid-template-columns: 1fr; gap: 1.4rem; }
   .slack-panels { grid-template-columns: 1fr; }
   .reasoning-grid { grid-template-columns: 1fr; }
-  .faq-item { grid-template-columns: 1fr; gap: 0.8rem; }
   .cta-grid { grid-template-columns: 1fr; gap: 2.5rem; }
   .slack-channel-desc { display: none; }
   .dispatch-inner { padding: 0.55rem 1.5rem; gap: 1rem; font-size: 0.62rem; }
   .dispatch-inner > span:nth-child(n+4) { display: none; }
+  .pricing-features { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 640px) {
@@ -2118,7 +2176,7 @@ footer .f-links a:hover { color: var(--text); }
 
 <!-- ── Problem ── -->
 <section class="section fade-in">
-  <div class="section-eyebrow">01 / 09 · The problem</div>
+  <div class="section-eyebrow">01 / 07 · The problem</div>
   <div class="problem-grid">
     <!-- Problem title — paired -->
     <h2 class="problem-title">You've been stitching this together <em>by hand, between releases.</em></h2>
@@ -2133,9 +2191,9 @@ footer .f-links a:hover { color: var(--text); }
 
 <div class="section-rule"><hr></div>
 
-<!-- ── Features ── -->
+<!-- ── Features + How It Works (consolidated) ── -->
 <section class="section fade-in" id="features">
-  <div class="section-eyebrow">02 / 09 · Capabilities</div>
+  <div class="section-eyebrow">02 / 07 · Capabilities</div>
   <div class="section-title">What runs against every instance.</div>
   <!-- Capabilities intro — paired (one phrase differs) -->
   <p class="section-intro">Twelve health probes. 146 post-publish tests. A CI/CD pipeline that pushes customizations through the Customization API. All three read-only against the Acumatica instances you run.</p>
@@ -2206,13 +2264,125 @@ footer .f-links a:hover { color: var(--text); }
     </div>
 
   </div>
+
+  <!-- How it works + Slack — merged subsection -->
+  <div style="margin-top:2.5rem; padding-top:2rem; border-top:1px solid var(--rule-light);">
+    <div class="section-eyebrow" style="margin-bottom:0.5rem;">How it works</div>
+    <div class="section-title" style="font-size:clamp(1.4rem,2.2vw,1.9rem); margin-bottom:1.5rem;">Point AcuOps at the instance. Get Slack alerts <em>before anyone notices.</em></div>
+
+    <div class="steps" style="margin-top:0;">
+      <div class="step">
+        <div class="step-number">STEP 01 · Connect</div>
+        <h3>Point it at the instance.</h3>
+        <p>Point AcuOps at the Acumatica instance &mdash; yours, a customer's, or one you manage. Read-only API access, session-gated. Credentials live in your vault &mdash; we don't hold keys, we don't hold sessions between runs.</p>
+      </div>
+      <div class="step">
+        <div class="step-number">STEP 02 · Run</div>
+        <h3>Probes run. Pipeline deploys.</h3>
+        <p>Twelve health probes run continuously. The CI/CD pipeline deploys customizations when you push to GitHub. 146 tests validate every publish against the live screen.</p>
+      </div>
+      <div class="step">
+        <div class="step-number">STEP 03 · Alert</div>
+        <h3>Slack fires before the phone.</h3>
+        <p>Slack notifications fire before anyone does. The operator workspace sees every alert across every instance. Each instance's workspace sees only its own. Drill into dashboards for the stack trace.</p>
+      </div>
+    </div>
+
+    <!-- Slack channel layout — compact 2-col with alert sample inline -->
+    <p class="section-intro" style="margin:1.5rem 0 1rem; font-size:0.88rem;">AcuOps lands in the Slack workspace tied to the Acumatica instance &mdash; your own, a customer's, or a client's. Every alert posts to the right channel for that instance, and every alert also rolls up to your operator workspace. One event, the right audiences, zero manual forwarding.</p>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.2rem; align-items:start;">
+      <div>
+        <div class="slack-panel" style="height:100%;">
+          <div class="slack-panel-label">Per-instance</div>
+          <h3>Workspace for the instance.</h3>
+          <p>Two dedicated channels in the Slack workspace tied to the instance. Scoped, isolated, no cross-instance bleed:</p>
+          <div class="slack-channel">
+            <span class="slack-channel-icon">#</span>
+            <span class="slack-channel-name">acuops-alerts</span>
+            <span class="slack-channel-desc">Deploys, health warnings, schema drift</span>
+          </div>
+          <div class="slack-channel">
+            <span class="slack-channel-icon">#</span>
+            <span class="slack-channel-name">acuops-intake</span>
+            <span class="slack-channel-desc">Requests that route to HubSpot tickets</span>
+          </div>
+          <p class="slack-footnote">Each instance's data stays in its workspace. No cross-instance leakage, ever.</p>
+        </div>
+      </div>
+      <div>
+        <div class="slack-panel" style="height:100%;">
+          <div class="slack-panel-label">Operator view</div>
+          <h3>All instances, one view.</h3>
+          <p>Every notification also posts to your operator workspace. Whether you run one Acumatica or fifty, all alerts, one place:</p>
+          <div class="slack-channel">
+            <span class="slack-channel-icon">#</span>
+            <span class="slack-channel-name">agent-notifications</span>
+            <span class="slack-channel-desc">All deploy events, sync results, and health probe status (no-action notifications)</span>
+          </div>
+          <div class="slack-channel">
+            <span class="slack-channel-icon">#</span>
+            <span class="slack-channel-name">agent-escalations</span>
+            <span class="slack-channel-desc">Schema drift, integration failures, and anything requiring operator review</span>
+          </div>
+          <p class="slack-footnote">Per-instance privacy by design. Operator rollup by default. Zero manual forwarding.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sample alert + setup steps side by side -->
+    <div style="margin-top:1.5rem; display:grid; grid-template-columns:1.1fr 0.9fr; gap:1.5rem; align-items:start;">
+      <div class="alert-sample" role="figure" aria-label="Sample Slack alert preview">
+        <div class="alert-sample-head">
+          <span class="as-channel">acuops-alerts</span>
+          <span>2026-04-17 · 14:23:05 CDT</span>
+        </div>
+        <div class="alert-sample-body">
+          <div class="as-bot">
+            <strong>AcuOps Bot</strong>
+            <span class="as-badge">APP</span>
+            <span>· 90s after publish</span>
+          </div>
+          <div class="as-title">SCHEMA DRIFT DETECTED</div>
+          <dl>
+            <dt>instance</dt><dd>[client-1].acumatica.com</dd>
+            <dt>entity</dt><dd>SalesOrder</dd>
+            <dt>change</dt><dd>UsrHubSpotDealId type flipped <em>Decimal &rarr; String</em></dd>
+            <dt>deploy</dt><dd>ci-run-4821 &middot; 8m ago &middot; commit 2fe765b</dd>
+            <dt>impact</dt><dd>3 downstream syncs paused &middot; rollback ready</dd>
+          </dl>
+        </div>
+        <div class="alert-sample-actions" aria-hidden="true">
+          <span class="as-action">Acknowledge</span>
+          <span class="as-action">Roll back</span>
+          <span class="as-action">Open dashboard</span>
+        </div>
+      </div>
+      <div class="slack-onboard" style="margin:0; border-top:none; padding-top:0;">
+        <div class="slack-panel-label">Setup</div>
+        <div>
+          <div class="slack-onboard-step">
+            <span class="slack-onboard-step-num">01</span>
+            <p>We send a one-click install link during onboarding &mdash; to whoever owns the Slack workspace for the instance.</p>
+          </div>
+          <div class="slack-onboard-step">
+            <span class="slack-onboard-step-num">02</span>
+            <p>They approve AcuOps in the Slack workspace. Ten seconds, no meeting required.</p>
+          </div>
+          <div class="slack-onboard-step">
+            <span class="slack-onboard-step-num">03</span>
+            <p>Channels are created automatically. Alerts start flowing immediately.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
 
 <div class="section-rule"><hr></div>
 
 <!-- ── Live Event Ticker ── -->
 <section class="section fade-in" id="ticker">
-  <div class="section-eyebrow">03 / 09 · Live event ticker</div>
+  <div class="section-eyebrow">03 / 07 · Live event ticker</div>
   <div class="section-title">Running right now.</div>
   <p class="section-intro">Real publishes, real schema drift catches, real rollbacks from our own Acumatica portfolio. The feed below is live.</p>
   <div class="ticker-card" id="ticker-card" aria-live="polite" aria-label="Live event ticker">
@@ -2227,7 +2397,7 @@ footer .f-links a:hover { color: var(--text); }
 
 <!-- ── Open Source ── -->
 <section class="section fade-in" id="open-source">
-  <div class="section-eyebrow">04 / 09 · Open source</div>
+  <div class="section-eyebrow">04 / 07 · Open source</div>
   <div class="section-title">What we ship back to the ecosystem.</div>
   <p class="section-intro">The static-check engine inside AcuOps is open source. So are the static-analysis rules we're contributing upstream to Acumatica's own analyzer.</p>
 
@@ -2430,140 +2600,9 @@ footer .f-links a:hover { color: var(--text); }
 
 <div class="section-rule"><hr></div>
 
-<!-- ── How It Works ── -->
-<section class="section fade-in">
-  <div class="section-eyebrow">05 / 09 · How it works</div>
-  <!-- How it works title — paired -->
-  <div class="section-title">Point AcuOps at the instance.<br>Get Slack alerts <em>before anyone notices.</em></div>
-
-  <div class="steps">
-    <!-- Step 01 — paired -->
-    <div class="step">
-      <div class="step-number">STEP 01 · Connect</div>
-      <h3>Point it at the instance.</h3>
-      <p>Point AcuOps at the Acumatica instance &mdash; yours, a customer's, or one you manage. Read-only API access, session-gated. Credentials live in your vault &mdash; we don't hold keys, we don't hold sessions between runs.</p>
-    </div>
-    <!-- Step 02 — unchanged -->
-    <div class="step">
-      <div class="step-number">STEP 02 · Run</div>
-      <h3>Probes run. Pipeline deploys.</h3>
-      <p>Twelve health probes run continuously. The CI/CD pipeline deploys customizations when you push to GitHub. 146 tests validate every publish against the live screen.</p>
-    </div>
-    <!-- Step 03 — paired -->
-    <div class="step">
-      <div class="step-number">STEP 03 · Alert</div>
-      <h3>Slack fires before the phone.</h3>
-      <p>Slack notifications fire before anyone does. The operator workspace sees every alert across every instance. Each instance's workspace sees only its own. Drill into dashboards for the stack trace.</p>
-    </div>
-  </div>
-</section>
-
-<div class="section-rule"><hr></div>
-
-<!-- ── Slack Integration ── -->
-<section class="section fade-in">
-  <div class="section-eyebrow">06 / 09 · Slack integration</div>
-  <!-- Slack title — paired -->
-  <div class="section-title">Per-instance alerts.<br>Operator rollup. <em>No cross-instance noise.</em></div>
-  <!-- Slack intro — paired -->
-  <p class="section-intro">AcuOps lands in the Slack workspace tied to the Acumatica instance &mdash; your own, a customer's, or a client's. Every alert posts to the right channel for that instance, and every alert also rolls up to your operator workspace. One event, the right audiences, zero manual forwarding.</p>
-
-  <div class="slack-panels">
-
-    <!-- Left panel — paired labels, h3, body, footnote -->
-    <div class="slack-panel">
-      <div class="slack-panel-label">Per-instance</div>
-      <h3>Workspace for the instance.</h3>
-      <p>Two dedicated channels in the Slack workspace tied to the instance. Scoped, isolated, no cross-instance bleed:</p>
-      <div class="slack-channel">
-        <span class="slack-channel-icon">#</span>
-        <span class="slack-channel-name">acuops-alerts</span>
-        <span class="slack-channel-desc">Deploys, health warnings, schema drift</span>
-      </div>
-      <div class="slack-channel">
-        <span class="slack-channel-icon">#</span>
-        <span class="slack-channel-name">acuops-intake</span>
-        <span class="slack-channel-desc">Requests that route to HubSpot tickets</span>
-      </div>
-      <p class="slack-footnote">Each instance's data stays in its workspace. No cross-instance leakage, ever.</p>
-    </div>
-
-    <!-- Right panel — paired labels, h3, body, footnote -->
-    <div class="slack-panel">
-      <div class="slack-panel-label">Operator view</div>
-      <h3>All instances, one view.</h3>
-      <p>Every notification also posts to your operator workspace. Whether you run one Acumatica or fifty, all alerts, one place:</p>
-      <div class="slack-channel">
-        <span class="slack-channel-icon">#</span>
-        <span class="slack-channel-name">agent-notifications</span>
-        <span class="slack-channel-desc">All deploy events, sync results, and health probe status (no-action notifications)</span>
-      </div>
-      <div class="slack-channel">
-        <span class="slack-channel-icon">#</span>
-        <span class="slack-channel-name">agent-escalations</span>
-        <span class="slack-channel-desc">Schema drift, integration failures, and anything requiring operator review</span>
-      </div>
-      <p class="slack-footnote">Per-instance privacy by design. Operator rollup by default. Zero manual forwarding.</p>
-    </div>
-
-  </div>
-
-  <!-- Sample alert: spec-sheet moment showing what an AcuOps alert actually looks like.
-       role="figure" (not "img") so screen readers can still surface the sample buttons
-       as part of the figure's narrative; buttons rendered as <span> since they're
-       presentational, not interactive. -->
-  <div class="alert-sample" role="figure" aria-label="Sample Slack alert preview">
-    <div class="alert-sample-head">
-      <span class="as-channel">acuops-alerts</span>
-      <span>2026-04-17 · 14:23:05 CDT</span>
-    </div>
-    <div class="alert-sample-body">
-      <div class="as-bot">
-        <strong>AcuOps Bot</strong>
-        <span class="as-badge">APP</span>
-        <span>· 90s after publish</span>
-      </div>
-      <div class="as-title">SCHEMA DRIFT DETECTED</div>
-      <dl>
-        <dt>instance</dt><dd>[client-1].acumatica.com</dd>
-        <dt>entity</dt><dd>SalesOrder</dd>
-        <dt>change</dt><dd>UsrHubSpotDealId type flipped <em>Decimal &rarr; String</em></dd>
-        <dt>deploy</dt><dd>ci-run-4821 &middot; 8m ago &middot; commit 2fe765b</dd>
-        <dt>impact</dt><dd>3 downstream syncs paused &middot; rollback ready</dd>
-      </dl>
-    </div>
-    <div class="alert-sample-actions" aria-hidden="true">
-      <span class="as-action">Acknowledge</span>
-      <span class="as-action">Roll back</span>
-      <span class="as-action">Open dashboard</span>
-    </div>
-  </div>
-
-  <!-- Setup steps — paired -->
-  <div class="slack-onboard">
-    <div class="slack-panel-label">Setup</div>
-    <div>
-      <div class="slack-onboard-step">
-        <span class="slack-onboard-step-num">01</span>
-        <p>We send a one-click install link during onboarding &mdash; to whoever owns the Slack workspace for the instance.</p>
-      </div>
-      <div class="slack-onboard-step">
-        <span class="slack-onboard-step-num">02</span>
-        <p>They approve AcuOps in the Slack workspace. Ten seconds, no meeting required.</p>
-      </div>
-      <div class="slack-onboard-step">
-        <span class="slack-onboard-step-num">03</span>
-        <p>Channels are created automatically. Alerts start flowing immediately.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<div class="section-rule"><hr></div>
-
 <!-- ── Pricing (receipt styling) ── -->
 <section class="section fade-in" id="pricing">
-  <div class="section-eyebrow">07 / 09 · Pricing</div>
+  <div class="section-eyebrow">05 / 07 · Pricing</div>
   <div class="section-title">$800 per month. Per Acumatica instance. <em>Flat.</em></div>
   <!-- Pricing intro — paired (volume line hidden on in-house) -->
   <p class="section-intro">Not per seat. Not per transaction. Not per alert. The meter is the instance — one number, one invoice. Every capability included. Volume discounts at 5+ and 20+ instances.</p>
@@ -2643,45 +2682,34 @@ footer .f-links a:hover { color: var(--text); }
     <p class="pfb-body">We're selecting <strong>7&ndash;10 founding partners</strong> in exchange for a published case study, reference availability, and beta-feature feedback. First-come isn't enough &mdash; we're choosing partners across VAR, ISV, in-house mid-market, and enterprise deployment patterns to ensure the founding cohort represents the Acumatica ecosystem.</p>
     <a href="/founding-partners" class="pfb-cta">Apply for Founding Partner &rarr;</a>
   </aside>
-</section>
 
-<div class="section-rule"><hr></div>
+  <!-- Pricing rationale — merged from prior "Why this, not that" section -->
+  <div style="margin-top:2.5rem; padding-top:2rem; border-top:1px solid var(--rule-light);">
+    <div class="section-eyebrow" style="margin-bottom:0.4rem;">Why this, not that</div>
+    <div class="section-title" style="font-size:clamp(1.3rem,2vw,1.75rem); margin-bottom:0.4rem;">Four decisions you should know about.</div>
+    <p class="section-intro" style="margin-bottom:1.5rem; font-size:0.88rem;">We've priced this product three different ways. This is the one that survived first contact with our own Acumatica portfolio.</p>
 
-<!-- ── Reasoning ── -->
-<section class="section fade-in">
-  <div class="section-eyebrow">08 / 09 · Why this, not that</div>
-  <div class="section-title">Four decisions you should know about.</div>
-  <!-- Reasoning intro — paired -->
-  <p class="section-intro">We've priced this product three different ways. This is the one that survived first contact with our own Acumatica portfolio.</p>
-
-  <div class="reasoning-grid">
-    <!-- Decision 01 — paired -->
-    <div class="reason-item">
-      <div class="r-num">Decision 01</div>
-      <h3>Per instance, not per seat.</h3>
-      <p>An AP clerk and a senior architect are both running drift checks against the same DAC. Per-seat billing doesn't reflect the work. Instance-count does. One Acumatica tenant = $800/mo, regardless of who logs in or how many people open SO301000.</p>
-    </div>
-    <!-- Decision 02 — paired -->
-    <div class="reason-item">
-      <div class="r-num">Decision 02</div>
-      <h3>Flat, not metered.</h3>
-      <p>We thought about $0.10 per test run. We thought about a tier-bump at 50 deploys per month. Then we ran the numbers on our own portfolio. The cost-to-serve variance between a quiet month and a wild one is close to nothing. A flat meter means you know the invoice before the month starts.</p>
-    </div>
-    <!-- Decision 03 — paired -->
-    <div class="reason-item">
-      <div class="r-num">Decision 03</div>
-      <h3>
-        $800 is what the work costs.
-      </h3>
-      <p>Twelve probes running every few minutes. A 146-test Playwright suite against every publish. A CI/CD pipeline that handles Import, publishBegin, co-publish, publishEnd polling, and rollback signals. Codex AI reviewing every PR. An on-call rotation that catches the indexer when it times out. Priced at what it takes to actually run the thing — which is the only price that survives a year.</p>
-    </div>
-    <!-- Decision 04 — paired -->
-    <div class="reason-item">
-      <div class="r-num">Decision 04</div>
-      <h3>
-        Bill it however you want.
-      </h3>
-      <p>Run it internally and never invoice anyone. Bundle it into your managed-service line item as a VAR &mdash; at cost, at a markup, or as a value-add. The meter is your Acumatica instance count &mdash; not seats, not clients, not end-customer invoices. What happens downstream of you is yours.</p>
+    <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:1rem 1.5rem; margin-top:0;">
+      <div class="reason-item" style="padding-top:0.9rem;">
+        <div class="r-num">Decision 01</div>
+        <h3 style="font-size:0.96rem; margin-bottom:0.4rem;">Per instance, not per seat.</h3>
+        <p style="font-size:0.83rem; line-height:1.65;">An AP clerk and a senior architect are both running drift checks against the same DAC. Per-seat billing doesn't reflect the work. Instance-count does. One Acumatica tenant = $800/mo, regardless of who logs in or how many people open SO301000.</p>
+      </div>
+      <div class="reason-item" style="padding-top:0.9rem;">
+        <div class="r-num">Decision 02</div>
+        <h3 style="font-size:0.96rem; margin-bottom:0.4rem;">Flat, not metered.</h3>
+        <p style="font-size:0.83rem; line-height:1.65;">We thought about $0.10 per test run. We thought about a tier-bump at 50 deploys per month. Then we ran the numbers on our own portfolio. The cost-to-serve variance between a quiet month and a wild one is close to nothing. A flat meter means you know the invoice before the month starts.</p>
+      </div>
+      <div class="reason-item" style="padding-top:0.9rem;">
+        <div class="r-num">Decision 03</div>
+        <h3 style="font-size:0.96rem; margin-bottom:0.4rem;">$800 is what the work costs.</h3>
+        <p style="font-size:0.83rem; line-height:1.65;">Twelve probes running every few minutes. A 146-test Playwright suite against every publish. A CI/CD pipeline that handles Import, publishBegin, co-publish, publishEnd polling, and rollback signals. Codex AI reviewing every PR. An on-call rotation that catches the indexer when it times out. Priced at what it takes to actually run the thing — which is the only price that survives a year.</p>
+      </div>
+      <div class="reason-item" style="padding-top:0.9rem;">
+        <div class="r-num">Decision 04</div>
+        <h3 style="font-size:0.96rem; margin-bottom:0.4rem;">Bill it however you want.</h3>
+        <p style="font-size:0.83rem; line-height:1.65;">Run it internally and never invoice anyone. Bundle it into your managed-service line item as a VAR &mdash; at cost, at a markup, or as a value-add. The meter is your Acumatica instance count &mdash; not seats, not clients, not end-customer invoices. What happens downstream of you is yours.</p>
+      </div>
     </div>
   </div>
 </section>
@@ -2690,72 +2718,72 @@ footer .f-links a:hover { color: var(--text); }
 
 <!-- ── FAQ ── -->
 <section class="section fade-in" id="faq">
-  <div class="section-eyebrow">09 / 09 · Questions</div>
+  <div class="section-eyebrow">06 / 07 · Questions</div>
   <div class="section-title">Direct answers.</div>
   <p class="section-intro">If you're asking these, you're the right audience.</p>
 
   <!-- Reseller FAQ — visible variant. Universal questions covering in-house, VAR, ISV, enterprise. -->
   <div class="faq-list">
 
-    <div class="faq-item">
-      <div class="faq-q">Who is AcuOps for?</div>
-      <div class="faq-a">Anyone running Acumatica. In-house teams operating their own instance. VARs managing client portfolios. ISVs shipping add-ons into customer deploys. Enterprise IT running multi-tenant Acumatica. The product is the same; pricing scales with how many instances you cover.</div>
-    </div>
+    <details class="faq-item" open>
+      <summary><span class="faq-q">Who is AcuOps for?</span></summary>
+      <div class="faq-answer-body faq-a">Anyone running Acumatica. In-house teams operating their own instance. VARs managing client portfolios. ISVs shipping add-ons into customer deploys. Enterprise IT running multi-tenant Acumatica. The product is the same; pricing scales with how many instances you cover.</div>
+    </details>
 
-    <div class="faq-item">
-      <div class="faq-q">What if our Acumatica partner already handles this?</div>
-      <div class="faq-a">AcuOps supplements rather than replaces. Your VAR keeps doing the implementation and customization work; AcuOps gives both you and them visibility into the production environment without waiting on a project to open. If you ARE the VAR, AcuOps is what gives your team the ops layer to manage the customizations you've already shipped.</div>
-    </div>
+    <details class="faq-item">
+      <summary><span class="faq-q">What if our Acumatica partner already handles this?</span></summary>
+      <div class="faq-answer-body faq-a">AcuOps supplements rather than replaces. Your VAR keeps doing the implementation and customization work; AcuOps gives both you and them visibility into the production environment without waiting on a project to open. If you ARE the VAR, AcuOps is what gives your team the ops layer to manage the customizations you've already shipped.</div>
+    </details>
 
-    <div class="faq-item">
-      <div class="faq-q">Why not handle this ourselves?</div>
-      <div class="faq-a">You can. At $175 per hour, $800 is 4.6 hours of senior time per month. A 146-test Playwright suite against the Customization API takes weeks to build and someone to maintain &mdash; before the CI/CD pipeline, snapshot/rollback, and Codex AI review. AcuOps brings all of it on day one, whether or not your team has the capacity.</div>
-    </div>
+    <details class="faq-item">
+      <summary><span class="faq-q">Why not handle this ourselves?</span></summary>
+      <div class="faq-answer-body faq-a">You can. At $175 per hour, $800 is 4.6 hours of senior time per month. A 146-test Playwright suite against the Customization API takes weeks to build and someone to maintain &mdash; before the CI/CD pipeline, snapshot/rollback, and Codex AI review. AcuOps brings all of it on day one, whether or not your team has the capacity.</div>
+    </details>
 
-    <div class="faq-item">
-      <div class="faq-q">What happens on an Acumatica minor release?</div>
-      <div class="faq-a">We run the 146-test suite against the upgrade candidate before it hits production. You get the diff in Slack before the release notes land. If something breaks, it breaks in sandbox &mdash; not in front of an AP manager on Tuesday morning.</div>
-    </div>
+    <details class="faq-item">
+      <summary><span class="faq-q">What happens on an Acumatica minor release?</span></summary>
+      <div class="faq-answer-body faq-a">We run the 146-test suite against the upgrade candidate before it hits production. You get the diff in Slack before the release notes land. If something breaks, it breaks in sandbox &mdash; not in front of an AP manager on Tuesday morning.</div>
+    </details>
 
-    <div class="faq-item">
-      <div class="faq-q">Do you need access to our Acumatica environment?</div>
-      <div class="faq-a">Read-only API, session-gated. Credentials stay in your vault, not ours. We don't hold API keys. We don't hold sessions between runs. Every probe is logged. If you want to revoke access, revoke the API user &mdash; there's nothing else to clean up.</div>
-    </div>
+    <details class="faq-item">
+      <summary><span class="faq-q">Do you need access to our Acumatica environment?</span></summary>
+      <div class="faq-answer-body faq-a">Read-only API, session-gated. Credentials stay in your vault, not ours. We don't hold API keys. We don't hold sessions between runs. Every probe is logged. If you want to revoke access, revoke the API user &mdash; there's nothing else to clean up.</div>
+    </details>
 
-    <div class="faq-item">
-      <div class="faq-q">Do you compete with implementation practices?</div>
-      <div class="faq-a">No. We don't take Acumatica implementation work. Per-instance flat pricing means we have zero incentive to push hours anyone's way. VARs keep the implementation margin; in-house teams keep the in-house knowledge; we take the ops layer nobody wanted to own.</div>
-    </div>
+    <details class="faq-item">
+      <summary><span class="faq-q">Do you compete with implementation practices?</span></summary>
+      <div class="faq-answer-body faq-a">No. We don't take Acumatica implementation work. Per-instance flat pricing means we have zero incentive to push hours anyone's way. VARs keep the implementation margin; in-house teams keep the in-house knowledge; we take the ops layer nobody wanted to own.</div>
+    </details>
 
-    <div class="faq-item">
-      <div class="faq-q">Can VARs bill this through to clients?</div>
-      <div class="faq-a">Yes. Or keep it internal. The meter is your Acumatica instance count &mdash; not seats, not clients, not end-customer invoices. VARs running portfolios get wholesale tiers ($650/mo at 5+, $500/mo at 20+); how you bill downstream is yours.</div>
-    </div>
+    <details class="faq-item">
+      <summary><span class="faq-q">Can VARs bill this through to clients?</span></summary>
+      <div class="faq-answer-body faq-a">Yes. Or keep it internal. The meter is your Acumatica instance count &mdash; not seats, not clients, not end-customer invoices. VARs running portfolios get wholesale tiers ($650/mo at 5+, $500/mo at 20+); how you bill downstream is yours.</div>
+    </details>
 
-    <div class="faq-item">
-      <div class="faq-q">Do I need to be a studio b. client to buy AcuOps?</div>
-      <div class="faq-a">No. AcuOps is sold on its own. No bundled services, no studio b. retainer required. If you later want fractional CTO work or an Acumatica roadmap engagement, that's a separate conversation &mdash; and not one the AcuOps meter pays for.</div>
-    </div>
+    <details class="faq-item">
+      <summary><span class="faq-q">Do I need to be a studio b. client to buy AcuOps?</span></summary>
+      <div class="faq-answer-body faq-a">No. AcuOps is sold on its own. No bundled services, no studio b. retainer required. If you later want fractional CTO work or an Acumatica roadmap engagement, that's a separate conversation &mdash; and not one the AcuOps meter pays for.</div>
+    </details>
 
-    <div class="faq-item">
-      <div class="faq-q">I saw $300/month somewhere. Did the price change?</div>
-      <div class="faq-a">Yes. AcuOps launched at $300 while we validated the product on Studio B's own Acumatica portfolio. New customers join at $800/month. If you were quoted $300 in a prior conversation, you're eligible for the Founding Partner program at $500/month locked for life &mdash; <a href="/founding-partners">apply here</a> or reply to your prior thread and we'll route you in.</div>
-    </div>
+    <details class="faq-item">
+      <summary><span class="faq-q">I saw $300/month somewhere. Did the price change?</span></summary>
+      <div class="faq-answer-body faq-a">Yes. AcuOps launched at $300 while we validated the product on Studio B's own Acumatica portfolio. New customers join at $800/month. If you were quoted $300 in a prior conversation, you're eligible for the Founding Partner program at $500/month locked for life &mdash; <a href="/founding-partners">apply here</a> or reply to your prior thread and we'll route you in.</div>
+    </details>
 
-    <div class="faq-item">
-      <div class="faq-q">What does "life of contract" mean in the Founding Partner program?</div>
-      <div class="faq-a">$500/month holds as long as your subscription is continuous and uninterrupted, through Acumatica version upgrades, AcuOps feature additions, and product evolution. Pricing resets only on cancellation+restart, acquisition of your company by a buyer that wants to renegotiate, or sale of AcuOps to a new owner.</div>
-    </div>
+    <details class="faq-item">
+      <summary><span class="faq-q">What does "life of contract" mean in the Founding Partner program?</span></summary>
+      <div class="faq-answer-body faq-a">$500/month holds as long as your subscription is continuous and uninterrupted, through Acumatica version upgrades, AcuOps feature additions, and product evolution. Pricing resets only on cancellation+restart, acquisition of your company by a buyer that wants to renegotiate, or sale of AcuOps to a new owner.</div>
+    </details>
 
-    <div class="faq-item">
-      <div class="faq-q">Why are you selecting Founding Partners instead of first-come-first-served?</div>
-      <div class="faq-a">The founding cohort becomes our public reference pool. We need deployment-pattern diversity (VAR, ISV, in-house mid-market, enterprise) so that every future prospect can talk to a Founding Partner who runs an Acumatica deployment that looks like theirs.</div>
-    </div>
+    <details class="faq-item">
+      <summary><span class="faq-q">Why are you selecting Founding Partners instead of first-come-first-served?</span></summary>
+      <div class="faq-answer-body faq-a">The founding cohort becomes our public reference pool. We need deployment-pattern diversity (VAR, ISV, in-house mid-market, enterprise) so that every future prospect can talk to a Founding Partner who runs an Acumatica deployment that looks like theirs.</div>
+    </details>
 
-    <div class="faq-item">
-      <div class="faq-q">What's in AcuOps that isn't in your free linter?</div>
-      <div class="faq-a">The free linter (<code>acumatica-lint</code> on PyPI &mdash; <code>pip install acumatica-lint</code>) is the deterministic check engine that you run locally or in your own CI. AcuOps adds: continuous gating on every PR, sandbox dry-run before prod, snapshot/rollback with integrity verification, Codex AI review, Slack telemetry, deploy-window enforcement, auto-qualify-and-label, recovery plan suggestions when things fail, and ~60 failure-mode guards encoded from real production incidents. The linter tells you what's wrong; AcuOps prevents broken from shipping.</div>
-    </div>
+    <details class="faq-item">
+      <summary><span class="faq-q">What's in AcuOps that isn't in your free linter?</span></summary>
+      <div class="faq-answer-body faq-a">The free linter (<code>acumatica-lint</code> on PyPI &mdash; <code>pip install acumatica-lint</code>) is the deterministic check engine that you run locally or in your own CI. AcuOps adds: continuous gating on every PR, sandbox dry-run before prod, snapshot/rollback with integrity verification, Codex AI review, Slack telemetry, deploy-window enforcement, auto-qualify-and-label, recovery plan suggestions when things fail, and ~60 failure-mode guards encoded from real production incidents. The linter tells you what's wrong; AcuOps prevents broken from shipping.</div>
+    </details>
 
   </div>
 
@@ -2765,7 +2793,7 @@ footer .f-links a:hover { color: var(--text); }
 
 <!-- ── CTA / Demo Form ── -->
 <section class="section fade-in" id="demo">
-  <div class="section-eyebrow">Request demo</div>
+  <div class="section-eyebrow">07 / 07 · Request demo</div>
   <!-- CTA title — paired -->
   <div class="section-title">See what AcuOps catches on <em>your Acumatica right now.</em></div>
   <p class="section-intro">30-minute demo. We point AcuOps at an Acumatica instance of your choosing &mdash; your own, a customer's, or one you manage &mdash; and walk through what the probes, pipeline, and test suite catch. No slide deck.</p>
@@ -3130,13 +3158,13 @@ footer .f-links a:hover { color: var(--text); }
       return;
     }
 
-    var events = feed.events.slice(0, 10);
+    var events = feed.events.slice(0, 3);
     var header = '<div class="ticker-header">' +
       '<span class="ticker-channel"># ACUOPS-ALERTS</span>' +
       '<span class="ticker-updated">Last updated: ' + humanAgo(feed.lastUpdated) + ' ago</span>' +
     '</div>';
 
-    var eventsHtml = events.map(renderEvent).join('');
+    var eventsHtml = '<div class="ticker-events-window">' + events.map(renderEvent).join('') + '</div>';
 
     var cta = '<a href="/founding-partners" class="ticker-cta">Setup &rarr;</a>';
 
