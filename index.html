@@ -690,17 +690,21 @@ nav::after {
 .fade-in { opacity: 0; transform: translateY(24px); transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
 .fade-in.visible { opacity: 1; transform: translateY(0); }
 
-/* ── Ticker: capped 3-event window with bottom fade ── */
+/* ── Ticker: capped 3-event window with scroll + bottom fade ── */
 .ticker-events-window {
   position: relative;
-  max-height: 320px;
-  overflow: hidden;
+  max-height: 380px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--rule) transparent;
 }
 .ticker-events-window::after {
   content: '';
-  position: absolute;
-  bottom: 0; left: 0; right: 0;
-  height: 80px;
+  position: sticky;
+  bottom: 0;
+  display: block;
+  height: 60px;
+  margin-top: -60px;
   background: linear-gradient(to bottom, transparent, var(--surface));
   pointer-events: none;
 }
@@ -1577,6 +1581,7 @@ footer .f-links a:hover { color: var(--text); }
 }
 @media (max-width: 640px) {
   .merged-decisions-grid { grid-template-columns: 1fr !important; }
+  .features-grid { grid-template-columns: 1fr !important; }
 }
 
 @media (max-width: 640px) {
