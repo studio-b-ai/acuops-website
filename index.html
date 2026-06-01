@@ -1682,6 +1682,332 @@ footer .f-links a:hover { color: var(--text); }
     transition: none;
   }
 }
+
+/* ── gi-lint form ─────────────────────────────────────────────────────────────
+ * Interactive GI-lint block inside #open-source.
+ * NEVER add validation/parsing logic here — server owns all logic.
+ * Scoped with gilint- prefix throughout.
+ * ────────────────────────────────────────────────────────────────────────── */
+
+.gilint-wrap {
+  margin-top: 2.75rem;
+  border-top: 1px solid var(--rule);
+  padding-top: 2.25rem;
+}
+
+.gilint-lead {
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  letter-spacing: 0.01em;
+  margin-bottom: 1.5rem;
+  max-width: 580px;
+  line-height: 1.7;
+}
+
+.gilint-lead strong {
+  color: var(--text);
+  font-weight: 500;
+}
+
+.gilint-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 720px;
+}
+
+.gilint-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.gilint-label {
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+
+.gilint-label .gilint-optional {
+  color: var(--text-dim);
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  margin-left: 0.5rem;
+  text-transform: none;
+}
+
+.gilint-textarea {
+  background: var(--console);
+  border: 1px solid var(--rule);
+  color: var(--text);
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.78rem;
+  line-height: 1.65;
+  padding: 0.9rem 1.1rem;
+  resize: vertical;
+  min-height: 140px;
+  width: 100%;
+  border-radius: 0;
+  transition: border-color 150ms ease-out;
+  outline: none;
+  -webkit-font-smoothing: antialiased;
+}
+
+.gilint-textarea::placeholder {
+  color: var(--text-dim);
+}
+
+.gilint-textarea:focus {
+  border-color: var(--signal);
+}
+
+.gilint-email {
+  background: var(--console);
+  border: 1px solid var(--rule);
+  color: var(--text);
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.78rem;
+  padding: 0.6rem 1.1rem;
+  width: 100%;
+  max-width: 340px;
+  border-radius: 0;
+  transition: border-color 150ms ease-out;
+  outline: none;
+  -webkit-font-smoothing: antialiased;
+}
+
+.gilint-email::placeholder {
+  color: var(--text-dim);
+}
+
+.gilint-email:focus {
+  border-color: var(--signal);
+}
+
+.gilint-submit {
+  align-self: flex-start;
+  background: var(--signal);
+  color: var(--bg);
+  border: none;
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.74rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.6rem 1.4rem;
+  cursor: pointer;
+  border-radius: 0;
+  transition: background 200ms ease-out, color 200ms ease-out, opacity 150ms ease-out;
+}
+
+.gilint-submit:hover:not(:disabled) {
+  background: var(--signal-hover);
+}
+
+.gilint-submit:disabled {
+  opacity: 0.38;
+  cursor: not-allowed;
+}
+
+.gilint-submit.gilint-loading {
+  opacity: 0.7;
+  cursor: wait;
+}
+
+.gilint-results {
+  margin-top: 1.5rem;
+  max-width: 720px;
+}
+
+/* Notice — shown for error responses (e.g. NO_GI_BLOCK) */
+.gilint-notice {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-left: 3px solid var(--text-tertiary);
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  padding: 0.85rem 1.1rem;
+  line-height: 1.65;
+}
+
+/* Findings list */
+.gilint-findings-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.gilint-finding {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  padding: 0.85rem 1.1rem;
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 0.6rem 1rem;
+  align-items: baseline;
+}
+
+.gilint-badge {
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 0.2rem 0.45rem;
+  border-radius: 0;
+  white-space: nowrap;
+}
+
+.gilint-badge-error {
+  background: rgba(248, 81, 73, 0.15);
+  color: var(--alert);
+  border: 1px solid rgba(248, 81, 73, 0.3);
+}
+
+.gilint-badge-review {
+  background: rgba(16, 185, 129, 0.1);
+  color: var(--signal);
+  border: 1px solid var(--signal-dim);
+}
+
+.gilint-finding-body {
+  grid-column: 2 / -1;
+}
+
+.gilint-finding-msg {
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  line-height: 1.65;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.gilint-rule-badge {
+  display: inline-block;
+  margin-top: 0.4rem;
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: var(--text-tertiary);
+  background: var(--surface-2);
+  border: 1px solid var(--rule);
+  padding: 0.18rem 0.45rem;
+}
+
+/* Clean state */
+.gilint-clean {
+  background: var(--surface);
+  border: 1px solid var(--signal-dim);
+  border-left: 3px solid var(--signal);
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.78rem;
+  color: var(--signal);
+  padding: 0.85rem 1.1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.gilint-clean::before {
+  content: '[✓]';
+  font-weight: 600;
+}
+
+/* Upsell panel */
+.gilint-upsell {
+  margin-top: 1.25rem;
+  background: var(--surface-2);
+  border: 1px solid var(--rule);
+  border-top: 2px solid var(--signal);
+  padding: 1.25rem 1.4rem 1.1rem;
+}
+
+.gilint-upsell-label {
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.6rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  margin-bottom: 0.65rem;
+}
+
+.gilint-upsell-text {
+  font-family: 'Geist', sans-serif;
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.72;
+  margin-bottom: 1.1rem;
+  max-width: 560px;
+}
+
+.gilint-upsell-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.gilint-upsell-cta {
+  background: var(--signal);
+  color: var(--bg);
+  border: none;
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.74rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.6rem 1.4rem;
+  cursor: pointer;
+  border-radius: 0;
+  text-decoration: none;
+  display: inline-block;
+  transition: background 200ms ease-out;
+}
+
+.gilint-upsell-cta:hover {
+  background: var(--signal-hover);
+}
+
+.gilint-upsell-secondary {
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.72rem;
+  color: var(--text-tertiary);
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  border-bottom: 1px solid var(--rule);
+  transition: color 200ms, border-color 200ms;
+}
+
+.gilint-upsell-secondary:hover {
+  color: var(--text);
+  border-bottom-color: var(--text);
+}
+
+@media (max-width: 640px) {
+  .gilint-textarea { min-height: 110px; }
+  .gilint-email { max-width: 100%; }
+  .gilint-finding {
+    grid-template-columns: 1fr;
+    gap: 0.4rem;
+  }
+  .gilint-finding-body { grid-column: 1 / -1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gilint-submit,
+  .gilint-textarea,
+  .gilint-email,
+  .gilint-upsell-cta,
+  .gilint-upsell-secondary { transition: none; }
+}
 </style>
 </head>
 <body>
@@ -1918,7 +2244,184 @@ footer .f-links a:hover { color: var(--text); }
       <span class="oss-cell-label">field</span><span class="oss-cell-dot"> · </span><span class="oss-cell-value">25 validators · 60+ failure modes encoded</span>
     </a>
   </div>
+
+  <!-- ── gi-lint interactive form ── -->
+  <div class="gilint-wrap">
+    <p class="gilint-lead">
+      <strong>Run it yourself.</strong>
+      Paste a <code>&lt;GenericInquiryScreen&gt;</code> block from your project.xml.
+      You get the same static checks the engine runs — free, in the browser, no account.
+    </p>
+
+    <form class="gilint-form" id="gilint-form" novalidate>
+      <div class="gilint-field">
+        <label class="gilint-label" for="gilint-xml">GI block</label>
+        <textarea
+          class="gilint-textarea"
+          id="gilint-xml"
+          name="project_xml"
+          rows="7"
+          placeholder="&lt;GenericInquiryScreen PrimaryScreenIDNew=&quot;GI000001&quot; …&gt;…&lt;/GenericInquiryScreen&gt;"
+          aria-required="true"
+          spellcheck="false"
+          autocomplete="off"
+        ></textarea>
+      </div>
+
+      <div class="gilint-field">
+        <label class="gilint-label" for="gilint-email">
+          Email
+          <span class="gilint-optional">— optional · helps us understand demand</span>
+        </label>
+        <input
+          class="gilint-email"
+          type="email"
+          id="gilint-email"
+          name="email"
+          placeholder="you@yourfirm.com"
+          autocomplete="email"
+        >
+      </div>
+
+      <button
+        class="gilint-submit"
+        type="submit"
+        id="gilint-submit"
+        disabled
+      >Lint my GI →</button>
+    </form>
+
+    <div
+      class="gilint-results"
+      id="gilint-results"
+      aria-live="polite"
+      aria-atomic="true"
+    ></div>
+  </div>
 </section>
+
+<script>
+/* ── gi-lint form — client-side submit handler ────────────────────────────
+ * Zero logic. Server owns all findings, severity, upsell text.
+ * Client responsibilities only: disable on empty, in-flight state, render
+ * exactly what the server returns, fire upsell-click on CTA tap.
+ * ──────────────────────────────────────────────────────────────────────── */
+(function () {
+  var GI_LINT_URL  = 'https://gi-lint-production.up.railway.app/api/v1/acuops/gi-lint';
+  var UPSELL_URL   = 'https://gi-lint-production.up.railway.app/api/v1/acuops/gi-lint/upsell-click';
+
+  var form    = document.getElementById('gilint-form');
+  var textarea = document.getElementById('gilint-xml');
+  var emailEl  = document.getElementById('gilint-email');
+  var submitEl = document.getElementById('gilint-submit');
+  var results  = document.getElementById('gilint-results');
+
+  /* Disable submit while textarea is empty */
+  textarea.addEventListener('input', function () {
+    submitEl.disabled = textarea.value.trim() === '';
+  });
+
+  function escHtml(str) {
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  function renderResults(data) {
+    var html = '';
+
+    if (data.error === true) {
+      /* Error envelope from server — guidance notice, not a findings list */
+      html = '<div class="gilint-notice">' + escHtml(data.message) + '</div>';
+    } else {
+      /* Success — render findings */
+      var findings = Array.isArray(data.findings) ? data.findings : [];
+
+      if (findings.length === 0) {
+        html += '<div class="gilint-clean">clean — no static issues found</div>';
+      } else {
+        html += '<div class="gilint-findings-list">';
+        for (var i = 0; i < findings.length; i++) {
+          var f = findings[i];
+          var badgeClass = f.severity === 'error' ? 'gilint-badge-error' : 'gilint-badge-review';
+          html += '<div class="gilint-finding">';
+          html += '<span class="gilint-badge ' + badgeClass + '">' + escHtml(f.severity) + '</span>';
+          html += '<div class="gilint-finding-body">';
+          html += '<div class="gilint-finding-msg">' + escHtml(f.message) + '</div>';
+          if (f.rule_badge) {
+            html += '<span class="gilint-rule-badge">' + escHtml(f.rule_badge) + '</span>';
+          }
+          html += '</div>';
+          html += '</div>';
+        }
+        html += '</div>';
+      }
+
+      /* Upsell panel — always rendered on success, verbatim server text */
+      if (data.upsell) {
+        html += '<div class="gilint-upsell">';
+        html += '<div class="gilint-upsell-label">What static analysis can\'t see</div>';
+        html += '<p class="gilint-upsell-text">' + escHtml(data.upsell) + '</p>';
+        html += '<div class="gilint-upsell-actions">';
+        html += '<button class="gilint-upsell-cta" id="gilint-upsell-cta" type="button">See the live diagnosis &#8594;</button>';
+        html += '<a class="gilint-upsell-secondary" href="/founding-partners">Founding partner pricing</a>';
+        html += '</div>';
+        html += '</div>';
+      }
+    }
+
+    results.innerHTML = html;
+
+    /* Wire upsell-click: fire beacon + scroll to #demo */
+    var ctaBtn = document.getElementById('gilint-upsell-cta');
+    if (ctaBtn) {
+      ctaBtn.addEventListener('click', function () {
+        /* Fire beacon — best-effort, no await */
+        fetch(UPSELL_URL, { method: 'POST' }).catch(function () {});
+        var demo = document.getElementById('demo');
+        if (demo) { demo.scrollIntoView({ behavior: 'smooth' }); }
+      });
+    }
+  }
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    var xml = textarea.value.trim();
+    if (!xml) return;
+
+    /* In-flight state */
+    submitEl.classList.add('gilint-loading');
+    submitEl.disabled = true;
+    submitEl.textContent = 'Linting…';
+    results.innerHTML = '';
+
+    var payload = { project_xml: xml };
+    var email = emailEl.value.trim();
+    if (email) { payload.email = email; }
+
+    fetch(GI_LINT_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    })
+      .then(function (res) { return res.json(); })
+      .then(function (data) {
+        renderResults(data);
+      })
+      .catch(function (err) {
+        results.innerHTML = '<div class="gilint-notice">Request failed — check your connection and try again.</div>';
+      })
+      .finally(function () {
+        submitEl.classList.remove('gilint-loading');
+        submitEl.disabled = textarea.value.trim() === '';
+        submitEl.textContent = 'Lint my GI →';
+      });
+  });
+})();
+</script>
 
 <div class="section-rule"><hr></div>
 
