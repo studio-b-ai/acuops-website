@@ -1,8 +1,8 @@
 {
   "client_label": "[client-1].acumatica.com",
   "branch": "main",
-  "sha_short": "00cb7db",
-  "run_at_iso": "2026-07-23T03:48:01Z",
+  "sha_short": "f18b970",
+  "run_at_iso": "2026-07-23T05:17:51Z",
   "workflow_name": "AcuOps (Heritage Fabrics)",
   "conclusion": "success",
   "categories": [
@@ -44,5 +44,5 @@
     "total": 23
   },
   "source": "studio b. CI \u00b7 verify-result.json",
-  "cached_at_iso": "2026-07-23T04:37:18Z"
+  "cached_at_iso": "2026-07-23T05:40:19Z"
 }
