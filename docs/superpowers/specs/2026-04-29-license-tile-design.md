@@ -8,7 +8,7 @@
 
 ## Context
 
-Phase 1 of the AcuOps License Gate is live — Heritage Fabrics key `ak_live_974175107494cc7cad6b`
+Phase 1 of the AcuOps License Gate is live — Heritage Fabrics key `ak_live_<the Heritage key — removed from the repo 2026-08-16, Rule #363>`
 validates successfully. VARs need a self-service surface to check their license status before
 automated reminders fire. This is a minimal read-only tile, not a management portal.
 
@@ -105,9 +105,9 @@ OG tags required:
 
 Verification:
 - Empty state renders
-- Heritage key (`ak_live_974175107494cc7cad6b`) → ACTIVE with correct tier/count
+- Heritage key (`ak_live_<the Heritage key — removed from the repo 2026-08-16, Rule #363>`) → ACTIVE with correct tier/count
 - Unknown key (`ak_test_invalid_404`) → KEY NOT FOUND
-- `?key=ak_live_974175107494cc7cad6b` pre-fills and auto-submits
+- `?key=ak_live_<the Heritage key — removed from the repo 2026-08-16, Rule #363>` pre-fills and auto-submits
 
 ---
 
@@ -148,5 +148,5 @@ This is the minimal surface — only the license endpoint, only acuops.com. No w
 1. `curl -X POST ... -H "Origin: https://acuops.com"` → response includes `Access-Control-Allow-Origin: https://acuops.com`
 2. Open `license.html` via Playwright, enter Heritage key, assert active state
 3. Enter `ak_test_invalid_404`, assert unknown state
-4. Load `?key=ak_live_974175107494cc7cad6b`, assert auto-submit
+4. Load `?key=ak_live_<the Heritage key — removed from the repo 2026-08-16, Rule #363>`, assert auto-submit
 5. Desktop screenshot (1280px) + mobile screenshot (375px) for 5b PR description
