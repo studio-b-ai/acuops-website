@@ -57,7 +57,7 @@ The dispatch strip at the top of the page is static (`STATUS ACTIVE` · `UPTIME 
 **Build:** Promote the dispatch strip to a real-fetching operations panel.
 
 - **Left slot:** Last CI run across AcuOps-protected instances. Blinded client identifier (`[client-1]` or `[partner-1]`), real commit SHA (short form), real relative timestamp (*"4 min ago"*). Pulled from the `studio-b-ai/acuops-pipeline` GitHub Actions API, OR from a thin Railway proxy for private-repo Actions runs (`studio-b-ai/client-asthetik`). Pick the stack that's cheapest to ship; blinded real data beats comprehensive real data.
-- **Middle slot:** 7-day probe-success sparkline. SVG, no JS chart lib, 20–30 data points at most. Pulled from the `webhook-router /api/ci-metrics` endpoint (already live, already CORS-enabled — extend its response shape if needed).
+- **Middle slot:** 7-day probe-success sparkline. SVG, no JS chart lib, 20–30 data points at most. Pulled from the `radio /api/ci-metrics` endpoint (already live, already CORS-enabled — extend its response shape if needed).
 - **Right slot:** Relative timestamp of the most recent post-publish test run, with the test name (*"TestPCCLeadTimeTab · 14 min ago"*). Visible proof the test matrix is running, not aspirational.
 
 Fetch cadence: 60s on page load, 5-min CDN cache. Server-side blinding (never trust client-side redaction — same rule as Amplify's audit ledger). No fake data under any circumstances; if the endpoint 500s, render the last-known-good snapshot with a muted *"cached"* label, not a placeholder.
@@ -87,7 +87,7 @@ Section §01 opens with *"The problem"* but doesn't yet carry the receipts that 
 
 Real or blinded-real numbers only. The `0 customer-visible incidents` line is the closer — VARs don't buy probes, they buy the absence of 2 AM Slack pings from their customer.
 
-**Source of truth:** a small rollup endpoint on `webhook-router` that counts `probe_failure`, `schema_drift`, and `release_pre_flight_fail` events from the last 30 days. Cache at the edge (5-min TTL). If the endpoint isn't up by PR 5b time, ship with hardcoded numbers for the current 30-day window and add the wire in a follow-up chip.
+**Source of truth:** a small rollup endpoint on `radio` that counts `probe_failure`, `schema_drift`, and `release_pre_flight_fail` events from the last 30 days. Cache at the edge (5-min TTL). If the endpoint isn't up by PR 5b time, ship with hardcoded numbers for the current 30-day window and add the wire in a follow-up chip.
 
 ### 4. Scale the §03 terminal block 2×
 
