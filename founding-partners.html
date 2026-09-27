@@ -963,7 +963,7 @@ footer .f-links a:focus-visible { outline: 2px solid var(--signal); outline-offs
 }
 
 /* ── Custom form additions (G2-0d rebuild, 2026-05-22) ─────────────────
-   Direct browser POST → webhook-router → HubSpot Forms API + Slack.
+   Direct browser POST → radio → HubSpot Forms API + Slack.
    Replaces broken HubSpot embed. Reuses existing .fp-form-wrap/.fp-field
    /.fp-field-error/.fp-submit-btn dark-theme tokens. */
 .fp-form { display: block; }
@@ -1332,7 +1332,7 @@ footer .f-links a:focus-visible { outline: 2px solid var(--signal); outline-offs
 
       <!--
         Custom dark-theme form — Studio b. owns 100% of UX. POSTs directly
-        to webhook-router /webhook/inbound/founding-partner-application,
+        to radio /webhook/inbound/founding-partner-application,
         which validates server-side, fans out to HubSpot Forms API (CRM
         record) + Slack #inbound-software-lead (operator alert). Bypasses
         HubSpot embed's per-browser anti-spam learning that silently
